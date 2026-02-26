@@ -12,5 +12,3 @@ Each `homework_XX` folder includes:
 - Generated tables and figures
 
 All results are reproducible using the provided scripts.
-
-Note: Datasets are not included if subject to licensing restrictions.
