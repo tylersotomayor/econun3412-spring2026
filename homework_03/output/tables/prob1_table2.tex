@@ -1,0 +1,33 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{3}{D{.}{.}{-1}}}
+\toprule
+            &\multicolumn{1}{c}{(1)}         &\multicolumn{1}{c}{(2)}         &\multicolumn{1}{c}{(3)}         \\
+\midrule
+hsGPA       &       0.459\sym{***}&       0.455\sym{***}&       0.461\sym{***}\\
+            &     (0.094)         &     (0.093)         &     (0.090)         \\
+\addlinespace
+skipped     &      -0.077\sym{***}&      -0.065\sym{**} &      -0.071\sym{***}\\
+            &     (0.025)         &     (0.026)         &     (0.026)         \\
+\addlinespace
+PC          &                     &       0.129\sym{**} &       0.137\sym{**} \\
+            &                     &     (0.060)         &     (0.059)         \\
+\addlinespace
+bgfriend    &                     &                     &       0.086         \\
+            &                     &                     &     (0.054)         \\
+\addlinespace
+campus      &                     &                     &      -0.124         \\
+            &                     &                     &     (0.079)         \\
+\addlinespace
+Intercept   &       1.579\sym{***}&       1.527\sym{***}&       1.490\sym{***}\\
+            &     (0.325)         &     (0.321)         &     (0.317)         \\
+\midrule
+n           &         141         &         141         &         141         \\
+R-squared   &       0.223         &       0.250         &       0.278         \\
+Regression RMSE&       0.331         &       0.326         &       0.322         \\
+\bottomrule
+\multicolumn{4}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{4}{l}{\footnotesize Robust standard errors in parentheses.}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}

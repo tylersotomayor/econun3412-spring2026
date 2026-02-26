@@ -1,0 +1,31 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{2}{D{.}{.}{-1}}}
+\toprule
+            &\multicolumn{1}{c}{(1)}         &\multicolumn{1}{c}{(2)}         \\
+\midrule
+educ        &       0.570\sym{***}&       0.570\sym{***}\\
+            &     (0.050)         &     (0.061)         \\
+\addlinespace
+exper       &       0.025\sym{**} &       0.025\sym{**} \\
+            &     (0.012)         &     (0.010)         \\
+\addlinespace
+tenure      &       0.141\sym{***}&       0.141\sym{***}\\
+            &     (0.021)         &     (0.028)         \\
+\addlinespace
+female      &      -1.812\sym{***}&      -1.812\sym{***}\\
+            &     (0.265)         &     (0.255)         \\
+\addlinespace
+nonwhite    &      -0.116         &      -0.116         \\
+            &     (0.427)         &     (0.393)         \\
+\addlinespace
+Intercept   &      -1.540\sym{**} &      -1.540\sym{*}  \\
+            &     (0.732)         &     (0.831)         \\
+\midrule
+n           &         526         &         526         \\
+R-squared   &       0.364         &       0.364         \\
+Regression RMSE&       2.960         &       2.960         \\
+\bottomrule
+\multicolumn{3}{l}{\footnotesize Column (2) reports heteroskedasticity-robust standard errors.}\\
+\end{tabular}
+}

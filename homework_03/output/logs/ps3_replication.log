@@ -1,0 +1,754 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/econ3412/homework_03/output/logs/ps3_replication.log
+  log type:  text
+ opened on:  26 Feb 2026, 09:22:29
+
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "Running from: `c(pwd)'"
+Running from: /Users/tylersotomayor/econ3412/homework_03
+
+. display as text "============================================================"
+============================================================
+
+. 
+. * ==============================================================================
+. * 1. Packages
+. * ==============================================================================
+. 
+. capture which esttab
+
+. if _rc {
+.     ssc install estout, replace
+. }
+
+. 
+. * ==============================================================================
+. * 2. House style for LaTeX regression tables
+. *    NOTE: line continuation uses " ///" with a leading space (required). 
+. * ==============================================================================
+. 
+. global ESTSTYLE ///
+>     "booktabs se star(* 0.10 ** 0.05 *** 0.01) b(%9.3f) se(%9.3f) alignment(D{.}{.}{-1})"
+
+. 
+. * ==============================================================================
+. * PROBLEM 1(a) — GPA4.dta (Table 2)
+. * ==============================================================================
+. 
+. use "$DATA/GPA4.dta", clear
+
+. 
+. describe
+
+Contains data from data/GPA4.dta
+ Observations:           141                  
+    Variables:             7                  7 Feb 2010 11:07
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+campus          byte    %9.0g                 =1 if live on campus
+colGPA          float   %9.0g                 MSU GPA
+hsGPA           float   %9.0g                 high school GPA
+ACT             byte    %9.0g                 'achievement' score
+PC              byte    %9.0g                 =1 of pers computer at sch
+bgfriend        byte    %9.0g                 =1 if boy- or girlfriend
+skipped         float   %9.0g                 avg lectures missed per week
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+
+. summarize colGPA hsGPA skipped PC bgfriend campus
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+      colGPA |        141    3.056738    .3723103        2.2          4
+       hsGPA |        141    3.402128    .3199259        2.4          4
+     skipped |        141    1.076241    1.088882          0          5
+          PC |        141    .3971631    .4910547          0          1
+    bgfriend |        141    .4751773    .5011638          0          1
+-------------+---------------------------------------------------------
+      campus |        141    .1702128    .3771594          0          1
+
+. 
+. eststo clear
+
+. 
+. reg colGPA hsGPA skipped, vce(robust)
+
+Linear regression                               Number of obs     =        141
+                                                F(2, 138)         =      20.90
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.2227
+                                                Root MSE          =     .33061
+
+------------------------------------------------------------------------------
+             |               Robust
+      colGPA | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       hsGPA |   .4588039   .0941514     4.87   0.000     .2726379    .6449698
+     skipped |  -.0774349   .0253855    -3.05   0.003    -.1276297     -.02724
+       _cons |   1.579167   .3252499     4.86   0.000     .9360492    2.222285
+------------------------------------------------------------------------------
+
+. eststo col1
+
+. 
+. reg colGPA hsGPA skipped PC, vce(robust)
+
+Linear regression                               Number of obs     =        141
+                                                F(3, 137)         =      15.47
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.2504
+                                                Root MSE          =     .32586
+
+------------------------------------------------------------------------------
+             |               Robust
+      colGPA | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       hsGPA |   .4554308   .0926418     4.92   0.000     .2722379    .6386236
+     skipped |  -.0654738   .0258948    -2.53   0.013     -.116679   -.0142686
+          PC |   .1288832   .0596679     2.16   0.033      .010894    .2468724
+       _cons |   1.526582   .3210645     4.75   0.000     .8916989    2.161465
+------------------------------------------------------------------------------
+
+. eststo col2
+
+. 
+. reg colGPA hsGPA skipped PC bgfriend campus, vce(robust)
+
+Linear regression                               Number of obs     =        141
+                                                F(5, 135)         =      11.14
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.2784
+                                                Root MSE          =     .32206
+
+------------------------------------------------------------------------------
+             |               Robust
+      colGPA | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       hsGPA |   .4612761   .0904146     5.10   0.000      .282464    .6400883
+     skipped |  -.0713981    .026088    -2.74   0.007    -.1229921    -.019804
+          PC |   .1366699   .0586553     2.33   0.021     .0206677    .2526721
+    bgfriend |   .0858605   .0541388     1.59   0.115    -.0212093    .1929303
+      campus |  -.1243919   .0787314    -1.58   0.116    -.2800983    .0313146
+       _cons |   1.490353   .3172954     4.70   0.000       .86284    2.117865
+------------------------------------------------------------------------------
+
+. eststo col3
+
+. 
+. esttab col1 col2 col3 using "$TABS/prob1_table2.tex", replace ///
+>     $ESTSTYLE ///
+>     nomtitles ///
+>     collabels("(1)" "(2)" "(3)", none) ///
+>     keep(hsGPA skipped PC bgfriend campus _cons) ///
+>     order(hsGPA skipped PC bgfriend campus _cons) ///
+>     coeflabels(_cons "Intercept") ///
+>     stats(N r2 rmse, fmt(%9.0fc %9.3f %9.3f) labels("n" "R-squared" "Regression RMSE")) ///
+>     addnotes("Robust standard errors in parentheses.")
+(output written to output/tables/prob1_table2.tex)
+
+. 
+. display as text "Wrote: $TABS/prob1_table2.tex"
+Wrote: output/tables/prob1_table2.tex
+
+. 
+. * ==============================================================================
+. * PROBLEM 2 — Nursing Home Utilization
+. * Part 2.1 (Year 2000 data)
+. * ==============================================================================
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "PROBLEM 2 — Year 2000 Analysis"
+PROBLEM 2 — Year 2000 Analysis
+
+. display as text "============================================================"
+============================================================
+
+. 
+. use "$DATA/WiscoNursingHome.dta", clear
+
+. 
+. * Keep only cost-report year 2000
+. keep if cryear == 2000
+(355 observations deleted)
+
+. 
+. * Create log(TPY)
+. gen logtpy = log(tpy)
+
+. 
+. * Basic checks
+. summarize tpy logtpy numbed sqrfoot
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         tpy |        362    88.79193    46.10236   11.56831   314.6995
+      logtpy |        362    4.360376    .5112968   2.448269   5.751618
+      numbed |        362    97.07956     48.9882         18        320
+     sqrfoot |        357    50.14371    34.50447      5.644        262
+
+. 
+. display as text "---- Correlation: TPY and log(TPY) ----"
+---- Correlation: TPY and log(TPY) ----
+
+. corr tpy logtpy
+(obs=362)
+
+             |      tpy   logtpy
+-------------+------------------
+         tpy |   1.0000
+      logtpy |   0.9372   1.0000
+
+
+. 
+. display as text "---- Correlation Matrix: TPY, NUMBED, SQRFOOT ----"
+---- Correlation Matrix: TPY, NUMBED, SQRFOOT ----
+
+. corr tpy numbed sqrfoot
+(obs=357)
+
+             |      tpy   numbed  sqrfoot
+-------------+---------------------------
+         tpy |   1.0000
+      numbed |   0.9789   1.0000
+     sqrfoot |   0.8244   0.8192   1.0000
+
+
+. 
+. * ------------------------------------------------------------------------------
+. * 2.1(b) Scatter plots
+. * ------------------------------------------------------------------------------
+. 
+. display as text "---- Generating Scatter Plots ----"
+---- Generating Scatter Plots ----
+
+. 
+. * Scatter: TPY vs NUMBED
+. twoway ///
+>     (scatter tpy numbed, msize(small) mcolor(navy)) ///
+>     (lfit tpy numbed, lcolor(maroon)), ///
+>     title("TPY vs NUMBED (Year 2000)") ///
+>     ytitle("TPY") ///
+>     xtitle("NUMBED") ///
+>     legend(off)
+
+. 
+. graph export "$FIGS/prob2_tpy_numbed.pdf", replace
+file /Users/tylersotomayor/econ3412/homework_03/output/figures/prob2_tpy_numbed.pdf saved as PDF format
+
+. 
+. * Scatter: TPY vs SQRFOOT
+. twoway ///
+>     (scatter tpy sqrfoot, msize(small) mcolor(navy)) ///
+>     (lfit tpy sqrfoot, lcolor(maroon)), ///
+>     title("TPY vs SQRFOOT (Year 2000)") ///
+>     ytitle("TPY") ///
+>     xtitle("SQRFOOT") ///
+>     legend(off)
+
+. 
+. graph export "$FIGS/prob2_tpy_sqrfoot.pdf", replace
+file /Users/tylersotomayor/econ3412/homework_03/output/figures/prob2_tpy_sqrfoot.pdf saved as PDF format
+
+. 
+. * ------------------------------------------------------------------------------
+. * 2.1(c)(i) TPY on NUMBED
+. * ------------------------------------------------------------------------------
+. 
+. display as text "---- Regression: TPY on NUMBED ----"
+---- Regression: TPY on NUMBED ----
+
+. 
+. reg tpy numbed
+
+      Source |       SS           df       MS      Number of obs   =       362
+-------------+----------------------------------   F(1, 360)       =   8344.17
+       Model |  735544.934         1  735544.934   Prob > F        =    0.0000
+    Residual |  31734.2731       360  88.1507585   R-squared       =    0.9586
+-------------+----------------------------------   Adj R-squared   =    0.9585
+       Total |  767279.207       361  2125.42717   Root MSE        =    9.3889
+
+------------------------------------------------------------------------------
+         tpy | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      numbed |    .921424   .0100871    91.35   0.000     .9015869    .9412611
+       _cons |  -.6595054   1.096563    -0.60   0.548    -2.815979    1.496969
+------------------------------------------------------------------------------
+
+. 
+. display as text "R-squared = " %6.4f e(r2)
+R-squared = 0.9586
+
+. display as text "t-stat(NUMBED) = " %6.4f (_b[numbed]/_se[numbed])
+t-stat(NUMBED) = 91.3464
+
+. 
+. * ------------------------------------------------------------------------------
+. * 2.1(c)(ii) TPY on SQRFOOT
+. * ------------------------------------------------------------------------------
+. 
+. * ------------------------------------------------------------------------------
+. * 2.1(c)(iii) LOGTPY on LOG(NUMBED)
+. * ------------------------------------------------------------------------------
+. 
+. gen lognumbed = log(numbed)
+
+. 
+. display as text "---- Regression: LOGTPY on LOG(NUMBED) ----"
+---- Regression: LOGTPY on LOG(NUMBED) ----
+
+. 
+. reg logtpy lognumbed
+
+      Source |       SS           df       MS      Number of obs   =       362
+-------------+----------------------------------   F(1, 360)       =   6599.05
+       Model |  89.4921256         1  89.4921256   Prob > F        =    0.0000
+    Residual |  4.88208937       360  .013561359   R-squared       =    0.9483
+-------------+----------------------------------   Adj R-squared   =    0.9481
+       Total |   94.374215       361  .261424418   Root MSE        =    .11645
+
+------------------------------------------------------------------------------
+      logtpy | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+   lognumbed |   1.012313   .0124616    81.23   0.000     .9878065     1.03682
+       _cons |  -.1521498   .0558855    -2.72   0.007    -.2620529   -.0422468
+------------------------------------------------------------------------------
+
+. 
+. display as text "R-squared = " %6.4f e(r2)
+R-squared = 0.9483
+
+. display as text "t-stat(LOGNUMBED) = " %6.4f (_b[lognumbed]/_se[lognumbed])
+t-stat(LOGNUMBED) = 81.2346
+
+. 
+. display as text "---- Regression: TPY on SQRFOOT ----"
+---- Regression: TPY on SQRFOOT ----
+
+. 
+. reg tpy sqrfoot
+
+      Source |       SS           df       MS      Number of obs   =       357
+-------------+----------------------------------   F(1, 355)       =    753.23
+       Model |  515192.432         1  515192.432   Prob > F        =    0.0000
+    Residual |  242813.516       355  683.981736   R-squared       =    0.6797
+-------------+----------------------------------   Adj R-squared   =    0.6788
+       Total |  758005.948       356  2129.23019   Root MSE        =    26.153
+
+------------------------------------------------------------------------------
+         tpy | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     sqrfoot |   1.102515   .0401719    27.44   0.000      1.02351     1.18152
+       _cons |   33.96946   2.444092    13.90   0.000     29.16274    38.77618
+------------------------------------------------------------------------------
+
+. 
+. display as text "R-squared = " %6.4f e(r2)
+R-squared = 0.6797
+
+. display as text "t-stat(SQRFOOT) = " %6.4f (_b[sqrfoot]/_se[sqrfoot])
+t-stat(SQRFOOT) = 27.4450
+
+. 
+. * ------------------------------------------------------------------------------
+. * 2.1(c)(iv) LOGTPY on LOG(SQRFOOT)
+. * ------------------------------------------------------------------------------
+. 
+. gen logsqrfoot = log(sqrfoot)
+(5 missing values generated)
+
+. 
+. display as text "---- Regression: LOGTPY on LOG(SQRFOOT) ----"
+---- Regression: LOGTPY on LOG(SQRFOOT) ----
+
+. 
+. reg logtpy logsqrfoot
+
+      Source |       SS           df       MS      Number of obs   =       357
+-------------+----------------------------------   F(1, 355)       =    742.50
+       Model |  62.6268859         1  62.6268859   Prob > F        =    0.0000
+    Residual |  29.9427516       355  .084345779   R-squared       =    0.6765
+-------------+----------------------------------   Adj R-squared   =    0.6756
+       Total |  92.5696375       356  .260027072   Root MSE        =    .29042
+
+------------------------------------------------------------------------------
+      logtpy | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  logsqrfoot |   .6873675   .0252255    27.25   0.000     .6377572    .7369777
+       _cons |   1.805093   .0952471    18.95   0.000     1.617774    1.992413
+------------------------------------------------------------------------------
+
+. 
+. display as text "R-squared = " %6.4f e(r2)
+R-squared = 0.6765
+
+. display as text "t-stat(LOGSQRFOOT) = " %6.4f (_b[logsqrfoot]/_se[logsqrfoot])
+t-stat(LOGSQRFOOT) = 27.2489
+
+. 
+. * ==============================================================================
+. * PROBLEM 2.2 — Year 2001 Analysis
+. * Same regression as 2.1(c)(i): TPY on NUMBED
+. * ==============================================================================
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "PROBLEM 2.2 — Year 2001 Analysis"
+PROBLEM 2.2 — Year 2001 Analysis
+
+. display as text "============================================================"
+============================================================
+
+. 
+. use "$DATA/WiscoNursingHome.dta", clear
+
+. 
+. * Keep only cost-report year 2001
+. keep if cryear == 2001
+(362 observations deleted)
+
+. 
+. display as text "---- Regression: TPY on NUMBED (Year 2001) ----"
+---- Regression: TPY on NUMBED (Year 2001) ----
+
+. 
+. reg tpy numbed
+
+      Source |       SS           df       MS      Number of obs   =       355
+-------------+----------------------------------   F(1, 353)       =  14494.51
+       Model |  831314.123         1  831314.123   Prob > F        =    0.0000
+    Residual |  20245.8631       353  57.3537199   R-squared       =    0.9762
+-------------+----------------------------------   Adj R-squared   =    0.9762
+       Total |  851559.986       354  2405.53668   Root MSE        =    7.5732
+
+------------------------------------------------------------------------------
+         tpy | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      numbed |   .9323838   .0077445   120.39   0.000     .9171527     .947615
+       _cons |  -1.034922   .8542459    -1.21   0.227    -2.714973    .6451297
+------------------------------------------------------------------------------
+
+. 
+. display as text "R-squared (2001) = " %6.4f e(r2)
+R-squared (2001) = 0.9762
+
+. display as text "t-stat(NUMBED, 2001) = " %6.4f (_b[numbed]/_se[numbed])
+t-stat(NUMBED, 2001) = 120.3932
+
+. 
+. * ==============================================================================
+. * PROBLEM 3(a)(ii) — Wage on Female
+. * ==============================================================================
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "PROBLEM 3(a)(ii) — wage on female"
+PROBLEM 3(a)(ii) — wage on female
+
+. display as text "============================================================"
+============================================================
+
+. 
+. use "$DATA/WAGE.dta", clear
+
+. 
+. reg wage female
+
+      Source |       SS           df       MS      Number of obs   =       526
+-------------+----------------------------------   F(1, 524)       =     68.54
+       Model |  828.220467         1  828.220467   Prob > F        =    0.0000
+    Residual |  6332.19382       524  12.0843394   R-squared       =    0.1157
+-------------+----------------------------------   Adj R-squared   =    0.1140
+       Total |  7160.41429       525  13.6388844   Root MSE        =    3.4763
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      female |   -2.51183   .3034092    -8.28   0.000    -3.107878   -1.915782
+       _cons |   7.099489   .2100082    33.81   0.000     6.686928     7.51205
+------------------------------------------------------------------------------
+
+. 
+. display as text "Mean wage (female=0): " %6.4f _b[_cons]
+Mean wage (female=0): 7.0995
+
+. display as text "Mean wage difference (female=1 - female=0): " %6.4f _b[female]
+Mean wage difference (female=1 - female=0): -2.5118
+
+. display as text "R-squared = " %6.4f e(r2)
+R-squared = 0.1157
+
+. 
+. * ==============================================================================
+. * PROBLEM 3(c) — Perfect multicollinearity (female and male dummy)
+. * ==============================================================================
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "PROBLEM 3(a)(iii) — Female and Male Dummy Together"
+PROBLEM 3(a)(iii) — Female and Male Dummy Together
+
+. display as text "============================================================"
+============================================================
+
+. 
+. use "$DATA/WAGE.dta", clear
+
+. 
+. * Generate male dummy
+. gen male = 1 - female
+
+. 
+. * Verify construction
+. tab female male
+
+           |         male
+    female |         0          1 |     Total
+-----------+----------------------+----------
+         0 |         0        274 |       274 
+         1 |       252          0 |       252 
+-----------+----------------------+----------
+     Total |       252        274 |       526 
+
+. 
+. * Run regression with both dummies
+. reg wage educ female male
+note: male omitted because of collinearity.
+
+      Source |       SS           df       MS      Number of obs   =       526
+-------------+----------------------------------   F(2, 523)       =     91.32
+       Model |  1853.25304         2  926.626518   Prob > F        =    0.0000
+    Residual |  5307.16125       523  10.1475359   R-squared       =    0.2588
+-------------+----------------------------------   Adj R-squared   =    0.2560
+       Total |  7160.41429       525  13.6388844   Root MSE        =    3.1855
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        educ |   .5064521   .0503906    10.05   0.000     .4074592     .605445
+      female |  -2.273362   .2790444    -8.15   0.000    -2.821547   -1.725176
+        male |          0  (omitted)
+       _cons |   .6228168   .6725334     0.93   0.355     -.698382    1.944016
+------------------------------------------------------------------------------
+
+. 
+. * ==============================================================================
+. * PROBLEM 3(a)(iv) — OVB: wage on educ, then wage on educ + exper
+. * ==============================================================================
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "PROBLEM 3(d) — wage on educ; then wage on educ + exper"
+PROBLEM 3(d) — wage on educ; then wage on educ + exper
+
+. display as text "============================================================"
+============================================================
+
+. 
+. use "$DATA/WAGE.dta", clear
+
+. 
+. * (1) Simple regression: wage on educ
+. reg wage educ
+
+      Source |       SS           df       MS      Number of obs   =       526
+-------------+----------------------------------   F(1, 524)       =    103.36
+       Model |  1179.73204         1  1179.73204   Prob > F        =    0.0000
+    Residual |  5980.68225       524  11.4135158   R-squared       =    0.1648
+-------------+----------------------------------   Adj R-squared   =    0.1632
+       Total |  7160.41429       525  13.6388844   Root MSE        =    3.3784
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        educ |   .5413593    .053248    10.17   0.000     .4367534    .6459651
+       _cons |  -.9048516   .6849678    -1.32   0.187    -2.250472    .4407687
+------------------------------------------------------------------------------
+
+. display as text "beta1 (educ) in simple model = " %9.6f _b[educ]
+beta1 (educ) in simple model =  0.541359
+
+. 
+. * (2) Multiple regression: wage on educ and exper
+. reg wage educ exper
+
+      Source |       SS           df       MS      Number of obs   =       526
+-------------+----------------------------------   F(2, 523)       =     75.99
+       Model |   1612.2545         2  806.127251   Prob > F        =    0.0000
+    Residual |  5548.15979       523  10.6083361   R-squared       =    0.2252
+-------------+----------------------------------   Adj R-squared   =    0.2222
+       Total |  7160.41429       525  13.6388844   Root MSE        =     3.257
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        educ |   .6442721   .0538061    11.97   0.000     .5385695    .7499747
+       exper |   .0700954   .0109776     6.39   0.000     .0485297    .0916611
+       _cons |  -3.390539   .7665661    -4.42   0.000    -4.896466   -1.884613
+------------------------------------------------------------------------------
+
+. display as text "beta1 (educ) controlling for exper = " %9.6f _b[educ]
+beta1 (educ) controlling for exper =  0.644272
+
+. display as text "beta2 (exper) controlling for educ = " %9.6f _b[exper]
+beta2 (exper) controlling for educ =  0.070095
+
+. 
+. * ==============================================================================
+. * PROBLEM 3 — Full model (classical vs robust SEs)
+. * ==============================================================================
+. 
+. use "$DATA/WAGE.dta", clear
+
+. 
+. eststo clear
+
+. 
+. * Classical SEs
+. reg wage educ exper tenure female nonwhite
+
+      Source |       SS           df       MS      Number of obs   =       526
+-------------+----------------------------------   F(5, 520)       =     59.43
+       Model |  2603.75212         5  520.750424   Prob > F        =    0.0000
+    Residual |  4556.66217       520  8.76281186   R-squared       =    0.3636
+-------------+----------------------------------   Adj R-squared   =    0.3575
+       Total |  7160.41429       525  13.6388844   Root MSE        =    2.9602
+
+------------------------------------------------------------------------------
+        wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        educ |   .5703422   .0495667    11.51   0.000     .4729667    .6677177
+       exper |    .025343   .0115814     2.19   0.029      .002591    .0480951
+      tenure |   .1410697   .0211819     6.66   0.000     .0994572    .1826823
+      female |  -1.812043   .2650973    -6.84   0.000    -2.332836    -1.29125
+    nonwhite |   -.115874   .4269179    -0.27   0.786    -.9545699    .7228218
+       _cons |  -1.540298   .7323115    -2.10   0.036    -2.978951   -.1016454
+------------------------------------------------------------------------------
+
+. eststo classical
+
+. 
+. * Robust SEs
+. reg wage educ exper tenure female nonwhite, vce(robust)
+
+Linear regression                               Number of obs     =        526
+                                                F(5, 520)         =      35.62
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.3636
+                                                Root MSE          =     2.9602
+
+------------------------------------------------------------------------------
+             |               Robust
+        wage | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+        educ |   .5703422   .0613282     9.30   0.000     .4498608    .6908236
+       exper |    .025343   .0098146     2.58   0.010     .0060619    .0446242
+      tenure |   .1410697   .0279893     5.04   0.000     .0860837    .1960558
+      female |  -1.812043   .2545377    -7.12   0.000    -2.312092   -1.311994
+    nonwhite |   -.115874    .392651    -0.30   0.768    -.8872512    .6555031
+       _cons |  -1.540298   .8306617    -1.85   0.064    -3.172163     .091567
+------------------------------------------------------------------------------
+
+. eststo robust
+
+. 
+. esttab classical robust using "$TABS/prob3_fullmodel.tex", replace ///
+>     $ESTSTYLE ///
+>     nomtitles ///
+>     collabels("(1) Classical SEs" "(2) Robust SEs", none) ///
+>     keep(educ exper tenure female nonwhite _cons) ///
+>     order(educ exper tenure female nonwhite _cons) ///
+>     coeflabels(_cons "Intercept") ///
+>     stats(N r2 rmse, fmt(%9.0fc %9.3f %9.3f) ///
+>           labels("n" "R-squared" "Regression RMSE")) ///
+>     nonotes ///
+>     addnotes("Column (2) reports heteroskedasticity-robust standard errors.")
+(output written to output/tables/prob3_fullmodel.tex)
+
+.         
+. * ==============================================================================
+. * PROBLEM 3(f) — Hypothesis tests using ROBUST regression
+. * ==============================================================================
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "PROBLEM 3(f) — Hypothesis tests (robust VCE)"
+PROBLEM 3(f) — Hypothesis tests (robust VCE)
+
+. display as text "============================================================"
+============================================================
+
+. 
+. * Individual (two-sided) tests H0: beta_i = 0 for i=1,...,5
+. * (The t-stats and p-values are in the regression output, but we can also display them cleanly.)
+. foreach v in educ exper tenure female nonwhite {
+  2.     display as text "---- H0: beta_`v' = 0 (robust) ----"
+  3.     test `v' = 0
+  4. }
+---- H0: beta_educ = 0 (robust) ----
+
+ ( 1)  educ = 0
+
+       F(  1,   520) =   86.49
+            Prob > F =    0.0000
+---- H0: beta_exper = 0 (robust) ----
+
+ ( 1)  exper = 0
+
+       F(  1,   520) =    6.67
+            Prob > F =    0.0101
+---- H0: beta_tenure = 0 (robust) ----
+
+ ( 1)  tenure = 0
+
+       F(  1,   520) =   25.40
+            Prob > F =    0.0000
+---- H0: beta_female = 0 (robust) ----
+
+ ( 1)  female = 0
+
+       F(  1,   520) =   50.68
+            Prob > F =    0.0000
+---- H0: beta_nonwhite = 0 (robust) ----
+
+ ( 1)  nonwhite = 0
+
+       F(  1,   520) =    0.09
+            Prob > F =    0.7680
+
+. 
+. * Joint test H0: beta1=beta2=beta3=beta4=beta5=0
+. display as text "---- Joint test: educ exper tenure female nonwhite all zero (robust) ----"
+---- Joint test: educ exper tenure female nonwhite all zero (robust) ----
+
+. test educ exper tenure female nonwhite
+
+ ( 1)  educ = 0
+ ( 2)  exper = 0
+ ( 3)  tenure = 0
+ ( 4)  female = 0
+ ( 5)  nonwhite = 0
+
+       F(  5,   520) =   35.62
+            Prob > F =    0.0000
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/econ3412/homework_03/output/logs/ps3_replication.log
+  log type:  text
+ closed on:  26 Feb 2026, 09:22:30
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
