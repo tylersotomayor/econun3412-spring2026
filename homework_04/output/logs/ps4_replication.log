@@ -1,0 +1,490 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/econ3412-spring2026/homework_04/output/logs/ps4_replication.log
+  log type:  text
+ opened on:   3 Mar 2026, 04:08:37
+
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "Running from: `c(pwd)'"
+Running from: /Users/tylersotomayor/econ3412-spring2026/homework_04
+
+. display as text "============================================================"
+============================================================
+
+. 
+. * ==============================================================================
+. * 1. Packages
+. * ==============================================================================
+. 
+. capture which esttab
+
+. if _rc {
+.     ssc install estout, replace
+. }
+
+. 
+. * ==============================================================================
+. * 2. House style for LaTeX regression tables
+. *    NOTE: line continuation uses " ///" with a leading space (required). 
+. * ==============================================================================
+. 
+. global ESTSTYLE ///
+>     "booktabs se star(* 0.10 ** 0.05 *** 0.01) b(%9.3f) se(%9.3f) alignment(D{.}{.}{-1})"
+
+.         
+. * ==============================================================================
+. * PROBLEM 1(a) — House Price Regression (hprice1.dta)
+. * Model: price = β0 + β1*sqrft + β2*bdrms + u
+. *
+. * price  = selling price (in $1000s)
+. * sqrft  = house size (square feet)
+. * bdrms  = number of bedrooms
+. *
+. * Goal: Estimate OLS model and export LaTeX table for Appendix
+. * ==============================================================================
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "PROBLEM 1(a) — price on sqrft and bdrms"
+PROBLEM 1(a) — price on sqrft and bdrms
+
+. display as text "============================================================"
+============================================================
+
+. 
+. * ------------------------------------------------------------------------------
+. * 1. Load data
+. * ------------------------------------------------------------------------------
+. 
+. use "$DATA/hprice1.dta", clear
+
+. 
+. display as text "---- Dataset loaded: hprice1.dta ----"
+---- Dataset loaded: hprice1.dta ----
+
+. display as text "Observations = " _N
+Observations = 88
+
+. 
+. * ------------------------------------------------------------------------------
+. * 2. Inspect variables used in regression
+. * ------------------------------------------------------------------------------
+. 
+. describe price sqrft bdrms
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+price           float   %9.0g                 house price, $1000s
+sqrft           int     %9.0g                 size of house in square feet
+bdrms           byte    %9.0g                 number of bdrms
+
+. summarize price sqrft bdrms
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+       price |         88     293.546    102.7134        111        725
+       sqrft |         88    2013.693    577.1916       1171       3880
+       bdrms |         88    3.568182    .8413926          2          7
+
+. 
+. display as text "Note: price is measured in thousands of dollars."
+Note: price is measured in thousands of dollars.
+
+. 
+. * ------------------------------------------------------------------------------
+. * 3. Estimate OLS regression
+. * ------------------------------------------------------------------------------
+. 
+. eststo clear
+
+. 
+. reg price sqrft bdrms
+
+      Source |       SS           df       MS      Number of obs   =        88
+-------------+----------------------------------   F(2, 85)        =     72.96
+       Model |  580009.152         2  290004.576   Prob > F        =    0.0000
+    Residual |  337845.354        85  3974.65122   R-squared       =    0.6319
+-------------+----------------------------------   Adj R-squared   =    0.6233
+       Total |  917854.506        87  10550.0518   Root MSE        =    63.045
+
+------------------------------------------------------------------------------
+       price | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       sqrft |   .1284362   .0138245     9.29   0.000     .1009495    .1559229
+       bdrms |   15.19819   9.483517     1.60   0.113    -3.657582    34.05396
+       _cons |    -19.315   31.04662    -0.62   0.536    -81.04399      42.414
+------------------------------------------------------------------------------
+
+. 
+. * Store model for LaTeX export
+. eststo prob1_ols
+
+. 
+. * ------------------------------------------------------------------------------
+. * 4. Display key regression quantities cleanly
+. * ------------------------------------------------------------------------------
+. 
+. display as text "------------------------------------------------------------"
+------------------------------------------------------------
+
+. display as text "Key regression statistics"
+Key regression statistics
+
+. display as text "------------------------------------------------------------"
+------------------------------------------------------------
+
+. 
+. display as text "Number of observations = " %6.0f e(N)
+Number of observations =     88
+
+. display as text "R-squared              = " %6.4f e(r2)
+R-squared              = 0.6319
+
+. display as text "Adj. R-squared         = " %6.4f e(r2_a)
+Adj. R-squared         = 0.6233
+
+. display as text "Root MSE               = " %6.4f e(rmse)
+Root MSE               = 63.0448
+
+. 
+. display as text " "
+ 
+
+. display as text "Coefficient estimates (with t-stats):"
+Coefficient estimates (with t-stats):
+
+. 
+. display as text "sqrft  coefficient = " %9.6f _b[sqrft] ///
+>     "   t-stat = " %9.3f (_b[sqrft]/_se[sqrft])
+sqrft  coefficient =  0.128436   t-stat =     9.291
+
+. 
+. display as text "bdrms  coefficient = " %9.6f _b[bdrms] ///
+>     "   t-stat = " %9.3f (_b[bdrms]/_se[bdrms])
+bdrms  coefficient = 15.198191   t-stat =     1.603
+
+. 
+. display as text "_cons  coefficient = " %9.6f _b[_cons] ///
+>     "   t-stat = " %9.3f (_b[_cons]/_se[_cons])
+_cons  coefficient = -1.93e+01   t-stat =    -0.622
+
+. 
+. * ------------------------------------------------------------------------------
+. * 5. Export regression table to LaTeX (Appendix)
+. * ------------------------------------------------------------------------------
+. 
+. esttab prob1_ols using "$TABS/prob1_hprice_ols.tex", replace ///
+>     $ESTSTYLE ///
+>     nomtitles ///
+>     collabels("(1)", none) ///
+>     keep(sqrft bdrms _cons) ///
+>     order(sqrft bdrms _cons) ///
+>     coeflabels(_cons "Intercept") ///
+>     stats(N r2 r2_a rmse, ///
+>           fmt(%9.0fc %9.3f %9.3f %9.3f) ///
+>           labels("n" "R-squared" "Adj. R-squared" "Regression RMSE")) ///
+>     addnotes("Standard errors in parentheses.")
+(output written to output/tables/prob1_hprice_ols.tex)
+
+. 
+. display as text "------------------------------------------------------------"
+------------------------------------------------------------
+
+. display as text "Wrote LaTeX table: $TABS/prob1_hprice_ols.tex"
+Wrote LaTeX table: output/tables/prob1_hprice_ols.tex
+
+. display as text "------------------------------------------------------------"
+------------------------------------------------------------
+
+. 
+. * ==============================================================================
+. * PROBLEM 1(e) — First observation prediction
+. * ==============================================================================
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "PROBLEM 1(e) — First house prediction"
+PROBLEM 1(e) — First house prediction
+
+. display as text "============================================================"
+============================================================
+
+. 
+. * Ensure data are loaded
+. use "$DATA/hprice1.dta", clear
+
+. 
+. * Re-run regression to obtain prediction
+. reg price sqrft bdrms
+
+      Source |       SS           df       MS      Number of obs   =        88
+-------------+----------------------------------   F(2, 85)        =     72.96
+       Model |  580009.152         2  290004.576   Prob > F        =    0.0000
+    Residual |  337845.354        85  3974.65122   R-squared       =    0.6319
+-------------+----------------------------------   Adj R-squared   =    0.6233
+       Total |  917854.506        87  10550.0518   Root MSE        =    63.045
+
+------------------------------------------------------------------------------
+       price | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       sqrft |   .1284362   .0138245     9.29   0.000     .1009495    .1559229
+       bdrms |   15.19819   9.483517     1.60   0.113    -3.657582    34.05396
+       _cons |    -19.315   31.04662    -0.62   0.536    -81.04399      42.414
+------------------------------------------------------------------------------
+
+. 
+. * Extract first observation characteristics
+. display as text "---- First observation characteristics ----"
+---- First observation characteristics ----
+
+. display as text "Square footage (obs 1) = " sqrft[1]
+Square footage (obs 1) = 2438
+
+. display as text "Bedrooms (obs 1)       = " bdrms[1]
+Bedrooms (obs 1)       = 4
+
+. display as text "Actual price (obs 1)   = " price[1]
+Actual price (obs 1)   = 300
+
+. 
+. * Generate predicted values
+. predict price_hat, xb
+
+. 
+. display as text " "
+ 
+
+. display as text "---- Predicted value from OLS ----"
+---- Predicted value from OLS ----
+
+. display as text "Predicted price (obs 1) = " price_hat[1]
+Predicted price (obs 1) = 354.60526
+
+. 
+. display as text "Predicted price in dollars = $" ///
+>     %12.2f (price_hat[1]*1000)
+Predicted price in dollars = $   354605.26
+
+.         
+. * ==============================================================================
+. * PROBLEM 2(a) — CPS92_12: Regression 1
+. * Model: lahe on age, female, bachelor, female×bachelor
+. * ==============================================================================
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "PROBLEM 2(a) — Regression 1"
+PROBLEM 2(a) — Regression 1
+
+. display as text "============================================================"
+============================================================
+
+. 
+. use "$DATA/cps92_12.dta", clear
+
+. 
+. display as text "---- Dataset loaded: cps92_12.dta ----"
+---- Dataset loaded: cps92_12.dta ----
+
+. display as text "Observations = " _N
+Observations = 15052
+
+. 
+. * ------------------------------------------------------------------------------
+. * 1. Generate log hourly earnings
+. * ------------------------------------------------------------------------------
+. 
+. gen lahe = log(ahe)
+
+. 
+. label variable lahe "log(average hourly earnings)"
+
+. 
+. * ------------------------------------------------------------------------------
+. * 2. Generate interaction term: female × bachelor
+. * ------------------------------------------------------------------------------
+. 
+. gen femxbac = female * bachelor
+
+. label variable femxbac "female × bachelor"
+
+. 
+. * ------------------------------------------------------------------------------
+. * 3. Estimate Regression 1
+. * ------------------------------------------------------------------------------
+. 
+. eststo clear
+
+. 
+. reg lahe age female bachelor femxbac
+
+      Source |       SS           df       MS      Number of obs   =    15,052
+-------------+----------------------------------   F(4, 15047)     =    936.69
+       Model |  987.464447         4  246.866112   Prob > F        =    0.0000
+    Residual |  3965.68078    15,047   .26355292   R-squared       =    0.1994
+-------------+----------------------------------   Adj R-squared   =    0.1991
+       Total |  4953.14523    15,051  .329090773   Root MSE        =    .51337
+
+------------------------------------------------------------------------------
+        lahe | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .0261419   .0014838    17.62   0.000     .0232334    .0290504
+      female |  -.2422382   .0117344   -20.64   0.000    -.2652392   -.2192373
+    bachelor |   .4248153   .0111986    37.93   0.000     .4028647    .4467659
+     femxbac |   .1194567   .0170469     7.01   0.000     .0860428    .1528707
+       _cons |    1.69595   .0446878    37.95   0.000     1.608357    1.783544
+------------------------------------------------------------------------------
+
+. 
+. eststo reg1
+
+. 
+. * ------------------------------------------------------------------------------
+. * 4. Display key regression quantities
+. * ------------------------------------------------------------------------------
+. 
+. display as text "------------------------------------------------------------"
+------------------------------------------------------------
+
+. display as text "Regression 1 Summary"
+Regression 1 Summary
+
+. display as text "------------------------------------------------------------"
+------------------------------------------------------------
+
+. 
+. display as text "N               = " %9.0f e(N)
+N               =     15052
+
+. display as text "R-squared       = " %9.4f e(r2)
+R-squared       =    0.1994
+
+. display as text "Adj. R-squared  = " %9.4f e(r2_a)
+Adj. R-squared  =    0.1991
+
+. 
+. * ------------------------------------------------------------------------------
+. * 5. Export LaTeX table for Appendix
+. * ------------------------------------------------------------------------------
+. 
+. esttab reg1 using "$TABS/prob2_reg1.tex", replace ///
+>     $ESTSTYLE ///
+>     nomtitles ///
+>     collabels("(1)", none) ///
+>     keep(age female bachelor femxbac _cons) ///
+>     order(age female bachelor femxbac _cons) ///
+>     coeflabels(_cons "Intercept") ///
+>     stats(N r2 r2_a rmse, ///
+>           fmt(%9.0fc %9.3f %9.3f %9.3f) ///
+>           labels("n" "R-squared" "Adj. R-squared" "Regression RMSE")) ///
+>     addnotes("Standard errors in parentheses.")
+(output written to output/tables/prob2_reg1.tex)
+
+. 
+. display as text "Wrote: $TABS/prob2_reg1.tex"
+Wrote: output/tables/prob2_reg1.tex
+
+. 
+. * ==============================================================================
+. * PROBLEM 2(b) — Regression 2
+. * Model: lahe on female, age, bachelor, female×age
+. * ==============================================================================
+. 
+. display as text "============================================================"
+============================================================
+
+. display as text "PROBLEM 2(b) — Regression 2"
+PROBLEM 2(b) — Regression 2
+
+. display as text "============================================================"
+============================================================
+
+. 
+. use "$DATA/cps92_12.dta", clear
+
+. 
+. * Recreate lahe
+. gen lahe = log(ahe)
+
+. 
+. * Create interaction: female × age
+. gen femxage = female * age
+
+. label variable femxage "female × age"
+
+. 
+. eststo clear
+
+. 
+. reg lahe female age bachelor femxage
+
+      Source |       SS           df       MS      Number of obs   =    15,052
+-------------+----------------------------------   F(4, 15047)     =    925.99
+       Model |   978.41649         4  244.604122   Prob > F        =    0.0000
+    Residual |  3974.72874    15,047  .264154233   R-squared       =    0.1975
+-------------+----------------------------------   Adj R-squared   =    0.1973
+       Total |  4953.14523    15,051  .329090773   Root MSE        =    .51396
+
+------------------------------------------------------------------------------
+        lahe | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      female |   .1567253   .0895686     1.75   0.080      -.01884    .3322907
+         age |   .0307153    .001956    15.70   0.000     .0268813    .0345493
+    bachelor |   .4753585   .0084578    56.20   0.000     .4587802    .4919367
+     femxage |  -.0115354   .0030044    -3.84   0.000    -.0174244   -.0056463
+       _cons |   1.539047   .0584934    26.31   0.000     1.424393    1.653701
+------------------------------------------------------------------------------
+
+. 
+. eststo reg2
+
+. 
+. display as text "------------------------------------------------------------"
+------------------------------------------------------------
+
+. display as text "Regression 2 Summary"
+Regression 2 Summary
+
+. display as text "------------------------------------------------------------"
+------------------------------------------------------------
+
+. 
+. display as text "N               = " %9.0f e(N)
+N               =     15052
+
+. display as text "R-squared       = " %9.4f e(r2)
+R-squared       =    0.1975
+
+. display as text "Adj. R-squared  = " %9.4f e(r2_a)
+Adj. R-squared  =    0.1973
+
+. 
+. * Export table to appendix
+. esttab reg2 using "$TABS/prob2_reg2.tex", replace ///
+>     $ESTSTYLE ///
+>     nomtitles ///
+>     collabels("(1)", none) ///
+>     keep(female age bachelor femxage _cons) ///
+>     order(female age bachelor femxage _cons) ///
+>     coeflabels(_cons "Intercept") ///
+>     stats(N r2 r2_a rmse, ///
+>           fmt(%9.0fc %9.3f %9.3f %9.3f) ///
+>           labels("n" "R-squared" "Adj. R-squared" "Regression RMSE")) ///
+>     addnotes("Standard errors in parentheses.")
+(file output/tables/prob2_reg2.tex not found)
+(output written to output/tables/prob2_reg2.tex)
+
+. 
+. display as text "Wrote: $TABS/prob2_reg2.tex"
+Wrote: output/tables/prob2_reg2.tex
+
+. 
+end of do-file
+

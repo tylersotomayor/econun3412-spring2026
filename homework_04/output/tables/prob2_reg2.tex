@@ -1,0 +1,31 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{1}{D{.}{.}{-1}}}
+\toprule
+            &\multicolumn{1}{c}{(1)}         \\
+\midrule
+female      &       0.157\sym{*}  \\
+            &     (0.090)         \\
+\addlinespace
+age         &       0.031\sym{***}\\
+            &     (0.002)         \\
+\addlinespace
+bachelor    &       0.475\sym{***}\\
+            &     (0.008)         \\
+\addlinespace
+femxage     &      -0.012\sym{***}\\
+            &     (0.003)         \\
+\addlinespace
+Intercept   &       1.539\sym{***}\\
+            &     (0.058)         \\
+\midrule
+n           &      15,052         \\
+R-squared   &       0.198         \\
+Adj. R-squared&       0.197         \\
+Regression RMSE&       0.514         \\
+\bottomrule
+\multicolumn{2}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{2}{l}{\footnotesize Standard errors in parentheses.}\\
+\multicolumn{2}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+}
