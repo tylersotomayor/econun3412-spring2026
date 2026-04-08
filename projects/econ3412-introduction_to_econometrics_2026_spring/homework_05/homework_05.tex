@@ -236,11 +236,11 @@ Interpret the coefficient on \textit{shall} in regression (ii). Is this estimate
 The coefficient on \textit{shall} in regression (ii) is $\hat{\beta}_{\textit{shall}} = -0.368$. Because the dependent variable is $\ln(\textit{vio})$ and \textit{shall} is a binary indicator, this coefficient has a log-level (semi-elasticity) interpretation: holding all other regressors fixed, the presence of a shall-issue law is associated with a change of $-0.368$ in the log of the violent crime rate. By the standard log-point approximation, this corresponds to approximately a $100 \times (-0.368) = -36.8\%$ reduction in the violent crime rate (\citealt{StockWatson2020}, Ch.~8). More precisely, using the exact transformation $\exp(\hat{\beta}) - 1 = \exp(-0.368) - 1 \approx -0.308$, the estimated reduction is about 30.8\%.
 
 \medskip
-\noindent\textbf{Real-world magnitude.} Given that the sample mean of the violent crime rate is approximately 503 incidents per 100,000 population, a 30--37\% reduction would imply roughly 155--185 fewer violent crimes per 100,000 residents. This is an extraordinarily large effect. To put it in context, the entire decline in the U.S.\ violent crime rate from its 1991 peak to 1999 was on the order of 30\%, and this decline is attributed to a wide range of factors (increased incarceration, demographic shifts, economic growth, policing strategies, among others). It would be implausible that shall-issue laws alone could account for an effect of this magnitude. This strongly suggests that the pooled OLS estimate, even after controlling for observables, still suffers from substantial omitted variable bias --- likely because states that adopt shall-issue laws differ from non-adopting states in unobserved ways (e.g., political culture, historical crime trends, law enforcement practices) that are correlated with both the passage of the law and with crime rates. The original and influential study by \citet{LottMustard1997} reported large crime-reducing effects of shall-issue laws using similar cross-state variation, but these estimates have been widely critiqued for sensitivity to specification choices \citep{DonohueAyres2003, NRC2005}.
+\noindent\textbf{Real-world magnitude.} Given that the sample mean of the violent crime rate is approximately 503 incidents per 100,000 population, a 30--37\% reduction would imply roughly 155--185 fewer violent crimes per 100,000 residents. This is an extraordinarily large effect. To put it in context, the entire decline in the U.S.\ violent crime rate from its 1991 peak to 1999 was on the order of 30\%, and this decline is attributed to a wide range of factors (increased incarceration, demographic shifts, economic growth, policing strategies, among others). An effect of this magnitude is economically very large and suggestive of remaining omitted variable bias --- it would be difficult for a single policy change to account for a reduction comparable to the entire national crime decline of the 1990s. The pooled OLS estimate, even after controlling for observables, likely still reflects confounding from unobserved differences between adopting and non-adopting states (e.g., political culture, historical crime trends, law enforcement practices) that are correlated with both the passage of the law and with crime rates. The original and influential study by \citet{LottMustard1997} reported large crime-reducing effects of shall-issue laws using similar cross-state variation, but these estimates have been widely critiqued for sensitivity to specification choices \citep{DonohueAyres2003, NRC2005}.
 
 \begin{center}
 \fbox{\parbox{0.85\textwidth}{\centering
-$\hat{\beta}_{\textit{shall}} = -0.368 \;\Longrightarrow\; \approx 30.8\%$--$36.8\%$ reduction; implausibly large.
+$\hat{\beta}_{\textit{shall}} = -0.368 \;\Longrightarrow\; \approx 30.8\%$--$36.8\%$ reduction; economically large, suggestive of remaining OVB.
 }}
 \end{center}
 \end{solution}
@@ -248,7 +248,7 @@ $\hat{\beta}_{\textit{shall}} = -0.368 \;\Longrightarrow\; \approx 30.8\%$--$36.
 \begin{reflection}
 The log-level interpretation of a dummy variable coefficient follows from the general result that for $\ln Y = \beta_0 + \beta_1 D + \mathbf{X}'\boldsymbol{\gamma} + u$, the exact percentage change associated with $D$ switching from 0 to 1 is $100 \times [\exp(\hat{\beta}_1) - 1]\%$ (see \citealt{Wooldridge2019}, \S6.2; \citealt{StockWatson2020}, \S8.1). The $100 \times \hat{\beta}_1$ approximation works well for small $|\hat{\beta}_1|$ but becomes less accurate as $|\hat{\beta}_1|$ grows. For $\hat{\beta}_1 = -0.368$, the discrepancy between the approximation ($-36.8\%$) and the exact figure ($-30.8\%$) is notable, illustrating why the exact calculation is preferred when the coefficient is large.
 
-The implausibly large magnitude of the OLS estimate motivates the use of panel data methods in Problem 2, where state and year fixed effects will be introduced to control for unobserved heterogeneity. This is the central methodological lesson of this exercise: cross-sectional OLS can be severely biased when unobserved confounders are present, and fixed effects estimation provides a way to address time-invariant omitted variables.
+The economically large magnitude of the OLS estimate motivates the use of panel data methods in Problem 2, where state and year fixed effects will be introduced to control for unobserved heterogeneity. This is the central methodological lesson of this exercise: cross-sectional OLS can be severely biased when unobserved confounders are present, and fixed effects estimation provides a way to address time-invariant omitted variables.
 \end{reflection}
 
 \item
@@ -260,7 +260,7 @@ Adding the seven state-characteristic control variables changes the magnitude of
 
 The coefficient shrinks by about 17\% in absolute value, from $-0.443$ to $-0.368$, when the controls are added. This attenuation is consistent with positive omitted variable bias in regression (i): states without shall-issue laws tend to have characteristics associated with higher crime (e.g., higher population density, larger black population share, higher incarceration rates), and controlling for these factors removes part of the spurious negative correlation between \textit{shall} and $\ln(\textit{vio})$.
 
-However, the estimated effect remains very large---a 30--37\% reduction in violent crime is still implausibly attributable to a single policy change. The fact that the estimate barely changes (from $-0.443$ to $-0.368$) despite a large increase in $R^2$ (from 0.087 to 0.564) suggests that the included controls, while explaining much of the variation in crime, do not adequately address the confounding that generates the large negative \textit{shall} coefficient. There are likely important omitted variables that are correlated with both shall-issue adoption and crime rates, which the observable controls cannot capture. This motivates the use of state fixed effects in Problem 2 to control for all time-invariant state-specific factors.
+However, the estimated effect remains very large---a 30--37\% reduction in violent crime is economically substantial and difficult to attribute to a single policy change. The fact that the estimate barely changes (from $-0.443$ to $-0.368$) despite a large increase in $R^2$ (from 0.087 to 0.564) suggests that the included controls, while explaining much of the variation in crime, do not adequately address the confounding that generates the large negative \textit{shall} coefficient. There are likely important omitted variables that are correlated with both shall-issue adoption and crime rates, which the observable controls cannot capture. This motivates the use of state fixed effects in Problem 2 to control for all time-invariant state-specific factors.
 
 \begin{center}
 \fbox{\parbox{0.85\textwidth}{\centering
@@ -368,7 +368,7 @@ The five specifications estimated for each dependent variable are:
 \begin{itemize}
 \item[(1)] Pooled OLS of $\ln(Y)$ on \textit{shall} only, with heteroskedasticity-robust standard errors.
 \item[(2)] Pooled OLS adding the seven state-characteristic control variables (\textit{incarc\_rate}, \textit{density}, \textit{avginc}, \textit{pop}, \textit{pb1064}, \textit{pw1064}, \textit{pm1029}), with robust SEs.
-\item[(3)] Adding 50 state fixed effect dummies (with one state as the omitted reference category), plus controls, with robust SEs. State FE absorb all time-invariant unobserved state-level heterogeneity. Identification of $\hat{\beta}_{\textit{shall}}$ comes exclusively from \emph{within-state} variation: states that changed their shall-issue status during 1977--1999.
+\item[(3)] Adding 50 state fixed effect dummies (with one state as the omitted reference category), plus controls, with robust SEs. State FE absorb all time-invariant unobserved state-level heterogeneity. Identification of $\hat{\beta}_{\textit{shall}}$ now comes from \emph{within-state} variation over time, which in practice is driven by states that changed their shall-issue status during 1977--1999.
 \item[(4)] Adding 22 year fixed effect dummies (with one year as reference) to specification (3), with robust SEs. Year FE absorb aggregate time trends common to all states (e.g., national crime trends, federal policy changes, macroeconomic cycles). This is the canonical two-way fixed effects (TWFE) model (\citealt{StockWatson2020}, Ch.~10).
 \item[(5)] Same as (4), but with standard errors clustered at the state level via \texttt{vce(cluster stateid)}. Clustering allows for arbitrary serial correlation (autocorrelation) in the error term within each state over time, as well as heteroskedasticity, producing HAC-robust inference (\citealt{Arellano1987}; \citealt{StockWatson2020}, \S10.5).
 \end{itemize}
@@ -646,7 +646,7 @@ This equation would be estimated using \textbf{fixed effects (within) estimation
         fe vce(robust)
 \end{verbatim}
 
-The fixed effects estimator is chosen for several reasons. First, the panel structure of the data (multiple firms observed over the same trading days) naturally calls for a panel estimator rather than pooled OLS. Second, different firms have different average returns (reflecting differences in risk, industry, growth prospects, etc.), and these firm-specific mean returns are captured by $\alpha_i$. If $\alpha_i$ is correlated with $r_{mt}$---which is plausible if, for example, firms with higher average returns are also more sensitive to market conditions---then pooled OLS would yield biased estimates of $\beta$ due to omitted variable bias (\citealt{Wooldridge2019}, Ch.~14). The fixed effects estimator eliminates $\alpha_i$ via the within transformation (demeaning each variable by its firm-specific mean), producing consistent estimates of $\beta$ even when $\text{Cov}(\alpha_i, r_{mt}) \neq 0$ (\citealt{StockWatson2020}, Ch.~10).
+The fixed effects estimator is chosen for several reasons. First, the panel structure of the data (multiple firms observed over the same trading days) naturally calls for a panel estimator rather than pooled OLS. Second, different firms have different average returns reflecting persistent differences in risk, industry, growth prospects, and other characteristics; these firm-specific mean returns are captured by $\alpha_i$. Including firm fixed effects absorbs this intercept heterogeneity, ensuring that the estimate of $\beta$ is not contaminated by cross-firm differences in average return levels (\citealt{StockWatson2020}, Ch.~10). The within transformation demeans each variable by its firm-specific mean, so $\beta$ is identified from the day-to-day co-movement of firm and market returns around their respective means (\citealt{Wooldridge2019}, Ch.~14).
 
 Third, the within estimator is numerically equivalent to the Least Squares Dummy Variable (LSDV) approach---including a full set of $n$ firm dummies---but is computationally more efficient when $n$ is large. Fourth, using heteroskedasticity-robust standard errors (or clustered standard errors at the firm level) ensures valid inference even if the variance of $u_{it}$ differs across firms or exhibits serial correlation within firms.
 
@@ -658,7 +658,7 @@ where $\delta_t$ are time (day) fixed effects. However, note that including day 
 \end{solution}
 
 \begin{reflection}
-This equation is essentially the market model from empirical finance, a single-factor version of the CAPM. In the CAPM framework, $\alpha_i$ should equal $r_f(1 - \beta_i)$ where $r_f$ is the risk-free rate, and in an efficient market, the ``Jensen's alpha'' (excess $\alpha_i$) should be zero on average. The fixed effects estimator in a panel setting with a common regressor $\Delta \ln(P_{mt})$ is equivalent to running separate time-series regressions for each firm and then averaging the slope coefficients (this is the \citealt{FamaMacBeth1973} intuition). The key econometric insight is that firm fixed effects control for all unobserved time-invariant firm characteristics, making the panel FE estimator robust to a wide class of omitted variable problems that would plague pooled OLS.
+This equation is essentially the market model from empirical finance, a single-factor version of the CAPM \citep{Sharpe1964, Lintner1965}. The key econometric insight is that firm fixed effects absorb all time-invariant firm characteristics (sector, size, management quality, geographic exposure), allowing $\beta$ to be estimated from within-day co-movement of firm and market returns without permanent cross-firm differences confounding the estimate.
 \end{reflection}
 
 \item
@@ -717,7 +717,7 @@ Within $R^2 = 0.2770$, \quad Overall $R^2 = 0.2768$.
 
 The estimated market beta is $\hat{\beta} = 0.782$ ($\text{SE} = 0.110$, $t = 7.11$, $p < 0.001$), indicating that a one-percentage-point increase in the S\&P 500 daily log return is associated with, on average, a 0.782 percentage-point increase in the firm's daily log return, holding firm-specific factors constant. The within $R^2$ of 0.277 means that market movements explain about 27.7\% of the within-firm day-to-day variation in individual stock returns, which is substantial for daily frequency data.
 
-The estimated firm fixed effects ($\hat{\alpha}_i$) represent each firm's average daily idiosyncratic return after removing the market component---akin to ``Jensen's alpha'' in the CAPM framework \citep{Jensen1968}. For instance, ExxonMobil (XOM) and Caterpillar (CAT) have the largest positive fixed effects ($\hat{\alpha} \approx 0.056\%$ per day), while Disney (DIS) has the most negative ($\hat{\alpha} \approx -0.077\%$ per day), reflecting differential firm-level performance over the sample period.
+The estimated firm fixed effects ($\hat{\alpha}_i$) represent each firm's average daily return after removing the market component. For instance, ExxonMobil (XOM) and Caterpillar (CAT) have the largest positive fixed effects ($\hat{\alpha} \approx 0.056\%$ per day), while Disney (DIS) has the most negative ($\hat{\alpha} \approx -0.077\%$ per day), reflecting differential firm-level performance over the sample period.
 
 See Table~\ref{tab:prob3d_fe} in the Appendix for the full regression output.
 
@@ -789,15 +789,15 @@ This exercise refers to the drunk driving panel data regression summarized in Ta
 New Jersey has a population of 8.85 million people. Suppose New Jersey increased the tax on a case of beer by \$2 (in 1988 dollars). Use the results in column (5) to predict the number of lives that would be saved over the next year. Construct a 99\% confidence interval for your answer.
 \end{problem}
 \begin{solution}
-From column (5), the coefficient on \textit{Beer tax} is $\hat{\beta} = -0.69$ with $\text{SE} = 0.35$ and 95\% CI $[-1.38, 0.00]$. The dependent variable is the fatality rate per 10,000 people. The predicted change in the fatality rate from a \$2 tax increase is $\Delta \widehat{\textit{FatalityRate}} = -0.69 \times 2 = -1.38$ deaths per 10,000. For New Jersey (population 8.85 million = 885 units of 10,000), the predicted number of lives saved is
+From column (5), the coefficient on \textit{Beer tax} is $\hat{\beta} = -0.69$ with $\text{SE} = 0.35$ and 95\% CI $[-1.38, 0.00]$. The dependent variable is the fatality rate per 10,000 people. The predicted change in the fatality rate from a \$2 tax increase is $\Delta \widehat{\textit{FatalityRate}} = -0.69 \times 2 = -1.38$ deaths per 10,000. For New Jersey (population 8.85 million $= 885$ units of 10,000), the predicted number of lives saved is approximately $1{,}221$:
 \[
-\Delta \widehat{\textit{Deaths}} = -1.38 \times 885 = -1221.3.
+\text{Lives saved} = 1.38 \times 885 \approx 1{,}221.
 \]
-For the 99\% CI, note that $\Delta \widehat{\textit{Deaths}} = \hat{\beta} \times 2 \times 885 = 1770 \times \hat{\beta}$. The 99\% CI for $\hat{\beta}$ is $\hat{\beta} \pm 2.576 \times \text{SE} = -0.69 \pm 2.576(0.35) = [-1.59, 0.21]$. Multiplying by $1770$:
+For the 99\% CI, note that the predicted change in deaths equals $\hat{\beta} \times 2 \times 885 = 1770 \times \hat{\beta}$. The 99\% CI for $\hat{\beta}$ is $-0.69 \pm 2.576(0.35) = [-1.59, 0.21]$. Multiplying by $-1770$ (flipping the sign so that positive values correspond to lives saved):
 \[
-\boxed{99\%\;\text{CI for lives saved} = [-2814,\; 372].}
+\boxed{99\%\;\text{CI for lives saved} = [-372,\; 2{,}814].}
 \]
-The point estimate predicts about 1,221 lives saved, but the confidence interval includes positive values (i.e., more deaths), reflecting the imprecision of the beer tax coefficient.
+The point estimate predicts about 1,221 fewer deaths, but the confidence interval includes negative values (i.e., the possibility that the tax increase could increase fatalities), reflecting the imprecision of the beer tax coefficient.
 \end{solution}
 
 \item
@@ -805,11 +805,11 @@ The point estimate predicts about 1,221 lives saved, but the confidence interval
 The drinking age in New Jersey is 21. Suppose that New Jersey lowered its drinking age to 19. Use the results in column (5) to predict the change in the number of traffic fatalities in the next year. Construct a 95\% confidence interval for your answer.
 \end{problem}
 \begin{solution}
-From column (5), the drinking-age variables enter as indicators for ages 18, 19, and 20 (with age 21 as the omitted category). To predict the effect of lowering the drinking age from 21 to 19, we use the coefficient on ``Drinking age 19,'' which is $\hat{\delta}_{19} = -0.08$ with $\text{SE} = 0.07$ and 95\% CI $[-0.21, 0.06]$. The predicted change in the fatality rate is $\Delta \widehat{\textit{FatalityRate}} = -0.08$ per 10,000. For New Jersey: $\Delta \widehat{\textit{Deaths}} = -0.08 \times 885 = -70.8$. The 95\% CI is $[885 \times (-0.21),\; 885 \times 0.06]$:
+From column (5), the drinking-age variables enter as indicators for ages 18, 19, and 20 (with age 21 as the omitted category). To predict the effect of lowering the drinking age from 21 to 19, we use the coefficient on ``Drinking age 19,'' which is $\hat{\delta}_{19} = -0.08$ with $\text{SE} = 0.07$ and 95\% CI $[-0.21, 0.06]$. The predicted change in the fatality rate is $-0.08$ per 10,000. For New Jersey, the predicted change in deaths is $-0.08 \times 885 \approx -71$, i.e., about 71 fewer deaths. The 95\% CI for the change in deaths is $[885 \times (-0.21),\; 885 \times 0.06]$:
 \[
-\boxed{95\%\;\text{CI for change in deaths} = [-185.9,\; 53.1].}
+\boxed{95\%\;\text{CI for change in deaths} = [-186,\; 53].}
 \]
-The point estimate suggests about 71 fewer deaths (counterintuitively), but the coefficient is statistically insignificant and the confidence interval includes both negative and positive values.
+The point estimate suggests about 71 fewer deaths, but the coefficient is statistically insignificant and the confidence interval spans both negative and positive values, so we cannot conclude that lowering the drinking age would meaningfully affect fatalities.
 \end{solution}
 
 \item
