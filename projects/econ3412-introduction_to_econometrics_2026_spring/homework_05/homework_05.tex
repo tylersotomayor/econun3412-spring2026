@@ -588,15 +588,17 @@ In order to determine the effects of stock market performance on individual firm
 What measures of firm performance would you include in an equation? What are some of the timing issues?
 \end{problem}
 \begin{solution}
-The most natural measure of firm performance in the context of stock market analysis is the \textbf{daily log return}, defined as
+The most natural measure of firm performance is the daily log return:
 \[
 r_{it} = 100 \times \bigl[\ln(P_{it}) - \ln(P_{i,t-1})\bigr],
 \]
-where $P_{it}$ is the adjusted closing price of firm $i$ on trading day $t$. The log-difference formulation is the standard econometric approach to measuring percentage changes (\citealt{StockWatson2020}, Ch.~14): applying a log transformation to the price level and then first-differencing yields a variable that is (i) approximately equal to the simple percentage return $(P_{it} - P_{i,t-1})/P_{i,t-1}$ for small daily changes, (ii) additive over time (multi-day log returns are the sum of daily log returns), and (iii) approximately stationary---an essential property for valid regression inference, since levels of stock prices are typically non-stationary (exhibiting unit roots). The adjusted close price is preferred over the raw close because it accounts for stock splits, dividends, and other corporate actions that mechanically alter the price level without reflecting true performance changes.
+where $P_{it}$ is the adjusted closing price of firm $i$ on trading day $t$. The log-difference formulation is the standard econometric approach to measuring percentage changes (\citealt{StockWatson2020}, Ch.~14). It yields a variable that is approximately equal to the simple percentage return for small daily changes, additive over time (multi-day log returns are the sum of daily log returns), and approximately stationary---an essential property for valid regression inference, since levels of stock prices are typically non-stationary. The adjusted close is preferred over the raw close because it accounts for stock splits, dividends, and other corporate actions.
 
-Alternative measures one might consider include: (i) \textbf{abnormal returns} (the firm's return minus the expected return from an asset pricing model), which isolate the firm-specific component of performance; (ii) \textbf{simple percentage returns}, $100 \times (P_{it} - P_{i,t-1})/P_{i,t-1}$, which are nearly identical to log returns for daily data but lack the additive property; and (iii) \textbf{trading volume} or \textbf{market capitalization changes}, though these capture liquidity and size rather than performance per se.
+Alternative measures include abnormal returns (the firm's return minus the expected return from an asset pricing model), simple percentage returns $100 \times (P_{it} - P_{i,t-1})/P_{i,t-1}$ (nearly identical to log returns for daily data but lacking the additive property), and trading volume or market capitalization changes (which capture liquidity and size rather than performance).
 
-Several timing issues arise with daily financial data. First, there is the question of \textbf{non-synchronous trading}: if some stocks close trading at slightly different times (e.g., due to trading halts or different exchange closing times), daily returns may not reflect the same information set, introducing measurement error. Second, stock prices may react to market-wide news with a \textbf{lag}---particularly for less liquid, smaller-cap stocks---which would argue for including lagged market returns alongside the contemporaneous market return in the regression (the \citealt{Dimson1979} correction). Third, prices respond to information released \textbf{between trading days} (overnight and weekend effects), so the daily close-to-close return conflates intraday movements and overnight reactions. Fourth, announcements or events (earnings releases, Federal Reserve decisions) typically occur at specific times; if the event falls after market close, the price impact appears on the following trading day, creating a one-day lead-lag alignment issue. Finally, the choice of whether to use \textbf{calendar time} or \textbf{trading-day time} matters: regressions should be run on trading days only, as weekends and holidays introduce spurious gaps.
+Several timing issues arise with daily financial data. Non-synchronous trading---where stocks close at slightly different times due to trading halts or exchange differences---means daily returns may not reflect the same information set, introducing measurement error. Stock prices may also react to market-wide news with a lag, particularly for less liquid firms, which would argue for including lagged market returns in the regression (the \citealt{Dimson1979} correction).
+
+Additionally, prices respond to information released between trading days (overnight and weekend effects), so the daily close-to-close return conflates intraday movements and overnight reactions. Announcements (earnings releases, Federal Reserve decisions) that fall after market close have their price impact on the following trading day, creating a lead-lag alignment issue. Finally, regressions should be run on trading days only, as weekends and holidays introduce spurious gaps if calendar time is used instead of trading-day time.
 
 \[
 \boxed{
@@ -610,13 +612,13 @@ r_{it} = 100 \times \bigl[\ln(P_{it}) - \ln(P_{i,t-1})\bigr] \quad \text{(daily 
 What other factors might you control for in the equation?
 \end{problem}
 \begin{solution}
-Beyond the overall stock market return (e.g., the S\&P 500 return), several additional factors may influence individual firm stock returns and should be considered as controls, drawing on the asset pricing literature and the econometrics of panel data.
+Beyond the overall stock market return (e.g., the S\&P 500 return), several additional factors may influence individual firm stock returns and should be considered as controls.
 
-At the \textbf{firm level}, one might control for: (i) \textbf{firm size} (measured by log market capitalization), since small firms tend to exhibit higher average returns and greater sensitivity to market shocks than large firms---this is the ``size effect'' documented by \citet{FamaFrench1993}; (ii) \textbf{book-to-market ratio}, capturing the ``value premium'' whereby high book-to-market (``value'') firms earn higher average returns than low book-to-market (``growth'') firms; (iii) \textbf{momentum} (past cumulative returns over the prior 3--12 months), since stocks that have performed well recently tend to continue outperforming in the short run (\citealt{JegadeeshTitman1993}); and (iv) \textbf{trading volume or liquidity measures}, as illiquid stocks may exhibit larger price swings and lagged responses to market movements.
+At the firm level, relevant controls include firm size (measured by log market capitalization), since small firms tend to exhibit higher average returns and greater sensitivity to market shocks---the ``size effect'' documented by \citet{FamaFrench1993}. The book-to-market ratio captures the ``value premium'' whereby high book-to-market firms earn higher average returns. Momentum (past cumulative returns over 3--12 months) is also relevant, as recent outperformers tend to continue outperforming in the short run \citep{JegadeeshTitman1993}. Trading volume or liquidity measures may matter as well, since illiquid stocks exhibit larger price swings and lagged responses to market movements.
 
-At the \textbf{macroeconomic and market level}, useful controls include: (v) \textbf{interest rate changes} (e.g., changes in the federal funds rate or the 10-year Treasury yield), since monetary policy affects discount rates and hence stock valuations differently across sectors; (vi) \textbf{credit spreads} (the difference between corporate bond yields and risk-free rates), which capture changes in perceived default risk and economic uncertainty; (vii) \textbf{exchange rate fluctuations}, particularly relevant for firms with international operations; and (viii) \textbf{sector-specific indices or returns}, since firms within the same industry are exposed to common sector-level shocks (e.g., oil prices for energy firms, interest rates for banks) that are distinct from market-wide movements.
+At the macroeconomic level, interest rate changes (e.g., the federal funds rate or 10-year Treasury yield) affect discount rates and hence stock valuations differently across sectors. Credit spreads capture changes in perceived default risk and economic uncertainty. Exchange rate fluctuations are relevant for firms with international operations. Sector-specific indices or returns control for common industry-level shocks (e.g., oil prices for energy firms) that are distinct from market-wide movements.
 
-At the \textbf{time-series level}, controlling for (ix) \textbf{day-of-week effects} (the ``Monday effect'') and (x) \textbf{lagged dependent variables} (lagged firm returns) can account for well-documented calendar anomalies and return persistence or mean reversion. In a panel context, \textbf{firm fixed effects} ($\alpha_i$) absorb all time-invariant firm characteristics (sector, size category, geographic location, management quality) and \textbf{time fixed effects} ($\delta_t$) absorb all market-wide daily shocks (news, sentiment, macroeconomic releases), making them powerful catch-all controls.
+At the time-series level, day-of-week effects (the ``Monday effect'') and lagged firm returns can account for calendar anomalies and return persistence. In a panel context, firm fixed effects ($\alpha_i$) absorb all time-invariant firm characteristics, while time fixed effects ($\delta_t$) absorb all market-wide daily shocks, making them powerful catch-all controls.
 
 \begin{center}
 \fbox{\parbox{0.85\textwidth}{\centering
@@ -638,7 +640,7 @@ The baseline equation for estimating the effect of overall market performance on
 \]
 where $\Delta \ln(P_{it}) = \ln(P_{it}) - \ln(P_{i,t-1})$ is the daily log return of firm $i$ on trading day $t$ (the log-difference measure of percentage change), $\Delta \ln(P_{mt})$ is the daily log return of the S\&P 500 index on day $t$, $\alpha_i$ is a firm-specific fixed effect (intercept), and $u_{it}$ is the idiosyncratic error term. The parameter of interest is $\beta$, which measures the average sensitivity of firm stock returns to market-wide movements---the ``market beta'' in the Capital Asset Pricing Model (CAPM) tradition (\citealt{Sharpe1964}; \citealt{Lintner1965}).
 
-This equation would be estimated using \textbf{fixed effects (within) estimation}. In Stata, this is implemented via the \texttt{xtreg} command with the \texttt{fe} option:
+This equation would be estimated using fixed effects (within) estimation. In Stata, this is implemented via the \texttt{xtreg} command with the \texttt{fe} option:
 
 \begin{verbatim}
     xtset firm_id trading_date
@@ -646,15 +648,15 @@ This equation would be estimated using \textbf{fixed effects (within) estimation
         fe vce(robust)
 \end{verbatim}
 
-The fixed effects estimator is chosen for several reasons. First, the panel structure of the data (multiple firms observed over the same trading days) naturally calls for a panel estimator rather than pooled OLS. Second, different firms have different average returns reflecting persistent differences in risk, industry, growth prospects, and other characteristics; these firm-specific mean returns are captured by $\alpha_i$. Including firm fixed effects absorbs this intercept heterogeneity, ensuring that the estimate of $\beta$ is not contaminated by cross-firm differences in average return levels (\citealt{StockWatson2020}, Ch.~10). The within transformation demeans each variable by its firm-specific mean, so $\beta$ is identified from the day-to-day co-movement of firm and market returns around their respective means (\citealt{Wooldridge2019}, Ch.~14).
+The fixed effects estimator is chosen because the panel structure of the data---multiple firms observed over the same trading days---calls for a method that accommodates firm-level heterogeneity. Different firms have different average returns reflecting persistent differences in risk, industry, and growth prospects; these firm-specific means are captured by $\alpha_i$. Including firm fixed effects absorbs this intercept heterogeneity, ensuring that the estimate of $\beta$ is not contaminated by cross-firm differences in average return levels (\citealt{StockWatson2020}, Ch.~10).
 
-Third, the within estimator is numerically equivalent to the Least Squares Dummy Variable (LSDV) approach---including a full set of $n$ firm dummies---but is computationally more efficient when $n$ is large. Fourth, using heteroskedasticity-robust standard errors (or clustered standard errors at the firm level) ensures valid inference even if the variance of $u_{it}$ differs across firms or exhibits serial correlation within firms.
+The within transformation demeans each variable by its firm-specific mean, so $\beta$ is identified from the day-to-day co-movement of firm and market returns around their respective means (\citealt{Wooldridge2019}, Ch.~14). This is numerically equivalent to the Least Squares Dummy Variable (LSDV) approach---including a full set of $n$ firm dummies---but is computationally more efficient when $n$ is large. Using heteroskedasticity-robust standard errors ensures valid inference even if the variance of $u_{it}$ differs across firms.
 
-An extended specification that also controls for aggregate time effects would be:
+An extended specification that also controls for aggregate time effects would add day-specific dummies:
 \[
-\Delta \ln(P_{it}) = \alpha_i + \delta_t + \beta \cdot \Delta \ln(P_{mt}) + u_{it}
+\Delta \ln(P_{it}) = \alpha_i + \delta_t + \beta \cdot \Delta \ln(P_{mt}) + u_{it}.
 \]
-where $\delta_t$ are time (day) fixed effects. However, note that including day fixed effects alongside $r_{mt}$ creates a near-perfect multicollinearity problem, since $r_{mt}$ is constant across firms on any given day and is thus almost perfectly spanned by the day dummies. In practice, one would either include day FE \emph{without} $r_{mt}$ (letting the day dummies absorb all common daily shocks) or include $r_{mt}$ without day FE. The choice depends on the research question: if the goal is to estimate $\beta$, one uses $r_{mt}$ directly; if the goal is to control for all common daily shocks without parametric restriction, one uses day FE.
+However, including day fixed effects alongside $\Delta \ln(P_{mt})$ creates a multicollinearity problem: the market return is constant across firms on any given day and is thus perfectly spanned by the day dummies. In practice, one would either include day FE without $\Delta \ln(P_{mt})$ (letting the dummies absorb all common daily shocks) or include $\Delta \ln(P_{mt})$ without day FE. If the goal is to estimate $\beta$, the latter is appropriate; if the goal is to control for all common shocks non-parametrically, the former is preferred.
 \end{solution}
 
 \begin{reflection}
@@ -667,7 +669,7 @@ Now, in order to implement your strategy discussed above, go to Yahoo Finance we
 \end{problem}
 \begin{solution}
 
-\textbf{Data Collection and Construction.} Daily adjusted close prices were downloaded from Yahoo Finance \citep{YahooFinance2026} using the \texttt{yfinance} Python package \citep{yfinance} for ten U.S.\ companies spanning diverse sectors and the S\&P 500 index (\texttt{\textasciicircum GSPC}) for the period January 1, 2021 through January 1, 2026. The ten firms are:
+Daily adjusted close prices were downloaded from Yahoo Finance \citep{YahooFinance2026} using the \texttt{yfinance} Python package \citep{yfinance} for ten U.S.\ companies spanning diverse sectors and the S\&P 500 index (\texttt{\textasciicircum GSPC}) for the period January 1, 2021 through January 1, 2026. The ten firms are:
 
 \medskip
 \begin{center}
@@ -694,7 +696,7 @@ Now, in order to implement your strategy discussed above, go to Yahoo Finance we
 Daily log returns were computed as $r_{it} = 100 \times [\ln(P_{it}) - \ln(P_{i,t-1})]$, where $P_{it}$ is the adjusted close price. This log-difference formulation is the standard econometric measure of percentage change (\citealt{StockWatson2020}, Ch.~14). The first observation for each firm (which yields a missing return due to differencing) was dropped. The data were then stacked into a balanced panel with $n = 10$ firms $\times$ $T = 1{,}254$ trading days $= 12{,}540$ observations, identified by \texttt{firm\_id} and \texttt{stata\_date}.
 
 \medskip
-\textbf{(i) Cross-Section Fixed Effects Model.} The following firm fixed effects model was estimated in Stata:
+(i) The following firm fixed effects model was estimated in Stata:
 
 \begin{verbatim}
     use "data/stock_panel.dta", clear
@@ -722,7 +724,7 @@ The estimated firm fixed effects ($\hat{\alpha}_i$) represent each firm's averag
 See Table~\ref{tab:prob3d_fe} in the Appendix for the full regression output.
 
 \bigskip
-\textbf{(ii) Controlling for Time Fixed Effects.} To additionally control for time (trading-day) fixed effects, one would augment the model with a full set of day-specific dummy variables:
+(ii) To additionally control for time (trading-day) fixed effects, one would augment the model with a full set of day-specific dummy variables:
 \[
 \Delta \ln(P_{it}) = \alpha_i + \delta_t + \beta \cdot \Delta \ln(P_{mt}) + u_{it}
 \]
@@ -736,7 +738,7 @@ where $\delta_t$ represents the fixed effect for trading day $t$. In Stata, one 
 
 However, there is an important identification problem. The market return $\Delta \ln(P_{mt})$ varies only across time, not across firms---it takes the same value for all $n$ firms on any given trading day $t$. Including a full set of day fixed effects $\delta_t$ (one dummy per trading day) would absorb all variation that is common to all firms on each day, which is exactly the variation that $\Delta \ln(P_{mt})$ exploits for identification. In the extreme, $\Delta \ln(P_{mt})$ is a deterministic function of $\delta_t$ (since it is perfectly collinear with the day dummies), and the coefficient $\beta$ would be unidentified.
 
-In practice, if we want to control for aggregate daily shocks while still estimating $\beta$, we have several options. One approach is to include \textbf{time fixed effects but drop $\Delta \ln(P_{mt})$}, letting the day dummies absorb all common daily variation; this controls for market movements non-parametrically but does not produce an estimate of $\beta$. A second approach is to use \textbf{year or month fixed effects} rather than daily fixed effects, which absorb low-frequency common trends while leaving enough within-period variation in $\Delta \ln(P_{mt})$ for $\beta$ to be identified. A third approach is to include additional \textbf{time-varying aggregate controls} (such as changes in the VIX volatility index, interest rate changes, or oil price changes) alongside $\Delta \ln(P_{mt})$, rather than saturating the model with day dummies.
+In practice, if we want to control for aggregate daily shocks while still estimating $\beta$, there are several options. First, one could include time fixed effects but drop $\Delta \ln(P_{mt})$, letting the day dummies absorb all common daily variation; this controls for market movements non-parametrically but does not produce an estimate of $\beta$. Second, one could use year or month fixed effects rather than daily fixed effects, which absorb low-frequency common trends while leaving enough within-period variation in $\Delta \ln(P_{mt})$ for $\beta$ to be identified. Third, one could include time-varying aggregate controls (such as changes in the VIX, interest rate changes, or oil price changes) alongside $\Delta \ln(P_{mt})$, rather than saturating the model with day dummies.
 
 The simplest implementation for time FE that avoids the collinearity issue would be:
 
