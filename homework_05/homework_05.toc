@@ -1,8 +1,8 @@
 \contentsline {section}{Problem 1: Concealed Weapons Laws and Violent Crime}{1}{section*.2}%
 \contentsline {section}{Problem 2: Panel Regression Tables (ln(vio), ln(rob), ln(mur))}{9}{section*.3}%
 \contentsline {section}{Problem 3: Stock Market Performance and Firm Returns}{18}{section*.7}%
-\contentsline {section}{Ungraded Exercises}{30}{section*.8}%
-\contentsline {subsection}{SW Exercise 10.1: Drunk Driving Panel Data}{30}{section*.9}%
+\contentsline {section}{Ungraded Exercises}{29}{section*.8}%
+\contentsline {subsection}{SW Exercise 10.1: Drunk Driving Panel Data}{29}{section*.9}%
 \contentsline {subsection}{SW Empirical Exercise E10.2: Income and Democracy}{36}{section*.11}%
 \contentsline {section}{Appendix: Tables and Figures}{45}{section*.12}%
 \contentsline {section}{Replication Files}{48}{section*.16}%
