@@ -1,0 +1,267 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      StataNow 19.5
+___/   /   /___/   /   /___/       BE—Basic Edition
+
+ Statistics and Data Science       Copyright 1985-2025 StataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texas 77845 USA
+                                   800-782-8272        https://www.stata.com
+                                   979-696-4600        service@stata.com
+
+Stata license: Single-user , expiring 29 Aug 2026
+Serial number: 301909360991
+  Licensed to: Tyler Sotomayor
+               Columbia University
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help unicode_advice.
+
+. do ps5_problem3d.do 
+
+. * ============================================================
+. * ps5_problem3d.do
+. * ECON UN3412 — Problem Set 5, Problem 3(d)
+. *
+. * Panel data regression of firm stock log returns on S&P 500
+. * log returns using cross-section (firm) fixed effects.
+. *
+. * Log returns are computed as:
+. *   r_{it} = 100 * [ln(P_{it}) - ln(P_{i,t-1})]
+. *
+. * This is the standard econometric measure of percentage change
+. * (Stock & Watson, 2020). For small daily changes, log returns
+. * approximate simple percentage returns but are additive over
+. * time and symmetric in gains and losses.
+. *
+. * Data: Daily adjusted close prices for 10 U.S. firms and the
+. * S&P 500 index from Yahoo Finance, Jan 1, 2021 – Jan 1, 2026.
+. *
+. * Firms:
+. *   1. AAPL (Apple)           6. PG  (Procter & Gamble)
+. *   2. MSFT (Microsoft)       7. DIS (Walt Disney)
+. *   3. JPM  (JPMorgan Chase)  8. HD  (Home Depot)
+. *   4. JNJ  (Johnson & Johnson) 9. CAT (Caterpillar)
+. *   5. XOM  (ExxonMobil)     10. NEE (NextEra Energy)
+. *
+. * Market index: S&P 500 (^GSPC)
+. *
+. * Output:
+. *   ../output/tables/prob3d_fe_regression.tex
+. * ============================================================
+. 
+. clear all
+
+. set more off
+
+. 
+. * ----------------------------------------------------------
+. * 1. LOAD PANEL DATA
+. * ----------------------------------------------------------
+. * The panel was constructed in Python (download_stock_data.py).
+. * Each observation is a (firm, trading day) pair.
+. * log_ret_firm   = 100 * [ln(P_it) - ln(P_{i,t-1})]
+. * log_ret_market = 100 * [ln(P_mt) - ln(P_{m,t-1})]
+. * firm_id        = numeric firm identifier (1–10)
+. use "../data/stock_panel.dta", clear
+
+. 
+. * ----------------------------------------------------------
+. * 2. DECLARE PANEL STRUCTURE
+. * ----------------------------------------------------------
+. * Tell Stata that this is panel data: firm_id is the cross-
+. * sectional (entity) dimension and stata_date is the time
+. * dimension. This enables the use of xtreg and xtset-aware
+. * commands.
+. xtset firm_id stata_date
+
+Panel variable: firm_id (strongly balanced)
+ Time variable: stata_date, 22285 to 24106, but with gaps
+         Delta: 1 unit
+
+. 
+. * ----------------------------------------------------------
+. * 3. SUMMARY STATISTICS
+. * ----------------------------------------------------------
+. * Display summary statistics for the log return variables to
+. * verify the data is sensible (means near zero, reasonable SD).
+. summarize log_ret_firm log_ret_market
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+log_ret_firm |     12,540    .0473868    1.585231  -14.11393   14.26174
+log_ret_ma~t |     12,540    .0490497    1.067015  -6.160906   9.089488
+
+. 
+. * ----------------------------------------------------------
+. * 4. CROSS-SECTION FIXED EFFECTS REGRESSION
+. * ----------------------------------------------------------
+. * We estimate the following model:
+. *
+. *   Delta ln(P_{it}) = alpha_i + beta * Delta ln(P_{mt}) + u_{it}
+. *
+. * where Delta ln(P_{it}) = ln(P_{it}) - ln(P_{i,t-1}) is the
+. * log return (x100) of firm i on day t, and similarly for the
+. * market. alpha_i are firm-specific fixed effects capturing
+. * each firm's average idiosyncratic log return (Jensen's alpha),
+. * and beta measures the sensitivity of firm returns to market
+. * returns (the firm's "market beta" in CAPM terminology).
+. *
+. * We use xtreg with the fe (fixed effects / within) estimator.
+. * The option vce(robust) produces heteroskedasticity-robust SEs.
+. *
+. * The within estimator demeans each variable by its firm-
+. * specific mean, then runs OLS on the demeaned data. This
+. * is numerically equivalent to including a full set of firm
+. * dummy variables (the LSDV estimator), but is computationally
+. * more efficient.
+. 
+. xtreg log_ret_firm log_ret_market, fe vce(robust)
+
+Fixed-effects (within) regression               Number of obs     =     12,540
+Group variable: firm_id                         Number of groups  =         10
+
+R-squared:                                      Obs per group:
+     Within  = 0.2770                                         min =      1,254
+                                                              avg =    1,254.0
+     Overall = 0.2768                                         max =      1,254
+
+                                                F(1, 9)           =      50.48
+corr(u_i, Xb) = -0.0000                         Prob > F          =     0.0001
+
+                               (Std. err. adjusted for 10 clusters in firm_id)
+------------------------------------------------------------------------------
+             |               Robust
+log_ret_firm | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+log_ret_ma~t |   .7816594   .1100124     7.11   0.000      .532794    1.030525
+       _cons |   .0090467   .0053961     1.68   0.128    -.0031601    .0212534
+-------------+----------------------------------------------------------------
+     sigma_u |  .04309877
+     sigma_e |   1.348002
+         rho |  .00102119   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+
+. estimates store fe_model
+
+. 
+. * ----------------------------------------------------------
+. * 5. DISPLAY FIRM FIXED EFFECTS (alpha_i)
+. * ----------------------------------------------------------
+. * After xtreg, fe, the fixed effects are stored. We can
+. * predict them using predict with the u option.
+. predict alpha_i, u
+
+. label var alpha_i "Estimated firm fixed effect (alpha_i)"
+
+. 
+. * Show firm-level averages of the fixed effects
+. tabulate firm_id, summarize(alpha_i)
+
+       Firm |   Summary of Estimated firm fixed
+ identifier |          effect (alpha_i)
+     (1-10) |        Mean   Std. dev.       Freq.
+------------+------------------------------------
+          1 |   .01395352           0       1,254
+          2 |   .01956128           0       1,254
+          3 |   .03792274           0       1,254
+          4 |  -.01377766           0       1,254
+          5 |    .0535992           0       1,254
+          6 |  -.03429573           0       1,254
+          7 |  -.08108129           0       1,254
+          8 |  -.01651918           0       1,254
+          9 |   .05156874           0       1,254
+         10 |  -.03093162           0       1,254
+------------+------------------------------------
+      Total |           0   .04088871      12,540
+
+. 
+. * ----------------------------------------------------------
+. * 6. EXPORT TABLE VIA ESTTAB
+. * ----------------------------------------------------------
+. esttab fe_model using "../output/tables/prob3d_fe_regression.tex", replace /
+> //
+>     se star(* 0.10 ** 0.05 *** 0.01) ///
+>     label title("Firm-Level Log Returns on S\&P 500 Log Returns: Fixed Effec
+> ts Panel Regression") ///
+>     stats(N r2_w r2_b r2_o N_g, ///
+>           labels("Observations" "Within \$R^2\$" "Between \$R^2\$" "Overall 
+> \$R^2\$" "Number of firms") ///
+>           fmt(%9.0fc %9.4f %9.4f %9.4f %9.0f)) ///
+>     booktabs alignment(D{.}{.}{-1}) ///
+>     addnotes("Dependent variable: daily log return of firm stock (x100)." //
+> /
+>              "Log returns: $100 \times [\ln(P_{it}) - \ln(P_{i,t-1})]$." ///
+>              "Firm (cross-section) fixed effects via within transformation."
+>  ///
+>              "Heteroskedasticity-robust standard errors in parentheses." ///
+>              "Data: Yahoo Finance, Jan 2021 -- Dec 2025, 10 U.S. firms.")
+(output written to ../output/tables/prob3d_fe_regression.tex)
+
+. 
+. * ----------------------------------------------------------
+. * 7. ALSO RUN WITH FIRM DUMMIES (LSDV) FOR COMPARISON
+. * ----------------------------------------------------------
+. * This is algebraically identical to xtreg, fe but shows the
+. * dummy coefficients explicitly. Useful for confirming results.
+. tabulate firm_id, generate(firm_d)
+
+       Firm |
+ identifier |
+     (1-10) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |      1,254       10.00       10.00
+          2 |      1,254       10.00       20.00
+          3 |      1,254       10.00       30.00
+          4 |      1,254       10.00       40.00
+          5 |      1,254       10.00       50.00
+          6 |      1,254       10.00       60.00
+          7 |      1,254       10.00       70.00
+          8 |      1,254       10.00       80.00
+          9 |      1,254       10.00       90.00
+         10 |      1,254       10.00      100.00
+------------+-----------------------------------
+      Total |     12,540      100.00
+
+. reg log_ret_firm log_ret_market firm_d2-firm_d10, robust
+
+Linear regression                               Number of obs     =     12,540
+                                                F(10, 12529)      =     231.21
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.2775
+                                                Root MSE          =      1.348
+
+------------------------------------------------------------------------------
+             |               Robust
+log_ret_firm | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+log_ret_ma~t |   .7816594   .0162828    48.01   0.000     .7497427    .8135761
+     firm_d2 |   .0056078   .0472895     0.12   0.906     -.087087    .0983025
+     firm_d3 |   .0239692   .0487723     0.49   0.623    -.0716319    .1195703
+     firm_d4 |  -.0277312   .0486166    -0.57   0.568    -.1230271    .0675647
+     firm_d5 |   .0396457    .057705     0.69   0.492     -.073465    .1527564
+     firm_d6 |  -.0482493   .0478051    -1.01   0.313    -.1419545     .045456
+     firm_d7 |  -.0950348   .0549262    -1.73   0.084    -.2026985    .0126289
+     firm_d8 |  -.0304727   .0487954    -0.62   0.532    -.1261192    .0651738
+     firm_d9 |   .0376152   .0556009     0.68   0.499     -.071371    .1466014
+    firm_d10 |  -.0448851   .0571985    -0.78   0.433    -.1570029    .0672326
+       _cons |   .0230002   .0350984     0.66   0.512    -.0457981    .0917984
+------------------------------------------------------------------------------
+
+. 
+. di ""
+
+
+. di "============================================="
+=============================================
+
+. di " PROBLEM 3(d) REGRESSIONS COMPLETE "
+ PROBLEM 3(d) REGRESSIONS COMPLETE 
+
+. di "============================================="
+=============================================
+
+. 
+end of do-file

@@ -1,0 +1,112 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      StataNow 19.5
+___/   /   /___/   /   /___/       BE—Basic Edition
+
+ Statistics and Data Science       Copyright 1985-2025 StataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texas 77845 USA
+                                   800-782-8272        https://www.stata.com
+                                   979-696-4600        service@stata.com
+
+Stata license: Single-user , expiring 29 Aug 2026
+Serial number: 301909360991
+  Licensed to: Tyler Sotomayor
+               Columbia University
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help unicode_advice.
+
+. do explore_data.do 
+
+. * ============================================================
+. * explore_data.do
+. * Quick exploration of handguns.dta
+. * ============================================================
+. 
+. clear all
+
+. set more off
+
+. 
+. use "../handguns.dta", clear
+
+. 
+. describe
+
+Contains data from ../handguns.dta
+ Observations:         1,173                  
+    Variables:            24                  22 Oct 2003 15:55
+------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+------------------------------------------------------------------------------
+year            byte    %9.0g                 
+stpop           long    %12.0g                (US Census Bureau - see
+                                                'SOURCES' note in this folder)
+state           str20   %20s                  
+area            long    %9.0g                 Land Area in Sq Miles
+                                                (Statistical Abstract of the
+                                                U.S.)
+vio             float   %9.0g                 Violent Crime Rate per 100,000
+                                                population (BJS)
+mur             float   %9.0g                 Murder Crime Rate per 100,000
+                                                population (BJS)
+rap             float   %9.0g                 Rape Crime Rate per 100,000
+                                                population (BJS)
+rob             float   %9.0g                 Robbery Crime Rate per 100,000
+                                                population (BJS)
+aga             float   %9.0g                 Aggravated Assault Crime Rate
+                                                per 100,000 population (BJS)
+pro             float   %9.0g                 Property Crime Rate per 100,000
+                                                population (BJS)
+bur             float   %9.0g                 Burglary Crime Rate per 100,000
+                                                population (BJS)
+lar             float   %9.0g                 Larceny Crime Rate per 100,000
+                                                population (BJS)
+aut             float   %9.0g                 Motor Vehicle Crime Rate per
+                                                100,000 population (BJS)
+yradopt         byte    %9.0g                 Year of shall-issue law adoption
+                                                (77=adoption prior to 1977,
+                                                0=never adopted)
+incarc_rate     int     %8.0g                 72-99 ONLY - Lagged Rate per
+                                                100,000 resident pop of
+                                                sentenced prisoners in Stat
+pb1064          float   %9.0g                 
+pn1064          float   %9.0g                 
+pw1064          float   %9.0g                 
+pm1029          float   %9.0g                 
+pop             float   %9.0g                 
+avginc          float   %9.0g                 
+density         float   %9.0g                 
+stateid         byte    %9.0g                 
+shall           byte    %9.0g                 
+------------------------------------------------------------------------------
+Sorted by: 
+
+. 
+. summarize vio rob mur shall incarc_rate density avginc pop pb1064 pw1064 pm1
+> 029 stateid year
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         vio |      1,173    503.0747    334.2772         47     2921.8
+         rob |      1,173    161.8202      170.51        6.4     1635.1
+         mur |      1,173    7.665132     7.52271         .2       80.6
+       shall |      1,173    .2429668    .4290581          0          1
+ incarc_rate |      1,173    226.5797    178.8881         19       1913
+-------------+---------------------------------------------------------
+     density |      1,173    .3520382    1.355472   .0007071   11.10212
+      avginc |      1,173     13.7248    2.554543   8.554884   23.64671
+         pop |      1,173    4.816341    5.252115    .402753   33.14512
+      pb1064 |      1,173    5.336217    4.885688   .2482066   26.97957
+      pw1064 |      1,173    62.94543    9.761527   21.78043   76.52575
+-------------+---------------------------------------------------------
+      pm1029 |      1,173    16.08113    1.732143   12.21368   22.35269
+     stateid |      1,173    28.96078    15.68352          1         56
+        year |      1,173          88    6.636079         77         99
+
+. 
+end of do-file

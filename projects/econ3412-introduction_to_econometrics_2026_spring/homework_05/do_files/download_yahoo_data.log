@@ -1,0 +1,199 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      StataNow 19.5
+___/   /   /___/   /   /___/       BE—Basic Edition
+
+ Statistics and Data Science       Copyright 1985-2025 StataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texas 77845 USA
+                                   800-782-8272        https://www.stata.com
+                                   979-696-4600        service@stata.com
+
+Stata license: Single-user , expiring 29 Aug 2026
+Serial number: 301909360991
+  Licensed to: Tyler Sotomayor
+               Columbia University
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help unicode_advice.
+
+. do download_yahoo_data.do 
+
+. ****************************************************************************
+> ****
+. * download_yahoo_data.do
+. * ECON UN3412 — Problem Set 5, Problem 3(d)
+. *
+. * PURPOSE:
+. *   Downloads daily adjusted close prices from Yahoo Finance for 10 U.S.
+. *   firms and the S&P 500 index, computes log returns, arranges as panel
+. *   data, and saves to ../data/stock_panel.dta.
+. *
+. * DATA SOURCE:
+. *   Yahoo Finance (https://finance.yahoo.com)
+. *   Retrieved via the yfinance Python package (Aroussi, 2024).
+. *
+. * REQUIREMENTS:
+. *   - Stata 16+ with Python integration enabled
+. *   - Python 3.x with 'yfinance' and 'pandas' packages installed
+. *     (install via: pip install yfinance pandas)
+. *
+. * SAMPLE:
+. *   January 1, 2021 – January 1, 2026 (trading days only)
+. *
+. * FIRMS (10 large-cap U.S. companies, diverse sectors):
+. *   1. AAPL  — Apple Inc.             (Technology)
+. *   2. MSFT  — Microsoft Corp.        (Technology)
+. *   3. JPM   — JPMorgan Chase & Co.   (Financials)
+. *   4. JNJ   — Johnson & Johnson      (Healthcare)
+. *   5. XOM   — ExxonMobil Corp.       (Energy)
+. *   6. PG    — Procter & Gamble Co.   (Consumer Staples)
+. *   7. DIS   — Walt Disney Co.        (Communication Services)
+. *   8. HD    — Home Depot Inc.        (Consumer Discretionary)
+. *   9. CAT   — Caterpillar Inc.       (Industrials)
+. *  10. NEE   — NextEra Energy Inc.    (Utilities)
+. *
+. * MARKET INDEX:
+. *   ^GSPC — S&P 500
+. *
+. * OUTPUT:
+. *   ../data/stock_panel.dta   (balanced panel: 10 firms × T trading days)
+. *   ../data/firm_list.csv     (firm ID–ticker–sector mapping)
+. *
+. * LOG RETURNS:
+. *   r_{it} = 100 × [ln(P_{it}) − ln(P_{i,t-1})]
+. *   This is the standard econometric measure of percentage change
+. *   (Stock & Watson, 2020, Ch. 14). Log returns are additive over time
+. *   and approximately equal to simple percentage returns for small
+. *   daily changes.
+. ****************************************************************************
+> ****
+. 
+. 
+. clear all
+
+. set more off
+
+. 
+. 
+. ****************************************************************************
+> ****
+. * STEP 1: DOWNLOAD DATA VIA PYTHON AND SAVE AS TEMPORARY CSV
+. *
+. *   We use Stata's 'python:' block to run yfinance, then save the
+. *   panel to a CSV file. Stata then imports the CSV natively — this
+. *   is vastly faster than pushing data row-by-row via sfi.Data.
+. ****************************************************************************
+> ****
+. 
+. python:
+----------------------------------------------- python (type end to exit) ----
+>>> 
+>>> import yfinance as yf
+>>> import pandas as pd
+>>> import numpy as np
+>>> import os
+>>> from datetime import datetime
+>>> 
+>>> # ── Parameters ──────────────────────────────────────────────────────────
+> ───
+... tickers = ['AAPL', 'MSFT', 'JPM', 'JNJ', 'XOM',
+...            'PG',   'DIS',  'HD',  'CAT', 'NEE']
+... 
+>>> sectors = ['Technology', 'Technology', 'Financials', 'Healthcare', 'Energy
+> ',
+...            'Consumer Staples', 'Communication Services',
+...            'Consumer Discretionary', 'Industrials', 'Utilities']
+... 
+>>> market_ticker = '^GSPC'
+>>> start_date    = '2021-01-01'
+>>> end_date      = '2026-01-01'
+>>> 
+>>> print("=" * 60)
+============================================================
+>>> print("DOWNLOADING YAHOO FINANCE DATA")
+DOWNLOADING YAHOO FINANCE DATA
+>>> print("=" * 60)
+============================================================
+>>> print(f"Firms:       {tickers}")
+Firms:       ['AAPL', 'MSFT', 'JPM', 'JNJ', 'XOM', 'PG', 'DIS', 'HD', 'CAT', '
+> NEE']
+>>> print(f"Market:      {market_ticker}")
+Market:      ^GSPC
+>>> print(f"Period:      {start_date} to {end_date}")
+Period:      2021-01-01 to 2026-01-01
+>>> print(f"Timestamp:   {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+Timestamp:   2026-04-07 22:08:47
+>>> print("=" * 60)
+============================================================
+>>> 
+>>> # ── Download adjusted close prices ──────────────────────────────────────
+> ───
+... #
+... # auto_adjust=True means the 'Close' column already reflects
+... # splits and dividends (i.e., it IS the adjusted close).
+>>> all_tickers = tickers + [market_ticker]
+>>> data = yf.download(all_tickers, start=start_date, end=end_date,
+...                    auto_adjust=True)
+[*********************100%***********************]  11 of 11 completed
+>>> prices = data['Close'].rename(columns={'^GSPC': 'SP500'}).dropna()
+>>> 
+>>> print(f"\nPrices: {prices.shape[0]} trading days, "
+...       f"{prices.shape[1]} series")
+
+Prices: 1255 trading days, 11 series
+>>> print(f"Date range: {prices.index.min().date()} to "
+...       f"{prices.index.max().date()}")
+... 
+... # ── Compute log returns: 100 × Δln(P) ───────────────────────────────────
+> ──
+Date range: 2021-01-04 to 2025-12-31
+>>> #
+... # r_t = 100 × [ln(P_t) − ln(P_{t-1})]
+... #
+... # The log-difference is the standard econometric measure of
+... # percentage change. For small daily changes it approximates the
+... # simple percentage return, and it has the desirable property
+... # of being additive over time.
+>>> log_ret = (np.log(prices).diff() * 100).dropna()
+>>> market_ret = log_ret['SP500']
+>>> 
+>>> # ── Reshape to panel (long) format ──────────────────────────────────────
+> ───
+... #
+... # Each row = (firm_id, date, log_ret_firm, log_ret_market).
+... # This is the stacked panel format required by xtset / xtreg.
+>>> panels = []
+>>> for i, ticker in enumerate(tickers, start=1):
+...     df = pd.DataFrame({
+...         'firm_id':        i,
+...         'ticker':         ticker,
+...         'sector':         sectors[i - 1],
+...         'date':           log_ret.index.strftime('%Y-%m-%d'),
+...         'log_ret_firm':   log_ret[ticker].values,
+...         'log_ret_market': market_ret.values,
+...         'stata_date':     (log_ret.index - pd.Timestamp('1960-01-01')).day
+> s
+...     })
+...     panels.append(df)
+... 
+>>> panel = pd.concat(panels, ignore_index=True)
+>>> panel = panel.sort_values(['firm_id', 'date']).reset_index(drop=True)
+>>> 
+>>> n_firms = panel['firm_id'].nunique()
+>>> n_days  = panel.groupby('firm_id').size().iloc[0]
+>>> 
+>>> print(f"\nPanel: {n_firms} firms x {n_days} days = {len(panel)} obs")
+
+Panel: 10 firms x 1254 days = 12540 obs
+>>> print(panel[['log_ret_firm', 'log_ret_market']].describe().round(4))
+       log_ret_firm  log_ret_market
+count    12540.0000      12540.0000
+mean         0.0474          0.0490
+std          1.5852          1.0670
+min        -14.1139         -6.1609
+25%         -0.7626         -0.4691
+50%          0.0631          0.0822
+75%          0.9020          0.6245

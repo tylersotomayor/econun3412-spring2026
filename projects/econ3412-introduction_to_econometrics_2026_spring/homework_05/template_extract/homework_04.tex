@@ -1,0 +1,1163 @@
+\documentclass[12pt]{article}
+\usepackage{setspace}
+\doublespacing
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+\usepackage{lipsum}   % for example filler text
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+% ============================================================
+% METADATA — EDIT ONLY THIS BLOCK EACH ASSIGNMENT
+% ============================================================
+
+\newcommand{\university}{COLUMBIA UNIVERSITY}
+\newcommand{\department}{Department of Economics}
+
+\newcommand{\classnum}{ECON UN3412}
+\newcommand{\subject}{Introduction to Econometrics}
+\newcommand{\semester}{Spring 2026}
+\newcommand{\assignment}{Homework 4}
+
+\newcommand{\instructors}{Seyhan Erden}
+\newcommand{\instructoremail}{seyhan.erden@columbia.edu}
+
+\newcommand{\name}{Tyler Sotomayor}
+\newcommand{\email}{tyler.sotomayor@columbia.edu}
+
+\newcommand{\duedate}{5 March 2026}
+
+\newcommand{\sealfile}{ColumbiaSeal.png}
+\newcommand{\sealsize}{0.22\textwidth}
+
+\newcommand{\tathanksline}{Special thanks to the Teaching Assistants of \classnum}
+
+% ============================================================
+% TA LIST — EDIT ONLY ITEMS BELOW
+% ============================================================
+
+\newcommand{\TA}[2]{%
+  {\large \textbf{#1}}\par
+  \href{mailto:#2}{\texttt{#2}}\par
+  \vspace{0.6cm}
+}
+
+\newcommand{\TAlist}{%
+  \TA{Daniel Garcia}{dg3342@columbia.edu}
+  \TA{Chris Kye}{mk4449@columbia.edu}
+  \TA{Shivesh Babu Narayan}{sb5211@columbia.edu}
+  \TA{Luca Salvatori}{ls4241@columbia.edu}
+  \TA{Zijian Zhang}{zz3263@columbia.edu}
+}
+
+% ============================================================
+% TITLE PAGE MACROS — DO NOT EDIT
+% ============================================================
+
+\newcommand{\maketitlepage}{%
+\begin{titlepage}
+\begingroup
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\centering
+
+\vspace*{-0.8cm}
+\includegraphics[width=\sealsize]{\sealfile}\par
+\vspace{0.3cm}
+{\LARGE \textbf{\university}}\par
+{\large \department}
+
+\vspace{1.1cm}
+
+{\normalsize \textit{Completed in Partial Fulfillment of the Requirements of}}\par
+\vspace{0.45cm}
+{\Large \textbf{\classnum}}\par
+{\Large \textbf{\subject}}\par
+\vspace{0.3cm}
+{\Large \semester}\par
+
+\vspace{1.5cm}
+{\fontfamily{lmr}\selectfont\Large\scshape \assignment}\par
+
+\vspace{1.5cm}
+
+{\large \textbf{\instructors}}\par
+\vspace{2pt}
+\href{mailto:\instructoremail}{\texttt{\instructoremail}}\par
+
+\vspace{1.0cm}
+
+{\large \textbf{\name}}\par
+\href{mailto:\email}{\texttt{\email}}\par
+
+\vspace*{\stretch{1}}
+\endgroup
+\end{titlepage}
+}
+
+\newcommand{\maketapage}{%
+\begin{titlepage}
+\begingroup
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\centering
+
+{\normalsize \tathanksline}\par
+\vspace{1.2cm}
+
+\TAlist
+
+\vspace*{\stretch{1}}
+\endgroup
+\end{titlepage}
+}
+
+% Optional collaborators
+%\newcommand{\collaborators}{Roy Milstein (\texttt{rm4238@columbia.edu})}
+
+% ------------------------------------------------------------
+% LOAD TYLER’S CUSTOM MACROS AND FORMATTING
+% ------------------------------------------------------------
+\input{tyler-pset.tex}
+
+% Optional compile toggles
+% \excludeversion{problem}
+% \excludeversion{solution}
+% \excludeversion{reflection}
+
+\begin{document}
+
+\pagenumbering{gobble}
+\maketitlepage
+\maketapage
+
+\clearpage
+\pagenumbering{arabic}
+\psetheader
+
+% ============================================================
+% PROBLEM 1
+% ============================================================
+
+\section*{Problem 1 \points{30}}
+
+\begin{problem}
+Use the data in \texttt{hprice1.dta} to estimate the following model (description of the variables in the data set is listed below in Table 1:
+\[
+price = \beta_0 + \beta_1 sqrft + \beta_2 bdrms + u
+\]
+where price = the (selling) price of the house (in 1000 dollars), sqrft = size of house (square feet) and bdrms = number of bedrooms in the house.
+\end{problem}
+
+\begin{enumerate}
+
+\item
+\begin{problem}{\points{3}}
+Write out the estimation result in equation form.
+\end{problem}
+\begin{solution}
+\[
+\widehat{price}_i
+=
+\underset{(31.047)}{-19.315}
++
+\underset{(0.0138)}{0.1284}\,sqrft_i
++
+\underset{(9.484)}{15.198}\,bdrms_i
+\]
+
+See Table~\ref{tab:p1_hprice_ols} in the Appendix for the full regression output.
+\noindent
+Holding bedrooms fixed, an additional square foot is associated with about \$128 higher price (since \texttt{price} is in \$1000s).
+\end{solution}
+\item
+\begin{problem}{\points{3}}
+What is the estimated increase in price for a house with one more bedroom keeping square footage constant?
+\end{problem}
+\begin{solution}
+The estimated coefficient on \texttt{bdrms} is $15.198$. Since \texttt{price} is measured in thousands of dollars, this implies that, holding square footage fixed, adding one additional bedroom increases the predicted selling price by approximately \$15,198.
+
+Thus, the estimated increase in price for one more bedroom (keeping square footage constant) is about \$15,200.
+\end{solution}
+
+\item
+\begin{problem}{\points{6}}
+What is the estimated increase in price for a house with an additional 1400-square-foot bedroom added? Compare this to your answer in (b).
+\end{problem}
+\begin{solution}
+From the estimated regression,
+\[
+\widehat{price}
+=
+-19.315
++
+0.1284\,sqrft
++
+15.198\,bdrms.
+\]
+
+Adding a 1400-square-foot bedroom increases both \texttt{sqrft} (by 1400) and \texttt{bdrms} (by 1). Therefore, the predicted increase in price is
+
+\[
+\Delta price
+=
+0.1284(1400)
++
+15.198(1).
+\]
+
+This equals
+\[
+179.811 + 15.198 = 195.009,
+\]
+which is approximately \$195,009 (since \texttt{price} is measured in thousands of dollars).
+
+This is substantially larger than the answer in part (b), where we held square footage constant. In part (b), we valued only the additional bedroom holding total size fixed. Here, most of the increase comes from the additional square footage.
+\end{solution}
+
+\item
+\begin{problem}{\points{6}}
+What percentage of the variation in price is explained by square footage and number of bedrooms? Compare your answer to the adjusted $R^2$. Explain the difference.
+\end{problem}
+\begin{solution}
+The percentage of the variation in \texttt{price} explained by \texttt{sqrft} and \texttt{bdrms} is given by the $R^2$ from the regression. From the OLS output,
+\[
+R^2 = 0.6319,
+\]
+so approximately $63.19\%$ of the sample variation in house prices is explained by the model.
+
+The adjusted $R^2$ is
+\[
+\bar{R}^2 = 0.6233,
+\]
+or about $62.33\%$. The adjusted $R^2$ is slightly smaller because it penalizes the inclusion of additional regressors through a degrees-of-freedom adjustment. While $R^2$ (weakly) increases whenever regressors are added, the adjusted $R^2$ increases only if the added variables improve model fit sufficiently to offset this penalty.
+\end{solution}
+
+\item
+\begin{problem}{\points{6}}
+Consider the first house in the sample. Report the square footage and number of bedrooms for this house. Find the predicted selling price for this house from the OLS regression line.
+\end{problem}
+\begin{solution}
+The first house in the sample has \texttt{sqrft}$=2438$ and \texttt{bdrms}$=4$. Using the estimated regression line,
+\[
+\widehat{price}_i
+=
+-19.315
++
+0.1284362\,sqrft_i
++
+15.19819\,bdrms_i,
+\]
+the predicted selling price for the first house is
+\[
+\widehat{price}_1
+=
+-19.315
++
+0.1284362(2438)
++
+15.19819(4)
+=
+354.6053,
+\]
+which corresponds to approximately \$354{,}605 (since \texttt{price} is measured in thousands of dollars).
+\end{solution}
+
+\item
+\begin{problem}{\points{6}}
+What is the actual selling price of the first house in the sample? Find the residual of this house. Does it suggest that the buyer underpaid or overpaid for the house? Explain.
+\end{problem}
+\begin{solution}
+The actual selling price of the first house is $300$ (i.e., \$300{,}000, since \texttt{price} is measured in thousands).
+
+From part (e), the predicted price is
+\[
+\widehat{price}_1 = 354.605,
+\]
+or approximately \$354{,}605.
+
+The residual is therefore
+\[
+\hat{u}_1
+=
+price_1 - \widehat{price}_1
+=
+300 - 354.605
+=
+-54.605.
+\]
+
+Thus, the residual is approximately $-54.605$ (thousand dollars), or about \$54{,}605 below the predicted value.
+
+Because the actual price is lower than the predicted price, the house sold for less than what the model would predict given its square footage and number of bedrooms. This suggests that the buyer underpaid (or equivalently, that the seller received less than the model-predicted value).
+\end{solution}
+
+\end{enumerate}
+
+\newpage
+
+% ============================================================
+% PROBLEM 2
+% ============================================================
+
+\section*{Problem 2 \points{40}}
+
+\begin{problem}
+Use \texttt{cps92\_12.dta} to answer following questions. You can find the description of the variables in the file named \texttt{cps92\_12.description.pdf}.
+\end{problem}
+
+\begin{enumerate}
+
+\item
+\begin{problem}{\points{5}}
+Generate natural logarithm of \textit{ahe}, call it \textit{lahe}. Regress \textit{lahe} on \textit{age}, \textit{female}, \textit{bachelor} and interaction of female and bachelor (call this variable \textit{femxbac}) this is your regression 1. Report (copy/paste) your results here title it \underline{Regression 1}
+\end{problem}
+\begin{solution}
+
+\underline{Regression 1}
+
+\[
+\widehat{lahe}_i
+=
+\underset{(0.0447)}{1.6959}
++
+\underset{(0.0015)}{0.0261}\,age_i
+-
+\underset{(0.0117)}{0.2422}\,female_i
++
+\underset{(0.0112)}{0.4248}\,bachelor_i
++
+\underset{(0.0170)}{0.1195}\,femxbac_i
+\]
+
+\noindent
+$n = 15{,}052$, \quad $R^2 = 0.1994$, \quad $\bar{R}^2 = 0.1991$.
+
+\medskip
+
+See Table~\ref{tab:prob2_reg1} in the Appendix for the full regression output.
+\end{solution}
+
+\item
+\begin{problem}{\points{5}}
+Regress \textit{lahe} on \textit{female}, \textit{age}, \textit{bachelor} and interaction between female and age (call this variable \textit{femxage}). Report (copy/paste) your results here title it \underline{Regression 2}
+\end{problem}
+\begin{solution}
+
+\underline{Regression 2}
+
+\[
+\widehat{lahe}_i
+=
+\underset{(0.058)}{1.539}
++
+\underset{(0.090)}{0.157}\,female_i
++
+\underset{(0.002)}{0.031}\,age_i
++
+\underset{(0.008)}{0.475}\,bachelor_i
+-
+\underset{(0.003)}{0.012}\,femxage_i
+\]
+
+\noindent
+$n = 15{,}052$, \quad $R^2 = 0.1975$, \quad $\bar{R}^2 = 0.1973$.
+
+\medskip
+
+See Table~\ref{tab:prob2_reg2} in the Appendix for the full regression output.
+
+\end{solution}
+
+\begin{problem}
+Using the appropriate regression please answer the following questions
+\end{problem}
+
+\item
+\begin{problem}{\points{5}}
+What is the estimated average hourly earnings difference between females with bachelor degrees and males with bachelor degree? State which regression (Regression 1 or Regression 2) do you need to use to answer this question and explain your answer.
+\end{problem}
+\begin{solution}
+We use \underline{Regression 1} because the question asks for the female--male earnings difference \emph{among bachelor degree holders}. In Regression 1, the effect of \texttt{female} is allowed to differ by whether \texttt{bachelor}=1 through the interaction term \texttt{femxbac} $=$ \texttt{female}$\times$\texttt{bachelor}. In contrast, Regression 2 includes an interaction \texttt{female}$\times$\texttt{age} but \emph{does not} allow the female effect to vary with bachelor status, so it cannot separately identify the gender gap for bachelor degree holders (it would impose the same female effect regardless of \texttt{bachelor}).
+
+\medskip
+Starting with Regression 1,
+\[
+\widehat{lahe}_i
+=
+\hat\beta_0
++
+\hat\beta_1\,age_i
++
+\hat\beta_2\,female_i
++
+\hat\beta_3\,bachelor_i
++
+\hat\beta_4\,(female_i \times bachelor_i).
+\]
+
+We can recover the predicted log hourly earnings for:
+\begin{itemize}
+\item a \emph{male} with a bachelor degree: $female=0$, $bachelor=1$,
+\item a \emph{female} with a bachelor degree: $female=1$, $bachelor=1$,
+\end{itemize}
+holding $age$ fixed (the question is a ceteris paribus comparison). Taking the difference of these estimates can reveal a gender dichotomy in hourly earnings. 
+
+\medskip
+\noindent\textbf{Male with bachelor ($female=0$, $bachelor=1$):}
+\[
+\widehat{lahe}^{M,B}(age)
+=
+\hat\beta_0
++
+\hat\beta_1\,age
++
+\hat\beta_2(0)
++
+\hat\beta_3(1)
++
+\hat\beta_4(0\cdot 1)
+=
+\hat\beta_0+\hat\beta_1\,age+\hat\beta_3.
+\]
+
+\noindent\textbf{Female with bachelor ($female=1$, $bachelor=1$):}
+\[
+\widehat{lahe}^{F,B}(age)
+=
+\hat\beta_0
++
+\hat\beta_1\,age
++
+\hat\beta_2(1)
++
+\hat\beta_3(1)
++
+\hat\beta_4(1\cdot 1)
+=
+\hat\beta_0+\hat\beta_1\,age+\hat\beta_2+\hat\beta_3+\hat\beta_4.
+\]
+
+\medskip
+\noindent\textbf{Difference (female bachelor minus male bachelor):}
+\begin{align*}
+\widehat{lahe}^{F,B}(age)-\widehat{lahe}^{M,B}(age)
+&=
+\left(\hat\beta_0+\hat\beta_1\,age+\hat\beta_2+\hat\beta_3+\hat\beta_4\right)
+-
+\left(\hat\beta_0+\hat\beta_1\,age+\hat\beta_3\right) \\
+&= \hat\beta_2+\hat\beta_4.
+\end{align*}
+
+Using the Regression 1 estimates,
+\[
+\hat\beta_2=\widehat{\beta}_{\texttt{female}}=-0.2422382,
+\qquad
+\hat\beta_4=\widehat{\beta}_{\texttt{femxbac}}=0.1194567,
+\]
+so
+\[
+\hat\beta_2+\hat\beta_4
+=
+-0.2422382+0.1194567
+=
+-0.1227815
+\approx
+-0.123.
+\]
+
+Therefore, the estimated female--male difference in \emph{log} hourly earnings among bachelor degree holders is about $-0.123$ log points. Because the dependent variable is $\log(\texttt{ahe})$, this corresponds to approximately a $100\times(-0.1228)\approx -12.28\%$ difference in average hourly earnings (female bachelor degree holders earn about 12\% less than comparable male bachelor degree holders). The exact percent difference would be $\exp(-0.1228)-1\approx -11.6\%$.
+\end{solution}
+
+\item
+\begin{problem}{\points{5}}
+What is the estimated average hourly earnings difference between females with bachelor degrees and females without bachelor degree? State which regression (Regression 1 or Regression 2) do you need to use to answer this question and explain your answer.
+\end{problem}
+\begin{solution}
+We use \underline{Regression 1} because the question asks for the earnings difference between
+females \emph{with} and \emph{without} a bachelor degree---a comparison that requires the
+bachelor-status effect to vary by gender. Regression 1 includes the interaction term
+\texttt{femxbac} $=$ \texttt{female}$\times$\texttt{bachelor}, which allows the return to a
+bachelor degree to differ for women. Regression 2 includes the interaction
+\texttt{female}$\times$\texttt{age} but imposes the same bachelor coefficient for both genders,
+so it cannot separately identify the bachelor premium for females.
+
+\medskip
+Starting with Regression 1,
+\[
+\widehat{lahe}_i
+=
+\hat\beta_0
++
+\hat\beta_1\,age_i
++
+\hat\beta_2\,female_i
++
+\hat\beta_3\,bachelor_i
++
+\hat\beta_4\,(female_i \times bachelor_i).
+\]
+
+We set $female=1$ throughout and compare the two bachelor values:
+
+\medskip
+\noindent\textbf{Female without bachelor ($female=1$, $bachelor=0$):}
+\[
+\widehat{lahe}^{F,NB}(age)
+=
+\hat\beta_0
++
+\hat\beta_1\,age
++
+\hat\beta_2(1)
++
+\hat\beta_3(0)
++
+\hat\beta_4(1\cdot 0)
+=
+\hat\beta_0+\hat\beta_1\,age+\hat\beta_2.
+\]
+
+\noindent\textbf{Female with bachelor ($female=1$, $bachelor=1$):}
+\[
+\widehat{lahe}^{F,B}(age)
+=
+\hat\beta_0
++
+\hat\beta_1\,age
++
+\hat\beta_2(1)
++
+\hat\beta_3(1)
++
+\hat\beta_4(1\cdot 1)
+=
+\hat\beta_0+\hat\beta_1\,age+\hat\beta_2+\hat\beta_3+\hat\beta_4.
+\]
+
+\medskip
+\noindent\textbf{Difference (female bachelor minus female non-bachelor):}
+\begin{align*}
+\widehat{lahe}^{F,B}(age)-\widehat{lahe}^{F,NB}(age)
+&=
+\left(\hat\beta_0+\hat\beta_1\,age+\hat\beta_2+\hat\beta_3+\hat\beta_4\right)
+-
+\left(\hat\beta_0+\hat\beta_1\,age+\hat\beta_2\right) \\
+&= \hat\beta_3+\hat\beta_4.
+\end{align*}
+
+Using the Regression 1 estimates,
+\[
+\hat\beta_3=\widehat{\beta}_{\texttt{bachelor}}=0.4248,
+\qquad
+\hat\beta_4=\widehat{\beta}_{\texttt{femxbac}}=0.1195,
+\]
+so
+\[
+\hat\beta_3+\hat\beta_4
+=
+0.4248+0.1195
+=
+0.5443.
+\]
+
+Therefore, the estimated difference in \emph{log} average hourly earnings between female
+bachelor degree holders and female non-degree holders is about $0.5443$ log points, holding
+age fixed. This corresponds to approximately a $100\times 0.5443 \approx 54.4\%$ difference
+using the log-point approximation, or more precisely $\exp(0.5443)-1 \approx 72.3\%$. Female
+workers with a bachelor degree earn substantially more than comparable females without one.
+\end{solution}
+
+\item
+\begin{problem}{\points{5}}
+How would you test if there is a significance difference in average hourly earnings of females with bachelor degrees and males with bachelor degrees? Please write commands necessary, you can use any method you want, but you must write the null hypothesis first. State which regression (Regression 1 or Regression 2) do you need to use to answer this question and explain your answer. Commands do not need to be implemented in Stata.
+\end{problem}
+\begin{solution}
+We use \underline{Regression 1} for the same reason as part (c): the question concerns the
+female--male earnings difference \emph{among bachelor degree holders}, which requires the
+interaction term \texttt{femxbac} $=$ \texttt{female}$\times$\texttt{bachelor}. As shown in
+part (c), that difference equals $\hat\beta_2+\hat\beta_4$ in Regression 1. Regression 2 does
+not allow the female effect to vary with bachelor status, so it cannot answer this question.
+
+\medskip
+\noindent\textbf{Null hypothesis:}
+\[
+H_0:\;\beta_2+\beta_4=0
+\]
+against the two-sided alternative $H_1:\beta_2+\beta_4\neq 0$.
+
+\medskip
+\noindent There are two equivalent ways to test this.
+
+\bigskip
+\noindent\textbf{Method 1: \texttt{lincom} (direct linear combination test)}
+
+The \texttt{lincom} command computes the point estimate, standard error, $t$-statistic, and
+$p$-value for any linear combination of coefficients in one step:
+
+\begin{verbatim}
+    lincom female + femxbac
+\end{verbatim}
+
+\noindent Stata reports the estimate $\hat\beta_2+\hat\beta_4$, its standard error, and the
+$t$-statistic
+\[
+t = \frac{\hat\beta_2+\hat\beta_4}{\widehat{SE}(\hat\beta_2+\hat\beta_4)},
+\]
+which under $H_0$ follows a $t_{n-k-1}$ distribution. We reject $H_0$ at the 5\% level if
+$|t|>1.96$ (or compare the reported $p$-value to 0.05).
+
+\noindent\textbf{Method 2: ``Fooling Stata'' (Reparameterisation)}
+
+The idea is to transform the regression so that the restriction
+$H_0: \beta_2 + \beta_4 = 0$ becomes a restriction on a \emph{single}
+coefficient, which can then be tested with a standard $t$-test.
+
+\medskip
+\noindent\textbf{Step 1: Rearrange the regression algebraically.}
+
+Start from Regression 1:
+\[
+lahe_i
+= \beta_0
++ \beta_1\,age_i
++ \beta_2\,female_i
++ \beta_3\,bachelor_i
++ \beta_4\,(female_i \times bachelor_i)
++ u_i.
+\]
+
+Define $\gamma \equiv \beta_2 + \beta_4$, so that $\beta_2 = \gamma - \beta_4$.
+Substituting into the regression:
+\begin{align*}
+lahe_i
+&= \beta_0
++ \beta_1\,age_i
++ (\gamma - \beta_4)\,female_i
++ \beta_3\,bachelor_i \\
+&\qquad
++ \beta_4\,(female_i \times bachelor_i)
++ u_i \\[4pt]
+&= \beta_0
++ \beta_1\,age_i
++ \gamma\,female_i
++ \beta_3\,bachelor_i \\
+&\qquad
++ \beta_4\!\left[(female_i \times bachelor_i) - female_i\right]
++ u_i \\[4pt]
+&= \beta_0
++ \beta_1\,age_i
++ \gamma\,female_i
++ \beta_3\,bachelor_i \\
+&\qquad
+- \beta_4\,female_i(1 - bachelor_i)
++ u_i.
+\end{align*}
+
+Notice that $female_i(1-bachelor_i)$ is simply an indicator equal to 1 for
+females \emph{without} a bachelor degree. Equivalently, we can reach the same
+reparameterisation by switching the omitted group: define
+\[
+male_i = 1 - female_i,
+\qquad
+malexbac_i = male_i \times bachelor_i.
+\]
+
+\noindent\textbf{Method 2: ``Fooling Stata'' (Reparameterisation)}
+
+The idea is to transform the regression so that the restriction
+$H_0: \beta_2 + \beta_4 = 0$ becomes a restriction on a \emph{single}
+coefficient, which can then be tested with a standard $t$-test.
+
+\medskip
+
+Start from Regression 1:
+\[
+lahe_i
+= \beta_0
++ \beta_1\,age_i
++ \beta_2\,female_i
++ \beta_3\,bachelor_i
++ \beta_4\,(female_i \times bachelor_i)
++ u_i.
+\]
+
+Define $\gamma \equiv \beta_2 + \beta_4$, so that $\beta_2 = \gamma - \beta_4$.
+Substituting into the regression:
+\begin{align*}
+lahe_i
+&= \beta_0
++ \beta_1\,age_i
++ (\gamma - \beta_4)\,female_i
++ \beta_3\,bachelor_i \\
+&\qquad
++ \beta_4\,(female_i \times bachelor_i)
++ u_i \\[4pt]
+&= \beta_0
++ \beta_1\,age_i
++ \gamma\,female_i
++ \beta_3\,bachelor_i \\
+&\qquad
++ \beta_4\!\left[(female_i \times bachelor_i)
+- female_i\right]
++ u_i \\[4pt]
+&= \beta_0
++ \beta_1\,age_i
++ \gamma\,female_i
++ \beta_3\,bachelor_i \\
+&\qquad
+- \beta_4\,female_i(1 - bachelor_i)
++ u_i.
+\end{align*}
+
+Notice that $female_i(1-bachelor_i)$ is simply an indicator equal to 1 for
+females \emph{without} a bachelor degree. Equivalently, we can reach the same
+reparameterisation by switching the omitted group: define
+\[
+male_i = 1 - female_i,
+\qquad
+malexbac_i = male_i \times bachelor_i.
+\]
+
+Rewrite the original model in terms of $male_i$ and $malexbac_i$. Because
+$female_i = 1 - male_i$, the original four indicator cells map as follows:
+
+\medskip
+\begin{center}
+\small
+\begin{tabular}{llccc}
+\hline
+Group & Coding & \textit{female/male} & \textit{bachelor} & \textit{femxbac/malexbac} \\
+\hline
+\multirow{2}{*}{Male, no bachelor}
+  & Original & $f=0$ & $b=0$ & $fxb=0$ \\
+  & New      & $m=1$ & $b=0$ & $mxb=0$ \\[4pt]
+\multirow{2}{*}{Male, bachelor}
+  & Original & $f=0$ & $b=1$ & $fxb=0$ \\
+  & New      & $m=1$ & $b=1$ & $mxb=1$ \\[4pt]
+\multirow{2}{*}{Female, no bachelor}
+  & Original & $f=1$ & $b=0$ & $fxb=0$ \\
+  & New      & $m=0$ & $b=0$ & $mxb=0$ \\[4pt]
+\multirow{2}{*}{Female, bachelor}
+  & Original & $f=1$ & $b=1$ & $fxb=1$ \\
+  & New      & $m=0$ & $b=1$ & $mxb=0$ \\
+\hline
+\end{tabular}
+\end{center}
+\medskip
+\noindent The reparameterised regression is:
+\[
+lahe_i
+= \delta_0
++ \delta_1\,age_i
++ \delta_2\,male_i
++ \delta_3\,bachelor_i
++ \delta_4\,malexbac_i
++ u_i,
+\]
+where one can verify algebraically that
+\[
+\delta_2 = -(\beta_2 + \beta_4), \qquad
+\delta_4 = -\beta_4, \qquad
+\delta_3 = \beta_3 + \beta_4, \qquad
+\delta_0 = \beta_0 + \beta_2.
+\]
+
+The key result is $\delta_2 = -(\beta_2+\beta_4)$, so
+\[
+H_0:\;\beta_2+\beta_4 = 0
+\quad\Longleftrightarrow\quad
+H_0:\;\delta_2 = 0,
+\]
+which is simply a $t$-test on the coefficient of $male_i$ in the new regression.
+
+\medskip
+
+Under the reparameterised regression the predicted log earnings for the two
+groups of interest (holding $age$ fixed) are:
+
+\medskip
+\noindent Female with bachelor ($male=0,\;bachelor=1,\;malexbac=0$):
+\[
+\widehat{lahe}^{F,B} = \delta_0 + \delta_1\,age + \delta_3.
+\]
+
+\noindent Male with bachelor ($male=1,\;bachelor=1,\;malexbac=1$):
+\[
+\widehat{lahe}^{M,B} = \delta_0 + \delta_1\,age + \delta_2 + \delta_3 + \delta_4.
+\]
+
+\noindent Difference (female minus male, among bachelor holders):
+\[
+\widehat{lahe}^{F,B} - \widehat{lahe}^{M,B}
+= -\delta_2 - \delta_4
+= (\beta_2+\beta_4) - (-\beta_4) - (-\beta_4)
+= \beta_2 + \beta_4,
+\]
+which recovers exactly the quantity from part (c), confirming the algebra is
+consistent.
+
+\medskip
+\noindent\textbf{Step 4: Stata commands.}
+
+\begin{verbatim}
+    gen male     = 1 - female
+    gen malexbac = male * bachelor
+    reg lahe age male bachelor malexbac
+\end{verbatim}
+
+\noindent In the output, the $t$-statistic on \texttt{male} tests
+$H_0: \delta_2 = 0$, i.e.\ $H_0: \beta_2+\beta_4=0$ directly. We reject $H_0$
+at the 5\% significance level if $|t|>1.96$.
+
+\medskip
+Both methods are algebraically identical: the $F$-statistic from the
+\texttt{lincom} approach equals the square of the $t$-statistic from the
+``fooling Stata'' approach.
+\end{solution}
+
+\item
+\begin{problem}{\points{5}}
+How would you test if there is an intercept and if there is a slope difference
+in the two estimated regression lines for males and females if your y-axis is
+average hourly earnings and x-axis is \textit{age}? Which regression
+(Regression 1 or Regression 2) do you need to use to answer this question?
+Write the null hypothesis for each test. Commands do not need to be implemented
+in Stata.
+\end{problem}
+\begin{solution}
+
+Regression 2 is required, since it includes
+the $female \times age$ interaction term:
+\[
+lahe_i = \beta_0 + \beta_1\,age_i + \beta_2\,female_i
+       + \beta_3\,(female_i \times age_i) + u_i.
+\]
+Regression 1 does not contain a $female \times age$ interaction, so it
+constrains the slope on $age$ to be the same for males and females and cannot
+be used to test for a slope difference.
+
+\medskip
+Writing out the regression separately for each group:
+
+\medskip
+\noindent\textit{Males} ($female = 0$):
+\[
+lahe_i = \beta_0 + \beta_1\,age_i + u_i.
+\]
+
+\noindent\textit{Females} ($female = 1$):
+\[
+lahe_i = (\beta_0 + \beta_2) + (\beta_1 + \beta_3)\,age_i + u_i.
+\]
+
+Hence $\beta_2$ captures the \emph{intercept difference} (female minus male)
+and $\beta_3$ captures the \emph{slope difference} on $age$ (female minus
+male).
+
+\medskip
+We test intercept difference.
+
+$H_0: \beta_2 = 0$ \quad (the male and female regression lines have the same
+intercept)
+
+$H_1: \beta_2 \neq 0$ \quad (the intercepts differ)
+
+\noindent This is a standard $t$-test on the coefficient of $female_i$.
+
+\medskip
+We now test slop difference.
+
+$H_0: \beta_3 = 0$ \quad (the slope on $age$ is the same for males and
+females)
+
+$H_1: \beta_3 \neq 0$ \quad (the slopes differ)
+
+\noindent This is a standard $t$-test on the coefficient of
+$female_i \times age_i$.
+
+\medskip
+We can also perform a Joint test for (intercept \emph{and} slope difference).
+
+To test whether the two regression lines are identical, we can also test both
+restrictions simultaneously:
+
+$H_0: \beta_2 = 0 \ \text{and} \ \beta_3 = 0$
+
+$H_1:$ at least one of $\beta_2,\,\beta_3$ is non-zero
+
+\noindent This is an $F$-test with $q = 2$ restrictions.
+
+\end{solution}
+
+\item
+\begin{problem}{\points{5}}
+As people get older, does the wage gender gap widen? Draw a sketch graph (with average hourly earnings on vertical axis and age on horizontal axis) of what this result tells you. Which regression (Regression1 or Regression2) do you need to use to answer this question and explain your answer?
+\end{problem}
+\begin{solution}
+Regression 2 is required. It includes the
+$female \times age$ interaction term $\beta_3$, which captures how the
+\emph{slope} on $age$ differs between males and females. A widening wage gap
+with age means the male earnings profile rises faster with age than the female
+profile, i.e.\ the slope on $age$ is steeper for males than for females.
+Regression 1 contains only a $female \times bachelor$ interaction and imposes
+the same slope on $age$ for both sexes, so it cannot detect a widening gap.
+
+\medskip
+From Regression 2:
+\[
+lahe_i = \beta_0 + \beta_1\,age_i + \beta_2\,female_i
+       + \beta_3\,(female_i \times age_i) + u_i.
+\]
+The slope on $age$ is $\beta_1$ for males and $(\beta_1 + \beta_3)$ for
+females. A widening gender gap requires:
+\[
+\beta_1 > \beta_1 + \beta_3
+\quad\Longleftrightarrow\quad
+\beta_3 < 0.
+\]
+That is, the female earnings profile is \emph{flatter} than the male profile:
+males receive larger wage returns to an additional year of age, so the gap
+grows as workers get older.
+
+\medskip
+\begin{center}
+\textsc{Wage Gender Gap Widening with Age}
+\end{center}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  % Axes
+  \draw[->] (0,0) -- (6.5,0) node[right] {$age$};
+  \draw[->] (0,0) -- (0,5.0) node[above] {$lahe$};
+
+  % Male line: steeper slope, starts lower (beta0)
+  \draw[thick, blue] (0.5, 0.8) -- (6.0, 4.6)
+        node[right] {\small Males};
+
+  % Female line: flatter slope, starts higher (beta0 + beta2, with beta2 > 0)
+  \draw[thick, red, dashed] (0.5, 1.6) -- (6.0, 3.4)
+        node[right] {\small Females};
+
+  % Brace / gap annotation at high age
+  \draw[<->, gray] (5.6, 3.2) -- (5.6, 4.3)
+        node[midway, right] {\small gap widens};
+
+  % Intersection region annotation
+  \node[below] at (3,0) {};
+\end{tikzpicture}
+\end{center}
+
+\noindent The sketch shows two upward-sloping lines that start close together
+at low ages. The male line (solid) has a steeper slope, so the two lines
+diverge as age increases: the wage gap widens. At any given age the vertical
+distance between the lines is the gender gap, which grows because
+$\beta_3 < 0$.
+
+\end{solution}
+
+\item
+\begin{problem}{\points{5}}
+Is the coefficient of \textit{female} in Regression 2, statistically significant at 1\% significance level? Please write the null hypothesis and calculate the test statistic before you answer this question. Also make sure to give your reason for your answer.
+\end{problem}
+\begin{solution}
+
+We use \underline{Regression 2}, which contains $female_i$ as a regressor
+alongside the $female \times age$ interaction (\texttt{femxage}).
+
+\medskip
+\noindent The coefficient on $female_i$ in Regression 2 is $\beta_2$, which
+captures the male--female earnings difference at $age = 0$. The null
+hypothesis is:
+\[
+H_0: \beta_2 = 0
+\]
+against the two-sided alternative $H_1: \beta_2 \neq 0$.
+
+\medskip
+\noindent From the regression output, $\hat{\beta}_2 = 0.157$ with
+$SE(\hat{\beta}_2) = 0.090$. The $t$-statistic is:
+\[
+t = \frac{\hat{\beta}_2}{SE(\hat{\beta}_2)}
+  = \frac{0.157}{0.090}
+  = 1.744.
+\]
+
+\noindent For a two-sided test at the 1\% significance level with
+$n = 15{,}052$ observations, the critical value is $z_{0.005} = 2.576$.
+Since $|t| = 1.744 < 2.576$, we \textbf{fail to reject} $H_0$ at the 1\%
+significance level. The coefficient on $female$ in Regression 2 is not
+statistically significant at the 1\% level, as confirmed by the single
+star in the regression table indicating significance only at the 10\% level.
+
+\medskip
+\noindent Note that $\beta_2$ in Regression 2 measures the intercept
+difference between females and males evaluated at $age = 0$, which lies
+outside the support of the data. The full gender gap at any realistic age
+also depends on $\hat{\beta}_4 = -0.012$ (\texttt{femxage}), so the
+imprecision of $\hat{\beta}_2$ alone does not imply the gender gap is
+insignificant at typical ages.
+
+\end{solution}
+
+\end{enumerate}
+
+\newpage
+
+% ============================================================
+% PROBLEM 3
+% ============================================================
+
+\section*{Problem 3 \points{30}}
+
+\begin{problem}
+This question is based on the posted article by David L. Sjoquist and John V. Winters (2015) entitled “State Merit Aid Programs and College Major: A Focus on STEM”. Journal of Labor Economics, Vol. 33, No 4. You are required to read this paper thoroughly and assess this paper based on:
+\end{problem}
+
+\begin{enumerate}
+
+\item
+\begin{problem}{\points{6}}
+The employed research methodology (i.e., What type of research method is used in the paper?)
+\end{problem}
+\begin{solution}
+The paper uses a quasi-experimental \emph{difference-in-differences} (DiD) research design implemented with repeated cross-sectional microdata. Individuals are assigned “treatment” status based on whether their \emph{state of birth} adopted a broad-based merit aid program and whether their \emph{birth cohort} would have been exposed to the program at typical high-school graduation age (turning 18 after implementation). The outcome is whether a bachelor’s degree major is in STEM, and identification comes from comparing changes across cohorts within merit-adopting birth states to contemporaneous changes in non-merit (or not-yet-treated) birth states, controlling for fixed effects and trends.
+
+Empirically, they estimate linear probability models (LPMs) with state-of-birth fixed effects, year-of-birth cohort fixed effects, demographics, and state-of-birth by cohort trends; they also emphasize inference procedures appropriate for DiD with policy variation at the state level (clustered-by-state standard errors and Conley--Taber style confidence intervals when treated groups are few).
+\end{solution}
+\item
+\begin{problem}{\points{6}}
+The data set used (i.e., Is it cross-section, panel, or time series data?) and related data gathering techniques and issues.
+\end{problem}
+\begin{solution}
+The core dataset is \emph{American Community Survey (ACS)} microdata for survey years 2009--2011, which are repeated cross-sections (not a panel): different individuals are sampled each year, and the analysis pools these cross-sections. The ACS began asking respondents to report college major starting in 2009, enabling the authors to study completed majors.
+
+Sample construction: they focus on U.S.-born individuals ages 24--39 with at least a bachelor’s degree (major is observed only for completers). They exclude observations with imputed values for key variables (age, education, major, or birth state) but note robustness to including them.
+
+Key data/measurement issues:
+(i) The ACS does not directly observe high school graduation state or year; thus, “exposure” is proxied using state of birth and year of birth (constructed from survey year minus age). 
+(ii) This creates measurement error because some people attend high school outside their birth state and some graduate high school at ages other than 18. The authors discuss and implement corrections/robustness checks (e.g., dropping marginal cohorts around the policy start and using predicted probabilities of living in the birth state during high school based on auxiliary Census/ACS samples).
+\end{solution}
+
+\item
+\begin{problem}{\points{6}}
+Alternative estimation techniques (i.e., Do you think of other estimation techniques that can be used compared to what is used by the authors)
+\end{problem}
+\begin{solution}
+Several alternative (and in some cases complementary) estimation approaches could be used:
+
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Nonlinear probability models:} Instead of an LPM, estimate logit/probit with the same fixed effects structure (state of birth and cohort fixed effects, plus controls). The marginal effects would be interpreted similarly. The authors note robustness to probit/logit.
+
+\item \textbf{Event-study (dynamic DiD):} Estimate an event-time specification with a set of leads/lags relative to program adoption (rather than only a post indicator and linear state trends). This provides (a) a dynamic treatment effect profile and (b) placebo tests via pre-trends (lead coefficients should be near zero). The paper discusses event-style analyses and placebo-style checks, though they report some dynamic specifications as noisy.
+
+\item \textbf{State-by-year (or state-by-cohort) saturated controls:} Use region-by-cohort or even state-by-cohort flexible controls to relax linear trend assumptions (at the cost of power). This helps guard against differential pre-trends in STEM completion.
+
+\item \textbf{Modern DiD aggregation / staggered adoption estimators:} Treat merit adoption as staggered timing and use cohort/event-time estimators that explicitly address heterogeneous treatment effects across states/cohorts (e.g., imputation-based event studies or group-time ATT aggregation). Conceptually, the treatment is staggered and effects may differ by state “strength,” so reporting group-time effects could be informative.
+
+\item \textbf{Two-sample or validation-based correction for misclassification:} Because treatment assignment is mismeasured (birth state $\neq$ high school state), one can formally correct attenuation using validation data on migration at high-school ages, similar in spirit to what the authors do with predicted probabilities of residing in birth state during high school.
+\end{enumerate}
+
+Overall, the main alternatives are (a) different functional forms (logit/probit), (b) more flexible dynamics (event study), and (c) DiD estimators designed for staggered adoption and heterogeneity.
+\end{solution}
+
+
+\item
+\begin{problem}{\points{6}}
+Internal and external validity of the paper’s findings (i.e., Do you see any internal and external validity issues with the paper before the findings of the paper is implemented?)
+\end{problem}
+\begin{solution}
+\textbf{Internal validity.}
+The main identifying assumption is a parallel trends condition: absent merit aid adoption, birth cohorts from “treated” states would have experienced similar changes in STEM major completion as cohorts from control states, after accounting for fixed effects and included controls/trends. Potential threats include:
+\begin{itemize}
+\item \textbf{Differential trends in STEM across states:} If treated states were already on different STEM trajectories for unrelated reasons (K--12 reforms, industrial change, selective college policies), estimates could be biased. The authors attempt to address this with state-of-birth by cohort trends and alternative trend specifications.
+\item \textbf{Treatment misclassification:} Exposure is inferred from birth state and cohort, but actual eligibility depends on high school location and graduation timing. This measurement error likely attenuates effects toward zero; the paper explicitly discusses this and shows larger magnitude estimates after corrections.
+\item \textbf{Policy bundling / contemporaneous shocks:} Merit aid adoption might coincide with other education policies or labor-market shocks that also affect STEM choices. Controls and trends help, but cannot rule out all omitted time-varying state factors.
+\item \textbf{Selection into the analysis sample:} The baseline sample conditions on bachelor’s completion (major is only observed for completers). If merit aid materially changed completion and the marginal completers differ systematically in STEM propensity, selection could bias results. The authors argue completion effects are not meaningfully positive and provide checks suggesting selection is not driving the results.
+\end{itemize}
+
+\textbf{External validity.}
+Generalizability may be limited by:
+\begin{itemize}
+\item \textbf{Program heterogeneity:} “Merit aid” differs greatly across states; the paper focuses on nine “strong” programs and finds weak programs have smaller/insignificant effects. Effects may not extrapolate to new programs with different eligibility/renewal rules.
+\item \textbf{Time period and cohorts:} Outcomes are measured in ACS 2009--2011 among ages 24--39, so results primarily reflect cohorts educated in the 1990s--2000s. STEM definitions, college grading norms, and labor-market returns may differ today.
+\item \textbf{Population studied:} The analysis is on U.S.-born bachelor’s degree completers (or variants including broader education groups). Results may not generalize to non-completers, immigrants, or states with very different higher-ed systems.
+\end{itemize}
+\end{solution}
+
+\item
+\begin{problem}{\points{6}}
+Identifying limitations of the paper and suggesting improvements. That is, can you find at least one limitation of this paper and suggest fixes?
+\end{problem}
+\begin{solution}
+\textbf{Limitation 1: Mis-measured exposure to merit aid.}
+Because the ACS does not observe where/when someone graduated high school, treatment is proxied using birth state and inferred cohort exposure, creating nontrivial misclassification (migration before high school, early/late graduation).
+\emph{Fix:} Link to data that observe high school state and graduation year (e.g., administrative K--12/college records or longitudinal surveys), or more fully implement validation-based corrections using migration-at-age measures; the paper’s probabilistic exposure approach is a step in this direction, but richer administrative linkage would reduce reliance on proxies.
+
+\textbf{Limitation 2: Limited mechanism evidence (why STEM declines).}
+The paper motivates mechanisms (GPA renewal requirements, course difficulty, strategic major choice) but the ACS lacks GPA, course-taking, scholarship retention, or institution-level grading rigor.
+\emph{Fix:} Use transcript/administrative university data (or state scholarship administrative records) to test whether scholarship loss risk, GPA thresholds, or grading competition explains switching away from STEM, and whether effects are concentrated near renewal cutoffs.
+
+\textbf{Limitation 3: Potential residual confounding from other state changes.}
+Even with trends and controls, adoption might correlate with other time-varying state factors affecting STEM (higher-ed capacity, STEM funding, labor demand shifts).
+\emph{Fix:} Add more flexible state-specific controls (e.g., state-by-year shocks where feasible), incorporate state-level policy covariates (higher-ed funding, STEM initiatives), and present a fully dynamic event-study with pre-trend diagnostics and sensitivity analyses.
+
+Any one of these (especially exposure mismeasurement and lack of mechanisms) is a clear limitation; addressing them would strengthen causal interpretation and policy relevance.
+\end{solution}
+
+
+\end{enumerate}
+
+\newpage
+
+
+% ============================================================
+% APPENDIX
+% ============================================================
+
+\appendix
+\section*{Appendix: Tables and Figures}
+\addcontentsline{toc}{section}{Appendix: Tables and Figures}
+
+% --- Problem 1: House Price Regression ---
+\begin{table}[!htbp]
+\caption{House Price Regression (Dependent variable: \texttt{price})}
+\label{tab:p1_hprice_ols}
+\centering
+\input{output/tables/prob1_hprice_ols.tex}
+\end{table}
+
+% --- Problem 2: Regression 1 ---
+\begin{table}[!htbp]
+\caption{Regression 1: Log Hourly Earnings on Age, Female, Bachelor, and Female × Bachelor}
+\label{tab:prob2_reg1}
+\centering
+\input{output/tables/prob2_reg1.tex}
+\end{table}
+
+% --- Problem 2: Regression 2 ---
+\begin{table}[!htbp]
+\caption{Regression 2: Log Hourly Earnings on Female, Age, Bachelor, and Female × Age}
+\label{tab:prob2_reg2}
+\centering
+\input{output/tables/prob2_reg2.tex}
+\end{table}
+\newpage
+
+
+
+
+
+
+
+
+\section*{Replication Files}
+
+All replication materials for \texttt{homework\_03} are available on GitHub:
+
+\begin{itemize}
+    \item Course repository: \url{https://github.com/tylersotomayor/econun3412-spring2026}
+    \item Homework 04 folder: \url{https://github.com/tylersotomayor/econun3412-spring2026/tree/main/homework_04}
+\end{itemize}
+\end{document}
