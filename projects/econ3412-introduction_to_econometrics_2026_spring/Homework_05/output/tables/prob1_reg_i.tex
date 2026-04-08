@@ -1,0 +1,23 @@
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Problem 1 Regression (i): ln(vio) on shall}
+\begin{tabular}{l*{1}{D{.}{.}{-1}}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}\\
+                    &\multicolumn{1}{c}{ln(Violent Crime Rate)}\\
+\midrule
+shall               &      -0.443\sym{***}\\
+                    &    (0.0475)         \\
+\addlinespace
+Constant            &       6.135\sym{***}\\
+                    &    (0.0193)         \\
+\midrule
+Observations        &       1,173         \\
+$R^2$               &      0.0866         \\
+Adjusted $R^2$      &      0.0859         \\
+\bottomrule
+\multicolumn{2}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{2}{l}{\footnotesize Heteroskedasticity-robust standard errors in parentheses.}\\
+\multicolumn{2}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

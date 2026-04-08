@@ -1,0 +1,28 @@
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Firm-Level Stock Returns on S\&P 500 Market Returns: Fixed Effects Panel Regression}
+\begin{tabular}{l*{1}{D{.}{.}{-1}}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}\\
+                    &\multicolumn{1}{c}{Percentage daily return of firm stock}\\
+\midrule
+Percentage daily return of S\&P 500&       0.781\sym{***}\\
+                    &     (0.110)         \\
+\addlinespace
+Constant            &      0.0172\sym{**} \\
+                    &   (0.00605)         \\
+\midrule
+Observations        &      12,540         \\
+Within $R^2$        &      0.2771         \\
+Between $R^2$       &                     \\
+Overall $R^2$       &      0.2769         \\
+Number of firms     &          10         \\
+\bottomrule
+\multicolumn{2}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{2}{l}{\footnotesize Dependent variable: daily percentage return of firm stock.}\\
+\multicolumn{2}{l}{\footnotesize Firm (cross-section) fixed effects estimated via within transformation.}\\
+\multicolumn{2}{l}{\footnotesize Heteroskedasticity-robust standard errors in parentheses.}\\
+\multicolumn{2}{l}{\footnotesize Data: Yahoo Finance, Jan 2021 -- Dec 2025, 10 U.S. firms.}\\
+\multicolumn{2}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

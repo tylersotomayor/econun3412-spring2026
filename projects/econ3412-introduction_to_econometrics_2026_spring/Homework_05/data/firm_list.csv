@@ -1,0 +1,11 @@
+firm_id,ticker,sector
+1,AAPL,Technology
+2,MSFT,Technology
+3,JPM,Financials
+4,JNJ,Healthcare
+5,XOM,Energy
+6,PG,Consumer Staples
+7,DIS,Communication Services
+8,HD,Consumer Discretionary
+9,CAT,Industrials
+10,NEE,Utilities

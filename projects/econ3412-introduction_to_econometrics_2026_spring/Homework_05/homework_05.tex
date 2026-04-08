@@ -1,0 +1,779 @@
+\documentclass[12pt]{article}
+\usepackage{setspace}
+\doublespacing
+\usepackage{caption}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+\usepackage{lipsum}   % for example filler text
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+% ============================================================
+% METADATA — EDIT ONLY THIS BLOCK EACH ASSIGNMENT
+% ============================================================
+
+\newcommand{\university}{COLUMBIA UNIVERSITY}
+\newcommand{\department}{Department of Economics}
+
+\newcommand{\classnum}{ECON UN3412}
+\newcommand{\subject}{Introduction to Econometrics}
+\newcommand{\semester}{Spring 2026}
+\newcommand{\assignment}{Homework 5}
+
+\newcommand{\instructors}{Seyhan Erden}
+\newcommand{\instructoremail}{seyhan.erden@columbia.edu}
+
+\newcommand{\name}{Tyler Sotomayor}
+\newcommand{\email}{tyler.sotomayor@columbia.edu}
+
+\newcommand{\duedate}{8 April 2026}
+
+\newcommand{\sealfile}{ColumbiaSeal.png}
+\newcommand{\sealsize}{0.22\textwidth}
+
+\newcommand{\tathanksline}{Special thanks to the Teaching Assistants of \classnum}
+
+% ============================================================
+% TA LIST — EDIT ONLY ITEMS BELOW
+% ============================================================
+
+\newcommand{\TA}[2]{%
+  {\large \textbf{#1}}\par
+  \href{mailto:#2}{\texttt{#2}}\par
+  \vspace{0.6cm}
+}
+
+\newcommand{\TAlist}{%
+  \TA{Daniel Garcia}{dg3342@columbia.edu}
+  \TA{Chris Kye}{mk4449@columbia.edu}
+  \TA{Shivesh Babu Narayan}{sb5211@columbia.edu}
+  \TA{Luca Salvatori}{ls4241@columbia.edu}
+  \TA{Zijian Zhang}{zz3263@columbia.edu}
+}
+
+% ============================================================
+% TITLE PAGE MACROS — DO NOT EDIT
+% ============================================================
+
+\newcommand{\maketitlepage}{%
+\begin{titlepage}
+\begingroup
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\centering
+
+\vspace*{-0.8cm}
+\includegraphics[width=\sealsize]{\sealfile}\par
+\vspace{0.3cm}
+{\LARGE \textbf{\university}}\par
+{\large \department}
+
+\vspace{1.1cm}
+
+{\normalsize \textit{Completed in Partial Fulfillment of the Requirements of}}\par
+\vspace{0.45cm}
+{\Large \textbf{\classnum}}\par
+{\Large \textbf{\subject}}\par
+\vspace{0.3cm}
+{\Large \semester}\par
+
+\vspace{1.5cm}
+{\fontfamily{lmr}\selectfont\Large\scshape \assignment}\par
+
+\vspace{1.5cm}
+
+{\large \textbf{\instructors}}\par
+\vspace{2pt}
+\href{mailto:\instructoremail}{\texttt{\instructoremail}}\par
+
+\vspace{1.0cm}
+
+{\large \textbf{\name}}\par
+\href{mailto:\email}{\texttt{\email}}\par
+
+\vspace*{\stretch{1}}
+\endgroup
+\end{titlepage}
+}
+
+\newcommand{\maketapage}{%
+\begin{titlepage}
+\begingroup
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\centering
+
+{\normalsize \tathanksline}\par
+\vspace{1.2cm}
+
+\TAlist
+
+\vspace*{\stretch{1}}
+\endgroup
+\end{titlepage}
+}
+
+% Optional collaborators
+%\newcommand{\collaborators}{Roy Milstein (\texttt{rm4238@columbia.edu})}
+
+% ------------------------------------------------------------
+% LOAD TYLER'S CUSTOM MACROS AND FORMATTING
+% ------------------------------------------------------------
+\input{tyler-pset.tex}
+
+% Optional compile toggles
+% \excludeversion{problem}
+% \excludeversion{solution}
+% \excludeversion{reflection}
+
+\begin{document}
+
+\pagenumbering{gobble}
+\maketitlepage
+\maketapage
+
+\clearpage
+\pagenumbering{arabic}
+\psetheader
+
+% ============================================================
+% PROBLEM 1
+% ============================================================
+
+\section*{Problem 1 \points{30}}
+
+\begin{problem}
+Some U.S.\ states have enacted laws that allow citizens to carry concealed weapons. These laws are known as ``shall-issue'' laws because they instruct local authorities to issue a concealed weapons permit to all applicants who are citizens, mentally competent, and have not been convicted of a felony (some states have some additional restrictions). Proponents argue that, if more people carry concealed weapons, crime will decline because criminals are deterred. Opponents argue that crime will increase because of accidental or spontaneous use of the weapon. In this exercise, you will analyze the effect of concealed weapons laws on three different categories of crimes: violent crimes; robberies (such as the robbery of a convenience store); and murder (many of which are spontaneous acts of passion).
+
+Data file and the description of variables are at the end of this problem set.
+Estimate
+\end{problem}
+
+\begin{enumerate}
+
+\item[\textbf{(i)}]
+\begin{problem}{\points{3}}
+A regression of $\ln(\textit{vio})$ against \textit{shall}.
+\end{problem}
+\begin{solution}
+The baseline specification regresses the natural log of the violent crime rate on the shall-issue indicator alone, using heteroskedasticity-robust (Eicker--Huber--White) standard errors. In Stata:
+
+\begin{verbatim}
+    use "handguns.dta", clear
+    gen ln_vio = ln(vio)
+    reg ln_vio shall, robust
+\end{verbatim}
+
+The estimated equation is:
+\[
+\boxed{
+\widehat{\ln(vio)}_i
+=
+\underset{(0.019)}{6.135}
+\;-\;
+\underset{(0.048)}{0.443}\;\textit{shall}_i
+}
+\]
+
+\noindent
+$n = 1{,}173$, \quad $R^2 = 0.0866$.
+
+The coefficient on \textit{shall} is $-0.443$ and is statistically significant at the 1\% level ($t = -9.32$, $p < 0.001$). Without any controls, states with shall-issue laws in effect have, on average, approximately 44.3\% lower violent crime rates than states without such laws. However, this naive estimate likely suffers from omitted variable bias (OVB), as states that adopt shall-issue laws may differ systematically from non-adopting states in ways that also affect crime. See the Appendix for the full regression output.
+\end{solution}
+
+\item[\textbf{(ii)}]
+\begin{problem}{\points{3}}
+A regression of $\ln(\textit{vio})$ against \textit{shall}, \textit{incarc\_rate}, \textit{density}, \textit{avginc}, \textit{pop}, \textit{pb1064}, \textit{pw1064}, and \textit{pm1029}.
+\end{problem}
+\begin{solution}
+The multiple regression adds seven state-characteristic control variables that capture cross-state differences in incarceration policy, urbanization, income, population size, and demographic composition. In Stata:
+
+\begin{verbatim}
+    reg ln_vio shall incarc_rate density avginc pop ///
+        pb1064 pw1064 pm1029, robust
+\end{verbatim}
+
+The estimated equation is:
+\begin{align*}
+\widehat{\ln(vio)}_i
+&= \underset{(0.609)}{2.982}
+\;-\;
+\underset{(0.035)}{0.368}\;\textit{shall}_i
+\;+\;
+\underset{(0.0002)}{0.0016}\;\textit{incarc\_rate}_i \\
+&\quad +\;
+\underset{(0.014)}{0.027}\;\textit{density}_i
+\;+\;
+\underset{(0.007)}{0.001}\;\textit{avginc}_i
+\;+\;
+\underset{(0.003)}{0.043}\;\textit{pop}_i \\
+&\quad +\;
+\underset{(0.020)}{0.081}\;\textit{pb1064}_i
+\;+\;
+\underset{(0.010)}{0.031}\;\textit{pw1064}_i \\
+&\quad +\;
+\underset{(0.012)}{0.009}\;\textit{pm1029}_i
+\end{align*}
+
+\noindent
+$n = 1{,}173$, \quad $R^2 = 0.5643$, \quad $\bar{R}^2 = 0.5613$.
+
+The coefficient on \textit{shall} is $-0.368$ and remains highly significant ($t = -10.59$, $p < 0.001$). The inclusion of controls substantially raises $R^2$ from 0.087 to 0.564, indicating that the control variables explain a large share of the cross-state variation in violent crime. See the Appendix for the full regression output.
+\end{solution}
+
+\item
+\begin{problem}{\points{8}}
+Interpret the coefficient on \textit{shall} in regression (ii). Is this estimate large or small in a ``real-world'' sense?
+\end{problem}
+\begin{solution}
+The coefficient on \textit{shall} in regression (ii) is $\hat{\beta}_{\textit{shall}} = -0.368$. Because the dependent variable is $\ln(\textit{vio})$ and \textit{shall} is a binary indicator, this coefficient has a log-level (semi-elasticity) interpretation: holding all other regressors fixed, the presence of a shall-issue law is associated with a change of $-0.368$ in the log of the violent crime rate. By the standard log-point approximation, this corresponds to approximately a $100 \times (-0.368) = -36.8\%$ reduction in the violent crime rate (Stock \& Watson, 2020, Ch.~8). More precisely, using the exact transformation $\exp(\hat{\beta}) - 1 = \exp(-0.368) - 1 \approx -0.308$, the estimated reduction is about 30.8\%.
+
+\medskip
+\noindent\textbf{Real-world magnitude.} Given that the sample mean of the violent crime rate is approximately 503 incidents per 100,000 population, a 30--37\% reduction would imply roughly 155--185 fewer violent crimes per 100,000 residents. This is an extraordinarily large effect. To put it in context, the entire decline in the U.S.\ violent crime rate from its 1991 peak to 1999 was on the order of 30\%, and this decline is attributed to a wide range of factors (increased incarceration, demographic shifts, economic growth, policing strategies, among others). It would be implausible that shall-issue laws alone could account for an effect of this magnitude. This strongly suggests that the pooled OLS estimate, even after controlling for observables, still suffers from substantial omitted variable bias --- likely because states that adopt shall-issue laws differ from non-adopting states in unobserved ways (e.g., political culture, historical crime trends, law enforcement practices) that are correlated with both the passage of the law and with crime rates.
+
+\begin{center}
+\fbox{\parbox{0.85\textwidth}{\centering
+$\hat{\beta}_{\textit{shall}} = -0.368 \;\Longrightarrow\; \approx 30.8\%$--$36.8\%$ reduction; implausibly large.
+}}
+\end{center}
+\end{solution}
+
+\begin{reflection}
+The log-level interpretation of a dummy variable coefficient follows from the general result that for $\ln Y = \beta_0 + \beta_1 D + \mathbf{X}'\boldsymbol{\gamma} + u$, the exact percentage change associated with $D$ switching from 0 to 1 is $100 \times [\exp(\hat{\beta}_1) - 1]\%$ (see Wooldridge, 2019, \S6.2; Stock \& Watson, 2020, \S8.1). The $100 \times \hat{\beta}_1$ approximation works well for small $|\hat{\beta}_1|$ but becomes less accurate as $|\hat{\beta}_1|$ grows. For $\hat{\beta}_1 = -0.368$, the discrepancy between the approximation ($-36.8\%$) and the exact figure ($-30.8\%$) is notable, illustrating why the exact calculation is preferred when the coefficient is large.
+
+The implausibly large magnitude of the OLS estimate motivates the use of panel data methods in Problem 2, where state and year fixed effects will be introduced to control for unobserved heterogeneity. This is the central methodological lesson of this exercise: cross-sectional OLS can be severely biased when unobserved confounders are present, and fixed effects estimation provides a way to address time-invariant omitted variables.
+\end{reflection}
+
+\item
+\begin{problem}{\points{8}}
+Does adding the control variables in regression (ii) change your conclusions about the effect of a shall-carry law, relative to regression (i)?
+\end{problem}
+\begin{solution}
+Adding the seven state-characteristic control variables changes the magnitude of the estimated effect but does not change the qualitative conclusion. In regression (i), the coefficient on \textit{shall} is $-0.443$ ($\text{SE} = 0.048$), while in regression (ii) it becomes $-0.368$ ($\text{SE} = 0.035$). Both estimates are negative and highly statistically significant at conventional levels.
+
+The coefficient shrinks by about 17\% in absolute value, from $-0.443$ to $-0.368$, when the controls are added. This attenuation is consistent with positive omitted variable bias in regression (i): states without shall-issue laws tend to have characteristics associated with higher crime (e.g., higher population density, larger black population share, higher incarceration rates), and controlling for these factors removes part of the spurious negative correlation between \textit{shall} and $\ln(\textit{vio})$.
+
+However, the estimated effect remains very large---a 30--37\% reduction in violent crime is still implausibly attributable to a single policy change. The fact that the estimate barely changes (from $-0.443$ to $-0.368$) despite a large increase in $R^2$ (from 0.087 to 0.564) suggests that the included controls, while explaining much of the variation in crime, do not adequately address the confounding that generates the large negative \textit{shall} coefficient. There are likely important omitted variables that are correlated with both shall-issue adoption and crime rates, which the observable controls cannot capture. This motivates the use of state fixed effects in Problem 2 to control for all time-invariant state-specific factors.
+
+\begin{center}
+\fbox{\parbox{0.85\textwidth}{\centering
+Qualitative conclusion unchanged; magnitude decreases modestly: $-0.443 \to -0.368$.
+}}
+\end{center}
+\end{solution}
+
+\item
+\begin{problem}{\points{8}}
+Suggest a variable which varies across states but plausibly varies little, or not at all, over time, and which plausibly could cause omitted variable bias in regression (ii).
+\end{problem}
+\begin{solution}
+A strong candidate is the \textbf{prevailing gun culture or attitudes toward firearms ownership} in each state. This variable reflects deeply rooted historical, cultural, and geographic factors---such as whether a state has a frontier heritage, rural traditions of hunting, or a longstanding culture of individual gun ownership---that vary substantially across states but change very slowly (if at all) over a 23-year panel.
+
+Gun culture plausibly satisfies both conditions required for omitted variable bias (Stock \& Watson, 2020, Ch.~6): it must be correlated with the included regressor (\textit{shall}) and with the dependent variable ($\ln(\textit{vio})$), conditional on the other controls.
+
+First, states with a stronger gun culture are more likely to pass shall-issue laws, because both the political demand for such legislation and the legislative willingness to enact it are higher where gun ownership is culturally normalized. This implies $\text{Corr}(\textit{gun culture}, \textit{shall}) > 0$.
+
+Second, gun culture is plausibly correlated with violent crime rates through multiple channels. States with deep gun cultures may have higher rates of gun ownership, which could increase or decrease crime depending on one's theoretical priors. More importantly, such states also tend to differ in other hard-to-measure ways (e.g., social norms about conflict resolution, rural vs.\ urban composition beyond what \textit{density} captures, quality of law enforcement). These factors may independently affect crime rates.
+
+Because gun culture is positively correlated with \textit{shall} and plausibly negatively correlated with crime (rural, gun-culture states tend to have lower violent crime rates for reasons beyond just gun laws), omitting it would bias $\hat{\beta}_{\textit{shall}}$ downward (more negative), making shall-issue laws appear more effective at reducing crime than they truly are. This is a form of negative omitted variable bias (since $\text{Corr}(\textit{gun culture}, \textit{shall}) > 0$ and the omitted variable is negatively correlated with the error term from the perspective of inflating the negative coefficient). This variable is approximately time-invariant within the sample period, which is precisely the type of confounding that state fixed effects are designed to eliminate.
+
+\begin{center}
+\fbox{\parbox{0.85\textwidth}{\centering
+Gun culture / attitudes toward firearms\\
+(varies across states, nearly time-invariant).
+}}
+\end{center}
+\end{solution}
+
+\begin{reflection}
+The omitted variable bias formula for the simple case is
+\[
+\text{Bias}(\hat{\beta}_1) = \beta_2 \cdot \frac{\text{Cov}(X_1, X_2)}{\text{Var}(X_1)},
+\]
+where $X_2$ is the omitted variable and $\beta_2$ is its true coefficient (Wooldridge, 2019, \S3.3; Stock \& Watson, 2020, \S6.1). This exercise is designed to motivate panel data fixed effects: variables that are roughly constant within each state over time are exactly the type of confounders that entity (state) fixed effects absorb. The ``within'' estimator differences out all time-invariant state characteristics, whether observed or unobserved, eliminating OVB from such sources.
+\end{reflection}
+
+\end{enumerate}
+
+\newpage
+
+% ============================================================
+% PROBLEM 2
+% ============================================================
+
+\section*{Problem 2 \points{30}}
+
+\begin{problem}
+Read the notes to Tables 1--3, then fill in the tables.
+
+\medskip
+\textbf{Table 1}\\
+\textbf{The Effect of Concealed Handgun Laws on Violent Crime: Regression Results}\\
+Dependent variable: $\ln(\textit{vio})$
+
+\smallskip
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l ccccc}
+\toprule
+ & (1) & (2) & (3) & (4) & (5) \\
+\midrule
+Coefficient on \textit{shall} & & & & & \\
+ & (\quad) & (\quad) & (\quad) & (\quad) & (\quad) \\
+State characteristic control variables$^a$? & no & yes & yes & yes & yes \\
+State fixed effects? & no & no & yes & yes & yes \\
+Year fixed effects? & no & no & no & yes & yes \\
+$F$-statistic: state FE $=0$ & -- & -- & (\quad) & (\quad) & -- \\
+$F$-statistic: year FE $=0$ & -- & -- & -- & (\quad) & (\quad) \\
+HAC (clustered) SEs? & no & no & no & no & yes \\
+$n$ & & & & & \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+
+\medskip
+\textbf{Table 2}\\
+\textbf{The Effect of Concealed Handgun Laws on Robberies: Regression Results}\\
+Dependent variable: $\ln(\textit{rob})$
+
+\smallskip
+{\footnotesize Same structure as Table 1. See the notes to Table 1.}
+
+\medskip
+\textbf{Table 3}\\
+\textbf{The Effect of Concealed Handgun Laws on Murders: Regression Results}\\
+Dependent variable: $\ln(\textit{mur})$
+
+\smallskip
+{\footnotesize Same structure as Table 1. See the notes to Table 1. $n = 1173$.}
+
+\medskip
+\begin{minipage}{\linewidth}
+\footnotesize
+\textit{Notes:} All regressions include an intercept. For regressions (1)--(4), heteroskedasticity-robust standard errors appear in parentheses below estimated coefficients; for regression (5), the standard errors are heteroskedasticity-robust and clustered at the state level, so as to allow for serial correlation in the error within a state. $p$-values appear in parentheses beneath heteroskedasticity-robust $F$-statistics (or, for regression~(5), heteroskedasticity-robust-clustered $F$-statistic).\par
+$^a$Regressions with ``state characteristic control variables'' include the following regressors: \textit{incarc\_rate}, \textit{density}, \textit{avginc}, \textit{pop}, \textit{pb1064}, \textit{pw1064}, \textit{pm1029}.
+\end{minipage}
+\normalsize
+\end{problem}
+
+\begin{solution}
+The five specifications estimated for each dependent variable are:
+\begin{itemize}
+\item[(1)] Pooled OLS of $\ln(Y)$ on \textit{shall} only, with heteroskedasticity-robust standard errors.
+\item[(2)] Pooled OLS adding the seven state-characteristic control variables (\textit{incarc\_rate}, \textit{density}, \textit{avginc}, \textit{pop}, \textit{pb1064}, \textit{pw1064}, \textit{pm1029}), with robust SEs.
+\item[(3)] Adding 50 state fixed effect dummies (with one state as the omitted reference category), plus controls, with robust SEs. State FE absorb all time-invariant unobserved state-level heterogeneity. Identification of $\hat{\beta}_{\textit{shall}}$ comes exclusively from \emph{within-state} variation: states that changed their shall-issue status during 1977--1999.
+\item[(4)] Adding 22 year fixed effect dummies (with one year as reference) to specification (3), with robust SEs. Year FE absorb aggregate time trends common to all states (e.g., national crime trends, federal policy changes, macroeconomic cycles). This is the canonical two-way fixed effects (TWFE) model (Stock \& Watson, 2020, Ch.~10).
+\item[(5)] Same as (4), but with standard errors clustered at the state level via \texttt{vce(cluster stateid)}. Clustering allows for arbitrary serial correlation (autocorrelation) in the error term within each state over time, as well as heteroskedasticity, producing HAC-robust inference (Arellano, 1987; Stock \& Watson, 2020, \S10.5).
+\end{itemize}
+
+The Stata code for the full set of regressions (taking \textit{ln\_vio} as an example) proceeds as follows:
+
+\begin{verbatim}
+    * Generate log dependent variables
+    gen ln_vio = ln(vio)
+
+    * Create state and year dummies
+    tabulate stateid, generate(st)
+    tabulate year, generate(yr)
+
+    * Column (1): shall only, robust SEs
+    reg ln_vio shall, robust
+
+    * Column (2): + controls, robust SEs
+    reg ln_vio shall incarc_rate density avginc pop ///
+        pb1064 pw1064 pm1029, robust
+
+    * Column (3): + state FE, robust SEs
+    reg ln_vio shall incarc_rate density   ///
+        avginc pop pb1064 pw1064 pm1029    ///
+        st2-st51, robust
+    testparm st2-st51  // F-test: state FE
+
+    * Column (4): + state FE + year FE
+    reg ln_vio shall incarc_rate density   ///
+        avginc pop pb1064 pw1064 pm1029    ///
+        st2-st51 yr2-yr23, robust
+    testparm st2-st51  // F-test: state FE
+    testparm yr2-yr23  // F-test: year FE
+
+    * Column (5): + clustered SEs
+    reg ln_vio shall incarc_rate density   ///
+        avginc pop pb1064 pw1064 pm1029    ///
+        st2-st51 yr2-yr23,                 ///
+        vce(cluster stateid)
+    testparm yr2-yr23  // F-test: year FE
+\end{verbatim}
+
+The completed tables follow below. The $F$-statistics test the null hypothesis that all fixed effect coefficients are jointly zero; the $p$-values appear in parentheses beneath.
+
+\bigskip
+
+% ---- TABLE 1: ln(vio) ----
+\begin{table}[H]
+\centering
+\caption{The Effect of Concealed Handgun Laws on Violent Crime: Regression Results}
+\label{tab:table1_vio}
+\smallskip
+{\small Dependent variable: $\ln(\textit{vio})$}
+\smallskip
+
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l c c c c c}
+\toprule
+ & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)} & \multicolumn{1}{c}{(4)} & \multicolumn{1}{c}{(5)} \\
+\midrule
+Coefficient on \textit{shall}
+ & -0.443^{***} & -0.368^{***} & -0.046^{**}  & -0.028       & -0.028 \\
+ & (0.048)      & (0.035)      & (0.020)      & (0.019)      & (0.042) \\[6pt]
+State characteristic control variables$^a$?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} \\
+State fixed effects?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} \\
+Year fixed effects?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} \\[4pt]
+$F$-statistic: state FE $= 0$
+ & \multicolumn{1}{c}{--}  & \multicolumn{1}{c}{--}  & 210.38       & 309.29       & \multicolumn{1}{c}{--} \\
+ &                          &                          & (0.000)      & (0.000)      & \\[4pt]
+$F$-statistic: year FE $= 0$
+ & \multicolumn{1}{c}{--}  & \multicolumn{1}{c}{--}  & \multicolumn{1}{c}{--}  & 13.90        & 20.67 \\
+ &                          &                          &                          & (0.000)      & (0.000) \\[4pt]
+HAC (clustered) SEs?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} \\
+$n$ & 1173 & 1173 & 1173 & 1173 & 1173 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+
+\smallskip
+\begin{minipage}{\textwidth}
+\footnotesize
+\textit{Notes:} All regressions include an intercept. For regressions (1)--(4), heteroskedasticity-robust standard errors appear in parentheses below estimated coefficients; for regression (5), the standard errors are heteroskedasticity-robust and clustered at the state level, so as to allow for serial correlation in the error within a state. $p$-values appear in parentheses beneath heteroskedasticity-robust $F$-statistics (or, for regression (5), heteroskedasticity-robust-clustered $F$-statistic). $^{***}p<0.01$; $^{**}p<0.05$; $^{*}p<0.10$.\par
+$^a$Regressions with ``state characteristic control variables'' include the following regressors: \textit{incarc\_rate}, \textit{density}, \textit{avginc}, \textit{pop}, \textit{pb1064}, \textit{pw1064}, \textit{pm1029}.
+\end{minipage}
+\end{table}
+
+\bigskip
+
+% ---- TABLE 2: ln(rob) ----
+\begin{table}[H]
+\centering
+\caption{The Effect of Concealed Handgun Laws on Robberies: Regression Results}
+\label{tab:table2_rob}
+\smallskip
+{\small Dependent variable: $\ln(\textit{rob})$}
+\smallskip
+
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l c c c c c}
+\toprule
+ & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)} & \multicolumn{1}{c}{(4)} & \multicolumn{1}{c}{(5)} \\
+\midrule
+Coefficient on \textit{shall}
+ & -0.773^{***} & -0.529^{***} & -0.008       & 0.027        & 0.027 \\
+ & (0.069)      & (0.051)      & (0.026)      & (0.025)      & (0.053) \\[6pt]
+State characteristic control variables$^a$?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} \\
+State fixed effects?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} \\
+Year fixed effects?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} \\[4pt]
+$F$-statistic: state FE $= 0$
+ & \multicolumn{1}{c}{--}  & \multicolumn{1}{c}{--}  & 190.47       & 243.39       & \multicolumn{1}{c}{--} \\
+ &                          &                          & (0.000)      & (0.000)      & \\[4pt]
+$F$-statistic: year FE $= 0$
+ & \multicolumn{1}{c}{--}  & \multicolumn{1}{c}{--}  & \multicolumn{1}{c}{--}  & 12.39        & 24.73 \\
+ &                          &                          &                          & (0.000)      & (0.000) \\[4pt]
+HAC (clustered) SEs?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} \\
+$n$ & 1173 & 1173 & 1173 & 1173 & 1173 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+
+\smallskip
+\begin{minipage}{\textwidth}
+\footnotesize
+\textit{Notes:} See the notes to Table~\ref{tab:table1_vio}.
+\end{minipage}
+\end{table}
+
+\bigskip
+
+% ---- TABLE 3: ln(mur) ----
+\begin{table}[H]
+\centering
+\caption{The Effect of Concealed Handgun Laws on Murders: Regression Results}
+\label{tab:table3_mur}
+\smallskip
+{\small Dependent variable: $\ln(\textit{mur})$}
+\smallskip
+
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l c c c c c}
+\toprule
+ & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)} & \multicolumn{1}{c}{(4)} & \multicolumn{1}{c}{(5)} \\
+\midrule
+Coefficient on \textit{shall}
+ & -0.473^{***} & -0.313^{***} & -0.061^{**}  & -0.015       & -0.015 \\
+ & (0.049)      & (0.036)      & (0.027)      & (0.027)      & (0.039) \\[6pt]
+State characteristic control variables$^a$?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} \\
+State fixed effects?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} \\
+Year fixed effects?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} & \multicolumn{1}{c}{yes} \\[4pt]
+$F$-statistic: state FE $= 0$
+ & \multicolumn{1}{c}{--}  & \multicolumn{1}{c}{--}  & 88.22        & 106.69       & \multicolumn{1}{c}{--} \\
+ &                          &                          & (0.000)      & (0.000)      & \\[4pt]
+$F$-statistic: year FE $= 0$
+ & \multicolumn{1}{c}{--}  & \multicolumn{1}{c}{--}  & \multicolumn{1}{c}{--}  & 9.73         & 18.75 \\
+ &                          &                          &                          & (0.000)      & (0.000) \\[4pt]
+HAC (clustered) SEs?
+ & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{no}  & \multicolumn{1}{c}{yes} \\
+$n$ & 1173 & 1173 & 1173 & 1173 & 1173 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+
+\smallskip
+\begin{minipage}{\textwidth}
+\footnotesize
+\textit{Notes:} See the notes to Table~\ref{tab:table1_vio}.
+\end{minipage}
+\end{table}
+
+\bigskip
+
+The key takeaway across all three tables is striking and instructive. The pooled OLS estimates in columns (1) and (2) suggest that shall-issue laws are associated with large, statistically significant reductions in violent crime, robbery, and murder. However, once state fixed effects are introduced in column (3), the estimated effects shrink dramatically---by roughly 87--99\%---indicating that the cross-sectional estimates were severely contaminated by omitted time-invariant state characteristics. Adding year fixed effects in column (4) further reduces the coefficients, and for all three crime categories the estimates become statistically insignificant. In column (5), where standard errors are clustered at the state level to allow for serial correlation within states, the estimates remain insignificant and the standard errors approximately double compared to column (4). This illustrates the importance of accounting for serial correlation in panel data, as emphasized by Bertrand, Duflo, and Mullainathan (2004). The final conclusion from the preferred specification (column 5) is that there is no statistically significant evidence that shall-issue laws affect violent crime, robbery, or murder rates.
+
+\begin{center}
+\fbox{\parbox{0.85\textwidth}{\centering
+After state and year FE with clustered SEs, shall-issue laws have no statistically significant effect on crime.
+}}
+\end{center}
+\end{solution}
+
+\begin{reflection}
+The dramatic change in the \textit{shall} coefficient across specifications illustrates the core logic of fixed effects estimation. The pooled OLS estimator exploits both \emph{between-state} and \emph{within-state} variation, but the between-state variation is contaminated by unobserved state-level confounders. The within (fixed effects) estimator uses only within-state variation over time, effectively comparing each state to itself before and after the law change, thereby eliminating all time-invariant confounding.
+
+The $F$-statistics for state fixed effects are extremely large (e.g., 210--309 for violent crime), confirming that states differ enormously in their baseline crime rates---differences that the pooled regressions attribute partly to \textit{shall}. The year fixed effects are also highly significant, reflecting common national crime trends (the crime wave of the late 1980s and the subsequent decline). By including both sets of fixed effects, the TWFE model identifies the \textit{shall} effect from the \emph{timing} of law adoption relative to other states, after removing both state-level means and common time shocks.
+
+The increase in standard errors from column (4) to column (5) demonstrates why clustering is essential in panel data. When errors are serially correlated within states, conventional robust SEs understate the true sampling uncertainty, leading to spuriously small $p$-values. Clustering at the entity level (Arellano, 1987; Bertrand, Duflo, \& Mullainathan, 2004; Stock \& Watson, 2020, \S10.5) corrects this by allowing arbitrary within-cluster correlation.
+\end{reflection}
+
+\newpage
+
+% ============================================================
+% PROBLEM 3
+% ============================================================
+
+\section*{Problem 3 \points{40}}
+
+\begin{problem}
+In order to determine the effects of stock market performance on individual firm's performance, you collect a daily frequency data on firm's performance for $n$ sample of publicly listed companies for the period of January 1, 2021 -- January 1, 2026 on a (trading) daily frequency.
+\end{problem}
+
+\begin{enumerate}
+
+\item
+\begin{problem}{\points{8}}
+What measures of firm performance would you include in an equation? What are some of the timing issues?
+\end{problem}
+\begin{solution}
+The most natural measure of firm performance in the context of stock market analysis is the \textbf{daily percentage change in the firm's stock price} (or equivalently, the daily stock return), defined as $r_{it} = 100 \times \frac{P_{it} - P_{i,t-1}}{P_{i,t-1}}$, where $P_{it}$ is the adjusted closing price of firm $i$ on trading day $t$. The adjusted close price is preferred over the raw close because it accounts for stock splits, dividends, and other corporate actions that mechanically alter the price level without reflecting true performance changes (Stock \& Watson, 2020, Ch.~14). In percentage-change form, the variable is approximately stationary---an important property for valid regression inference with time-series data, since levels of stock prices are typically non-stationary (exhibiting unit roots).
+
+Alternative measures one might consider include: (i) \textbf{abnormal returns} (the firm's return minus the market return or minus the expected return from an asset pricing model), which isolate the firm-specific component of performance; (ii) \textbf{log returns}, $\ln(P_{it}/P_{i,t-1})$, which are approximately equal to percentage returns for small changes and have convenient additive properties over time; and (iii) \textbf{trading volume} or \textbf{market capitalization changes}, though these capture liquidity and size rather than performance per se.
+
+Several timing issues arise with daily financial data. First, there is the question of \textbf{non-synchronous trading}: if some stocks close trading at slightly different times (e.g., due to trading halts or different exchange closing times), daily returns may not reflect the same information set, introducing measurement error. Second, stock prices may react to market-wide news with a \textbf{lag}---particularly for less liquid, smaller-cap stocks---which would argue for including lagged market returns alongside the contemporaneous market return in the regression (the Dimson, 1979, correction). Third, prices respond to information released \textbf{between trading days} (overnight and weekend effects), so the daily close-to-close return conflates intraday movements and overnight reactions. Fourth, announcements or events (earnings releases, Federal Reserve decisions) typically occur at specific times; if the event falls after market close, the price impact appears on the following trading day, creating a one-day lead-lag alignment issue. Finally, the choice of whether to use \textbf{calendar time} or \textbf{trading-day time} matters: regressions should be run on trading days only, as weekends and holidays introduce spurious gaps.
+
+\[
+\boxed{
+r_{it} = 100 \times \frac{P_{it} - P_{i,t-1}}{P_{i,t-1}} \quad \text{(daily percentage return using adjusted close)}
+}
+\]
+\end{solution}
+
+\item
+\begin{problem}{\points{8}}
+What other factors might you control for in the equation?
+\end{problem}
+\begin{solution}
+Beyond the overall stock market return (e.g., the S\&P 500 return), several additional factors may influence individual firm stock returns and should be considered as controls, drawing on the asset pricing literature and the econometrics of panel data.
+
+At the \textbf{firm level}, one might control for: (i) \textbf{firm size} (measured by log market capitalization), since small firms tend to exhibit higher average returns and greater sensitivity to market shocks than large firms---this is the ``size effect'' documented by Fama and French (1993); (ii) \textbf{book-to-market ratio}, capturing the ``value premium'' whereby high book-to-market (``value'') firms earn higher average returns than low book-to-market (``growth'') firms; (iii) \textbf{momentum} (past cumulative returns over the prior 3--12 months), since stocks that have performed well recently tend to continue outperforming in the short run (Jegadeesh \& Titman, 1993); and (iv) \textbf{trading volume or liquidity measures}, as illiquid stocks may exhibit larger price swings and lagged responses to market movements.
+
+At the \textbf{macroeconomic and market level}, useful controls include: (v) \textbf{interest rate changes} (e.g., changes in the federal funds rate or the 10-year Treasury yield), since monetary policy affects discount rates and hence stock valuations differently across sectors; (vi) \textbf{credit spreads} (the difference between corporate bond yields and risk-free rates), which capture changes in perceived default risk and economic uncertainty; (vii) \textbf{exchange rate fluctuations}, particularly relevant for firms with international operations; and (viii) \textbf{sector-specific indices or returns}, since firms within the same industry are exposed to common sector-level shocks (e.g., oil prices for energy firms, interest rates for banks) that are distinct from market-wide movements.
+
+At the \textbf{time-series level}, controlling for (ix) \textbf{day-of-week effects} (the ``Monday effect'') and (x) \textbf{lagged dependent variables} (lagged firm returns) can account for well-documented calendar anomalies and return persistence or mean reversion. In a panel context, \textbf{firm fixed effects} ($\alpha_i$) absorb all time-invariant firm characteristics (sector, size category, geographic location, management quality) and \textbf{time fixed effects} ($\delta_t$) absorb all market-wide daily shocks (news, sentiment, macroeconomic releases), making them powerful catch-all controls.
+
+\begin{center}
+\fbox{\parbox{0.85\textwidth}{\centering
+Key controls: firm FE, time FE, size, book-to-market, momentum, interest rates, sector returns.
+}}
+\end{center}
+\end{solution}
+
+\item
+\begin{problem}{\points{8}}
+Write an equation that allows you to estimate the effects of the overall stock market performance on the percentage change in firm's stock price. How would you estimate this equation? Why would you choose this method?
+\end{problem}
+\begin{solution}
+The baseline equation for estimating the effect of overall market performance on individual firm returns in a panel setting is:
+\[
+\boxed{
+r_{it} = \alpha_i + \beta \cdot r_{mt} + u_{it}, \qquad i = 1, \ldots, n, \quad t = 1, \ldots, T
+}
+\]
+where $r_{it}$ is the daily percentage return of firm $i$ on trading day $t$, $r_{mt}$ is the daily percentage return of the S\&P 500 index on day $t$, $\alpha_i$ is a firm-specific fixed effect (intercept), and $u_{it}$ is the idiosyncratic error term. The parameter of interest is $\beta$, which measures the average sensitivity of firm stock returns to market-wide movements---the ``market beta'' in the Capital Asset Pricing Model (CAPM) tradition (Sharpe, 1964; Lintner, 1965).
+
+This equation would be estimated using \textbf{fixed effects (within) estimation}. In Stata, this is implemented via the \texttt{xtreg} command with the \texttt{fe} option:
+
+\begin{verbatim}
+    xtset firm_id trading_date
+    xtreg pct_ret_firm pct_ret_market, fe vce(robust)
+\end{verbatim}
+
+The fixed effects estimator is chosen for several reasons. First, the panel structure of the data (multiple firms observed over the same trading days) naturally calls for a panel estimator rather than pooled OLS. Second, different firms have different average returns (reflecting differences in risk, industry, growth prospects, etc.), and these firm-specific mean returns are captured by $\alpha_i$. If $\alpha_i$ is correlated with $r_{mt}$---which is plausible if, for example, firms with higher average returns are also more sensitive to market conditions---then pooled OLS would yield biased estimates of $\beta$ due to omitted variable bias (Wooldridge, 2019, Ch.~14). The fixed effects estimator eliminates $\alpha_i$ via the within transformation (demeaning each variable by its firm-specific mean), producing consistent estimates of $\beta$ even when $\text{Cov}(\alpha_i, r_{mt}) \neq 0$ (Stock \& Watson, 2020, Ch.~10).
+
+Third, the within estimator is numerically equivalent to the Least Squares Dummy Variable (LSDV) approach---including a full set of $n$ firm dummies---but is computationally more efficient when $n$ is large. Fourth, using heteroskedasticity-robust standard errors (or clustered standard errors at the firm level) ensures valid inference even if the variance of $u_{it}$ differs across firms or exhibits serial correlation within firms.
+
+An extended specification that also controls for aggregate time effects would be:
+\[
+r_{it} = \alpha_i + \delta_t + \beta \cdot r_{mt} + u_{it}
+\]
+where $\delta_t$ are time (day) fixed effects. However, note that including day fixed effects alongside $r_{mt}$ creates a near-perfect multicollinearity problem, since $r_{mt}$ is constant across firms on any given day and is thus almost perfectly spanned by the day dummies. In practice, one would either include day FE \emph{without} $r_{mt}$ (letting the day dummies absorb all common daily shocks) or include $r_{mt}$ without day FE. The choice depends on the research question: if the goal is to estimate $\beta$, one uses $r_{mt}$ directly; if the goal is to control for all common daily shocks without parametric restriction, one uses day FE.
+\end{solution}
+
+\begin{reflection}
+This equation is essentially the market model from empirical finance, a single-factor version of the CAPM. In the CAPM framework, $\alpha_i$ should equal $r_f(1 - \beta_i)$ where $r_f$ is the risk-free rate, and in an efficient market, the ``Jensen's alpha'' (excess $\alpha_i$) should be zero on average. The fixed effects estimator in a panel setting with a common regressor $r_{mt}$ is equivalent to running separate time-series regressions for each firm and then averaging the slope coefficients (this is the Fama--MacBeth, 1973, intuition). The key econometric insight is that firm fixed effects control for all unobserved time-invariant firm characteristics, making the panel FE estimator robust to a wide class of omitted variable problems that would plague pooled OLS.
+\end{reflection}
+
+\item
+\begin{problem}{\points{16}}
+Now, in order to implement your strategy discussed above, go to Yahoo Finance website and collect the stock price data of any ten U.S.\ companies of your choice as well as the stock price for S\&P500 (i.e., as your measure of overall market performance and its ticker symbol is \textasciicircum GSPC) for the above sample. Use the adjusted close price (column) as your price data for your $n=10$ firms and compute the percentage change of these series as your performance measure. Make sure that you arrange your data as a panel data format by stacking these 10 companies' dataset. Then (i) run a cross section fixed effect panel data model of firm performance on market performance only; and (ii) explain (i.e., not estimate) how you would estimate a model or control for time fixed effects as well.
+\end{problem}
+\begin{solution}
+
+\textbf{Data Collection and Construction.} Daily adjusted close prices were downloaded from Yahoo Finance for ten U.S.\ companies spanning diverse sectors and the S\&P 500 index (\texttt{\textasciicircum GSPC}) for the period January 1, 2021 through January 1, 2026. The ten firms are:
+
+\medskip
+\begin{center}
+\small
+\begin{tabular}{clll}
+\toprule
+\textbf{ID} & \textbf{Ticker} & \textbf{Company} & \textbf{Sector} \\
+\midrule
+1  & AAPL & Apple Inc.            & Technology \\
+2  & MSFT & Microsoft Corp.       & Technology \\
+3  & JPM  & JPMorgan Chase \& Co. & Financials \\
+4  & JNJ  & Johnson \& Johnson    & Healthcare \\
+5  & XOM  & ExxonMobil Corp.      & Energy \\
+6  & PG   & Procter \& Gamble Co. & Consumer Staples \\
+7  & DIS  & Walt Disney Co.       & Communication Services \\
+8  & HD   & Home Depot Inc.       & Consumer Discretionary \\
+9  & CAT  & Caterpillar Inc.      & Industrials \\
+10 & NEE  & NextEra Energy Inc.   & Utilities \\
+\bottomrule
+\end{tabular}
+\end{center}
+\medskip
+
+Percentage daily returns were computed as $r_{it} = 100 \times (P_{it} - P_{i,t-1}) / P_{i,t-1}$, where $P_{it}$ is the adjusted close price. The first observation for each firm (which yields a missing return due to differencing) was dropped. The data were then stacked into a balanced panel with $n = 10$ firms $\times$ $T = 1{,}254$ trading days $= 12{,}540$ observations, identified by \texttt{firm\_id} and \texttt{stata\_date}.
+
+\medskip
+\textbf{(i) Cross-Section Fixed Effects Model.} The following firm fixed effects model was estimated in Stata:
+
+\begin{verbatim}
+    use "data/stock_panel.dta", clear
+    xtset firm_id stata_date
+    xtreg pct_ret_firm pct_ret_market, fe vce(robust)
+\end{verbatim}
+
+The estimated model is:
+\[
+\boxed{
+\widehat{r}_{it} = \hat{\alpha}_i + \underset{(0.110)}{0.781}\;r_{mt}
+}
+\]
+
+\noindent
+$n = 12{,}540$ observations, 10 firms, $T = 1{,}254$ trading days per firm.
+
+Within $R^2 = 0.2771$, \quad Between $R^2 = 0.2769$, \quad Overall $R^2 = 0.2769$.
+
+The estimated market beta is $\hat{\beta} = 0.781$ ($\text{SE} = 0.110$, $t = 7.07$, $p < 0.001$), indicating that a one-percentage-point increase in the S\&P 500 daily return is associated with, on average, a 0.781 percentage-point increase in the firm's daily return, holding firm-specific factors constant. The within $R^2$ of 0.277 means that market movements explain about 27.7\% of the within-firm day-to-day variation in individual stock returns, which is substantial for daily frequency data.
+
+The estimated firm fixed effects ($\hat{\alpha}_i$) represent each firm's average daily idiosyncratic return after removing the market component---akin to ``Jensen's alpha'' in the CAPM framework. For instance, ExxonMobil (XOM) and Caterpillar (CAT) have the largest positive fixed effects ($\hat{\alpha} \approx 0.056\%$ per day), while Disney (DIS) has the most negative ($\hat{\alpha} \approx -0.077\%$ per day), reflecting differential firm-level performance over the sample period.
+
+See the Appendix for the full regression output.
+
+\bigskip
+\textbf{(ii) Controlling for Time Fixed Effects.} To additionally control for time (trading-day) fixed effects, one would augment the model with a full set of day-specific dummy variables:
+\[
+r_{it} = \alpha_i + \delta_t + \beta \cdot r_{mt} + u_{it}
+\]
+where $\delta_t$ represents the fixed effect for trading day $t$. In Stata, one could either generate day dummies manually or use \texttt{i.stata\_date} factor notation:
+
+\begin{verbatim}
+    reg pct_ret_firm pct_ret_market ///
+        i.firm_id i.stata_date,     ///
+        vce(robust)
+\end{verbatim}
+
+However, there is an important identification problem. The market return $r_{mt}$ varies only across time, not across firms---it takes the same value for all $n$ firms on any given trading day $t$. Including a full set of day fixed effects $\delta_t$ (one dummy per trading day) would absorb all variation that is common to all firms on each day, which is exactly the variation that $r_{mt}$ exploits for identification. In the extreme, $r_{mt}$ is a deterministic function of $\delta_t$ (since $r_{mt}$ is perfectly collinear with the day dummies), and the coefficient $\beta$ would be unidentified.
+
+In practice, if we want to control for aggregate daily shocks while still estimating $\beta$, we have several options. One approach is to include \textbf{time fixed effects but drop $r_{mt}$}, letting the day dummies absorb all common daily variation; this controls for market movements non-parametrically but does not produce an estimate of $\beta$. A second approach is to use \textbf{year or month fixed effects} rather than daily fixed effects, which absorb low-frequency common trends while leaving enough within-period variation in $r_{mt}$ for $\beta$ to be identified. A third approach is to include additional \textbf{time-varying aggregate controls} (such as changes in the VIX volatility index, interest rate changes, or oil price changes) alongside $r_{mt}$, rather than saturating the model with day dummies.
+
+The simplest implementation for time FE that avoids the collinearity issue would be:
+
+\begin{verbatim}
+    * Year FE (coarse; avoids collinearity)
+    gen year = year(dofC(stata_date))
+    xtreg pct_ret_firm pct_ret_market ///
+        i.year, fe vce(robust)
+\end{verbatim}
+
+\begin{center}
+\fbox{\parbox{0.85\textwidth}{\centering
+Day FE and $r_{mt}$ are collinear; use coarser time FE (year/month) or drop $r_{mt}$.
+}}
+\end{center}
+\end{solution}
+
+\begin{reflection}
+The collinearity between time fixed effects and aggregate regressors is a fundamental identification issue in panel data. When the regressor of interest varies only across time (like $r_{mt}$), entity fixed effects are fine (they remove cross-sectional variation that the regressor does not exploit), but time fixed effects remove the very source of variation that identifies the coefficient. This is a concrete illustration of the general principle that fixed effects ``eat'' the variation they span: including $T$ time dummies leaves only cross-sectional variation within each period, and if the regressor is identical across entities within each period, there is no variation left.
+
+The recommended approach depends on the research question. If the goal is to estimate market beta ($\beta$), use firm FE without day FE (or with coarse time FE). If the goal is to isolate firm-specific shocks from all aggregate factors, use two-way FE (firm + day) but recognize that $\beta$ is not separately identified from $\delta_t$ (Stock \& Watson, 2020, Ch.~10).
+\end{reflection}
+
+\end{enumerate}
+
+\newpage
+
+
+% ============================================================
+% APPENDIX
+% ============================================================
+
+\appendix
+\section*{Appendix: Tables and Figures}
+\addcontentsline{toc}{section}{Appendix: Tables and Figures}
+
+% esttab tables include their own table environment and \sym macro
+\input{output/tables/prob1_reg_i.tex}
+
+\input{output/tables/prob1_reg_ii.tex}
+
+\input{output/tables/prob3d_fe_regression.tex}
+
+\newpage
+
+\section*{Replication Files}
+
+All replication materials for \texttt{homework\_05} are available on GitHub:
+
+\begin{itemize}
+    \item Course repository: \url{https://github.com/tylersotomayor/econun3412-spring2026}
+    \item Homework 05 folder: \url{https://github.com/tylersotomayor/econun3412-spring2026/tree/main/homework_05}
+\end{itemize}
+
+\end{document}
