@@ -5,4 +5,4 @@
 \contentsline {subsection}{SW Exercise 10.1: Drunk Driving Panel Data}{29}{section*.9}%
 \contentsline {subsection}{SW Empirical Exercise E10.2: Income and Democracy}{36}{section*.11}%
 \contentsline {section}{Appendix: Tables and Figures}{45}{section*.12}%
-\contentsline {section}{Replication Files}{48}{section*.16}%
+\contentsline {section}{Replication Files}{47}{section*.16}%
