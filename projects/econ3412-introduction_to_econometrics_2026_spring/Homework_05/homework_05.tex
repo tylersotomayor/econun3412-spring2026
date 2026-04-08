@@ -121,6 +121,9 @@
 % ------------------------------------------------------------
 \input{tyler-pset.tex}
 
+% Override citation link color to black
+\hypersetup{citecolor=black}
+
 % Optional compile toggles
 % \excludeversion{problem}
 % \excludeversion{solution}
@@ -579,15 +582,19 @@ In order to determine the effects of stock market performance on individual firm
 What measures of firm performance would you include in an equation? What are some of the timing issues?
 \end{problem}
 \begin{solution}
-The most natural measure of firm performance in the context of stock market analysis is the \textbf{daily percentage change in the firm's stock price} (or equivalently, the daily stock return), defined as $r_{it} = 100 \times \frac{P_{it} - P_{i,t-1}}{P_{i,t-1}}$, where $P_{it}$ is the adjusted closing price of firm $i$ on trading day $t$. The adjusted close price is preferred over the raw close because it accounts for stock splits, dividends, and other corporate actions that mechanically alter the price level without reflecting true performance changes (\citealt{StockWatson2020}, Ch.~14). In percentage-change form, the variable is approximately stationary---an important property for valid regression inference with time-series data, since levels of stock prices are typically non-stationary (exhibiting unit roots).
+The most natural measure of firm performance in the context of stock market analysis is the \textbf{daily log return}, defined as
+\[
+r_{it} = 100 \times \bigl[\ln(P_{it}) - \ln(P_{i,t-1})\bigr],
+\]
+where $P_{it}$ is the adjusted closing price of firm $i$ on trading day $t$. The log-difference formulation is the standard econometric approach to measuring percentage changes (\citealt{StockWatson2020}, Ch.~14): applying a log transformation to the price level and then first-differencing yields a variable that is (i) approximately equal to the simple percentage return $(P_{it} - P_{i,t-1})/P_{i,t-1}$ for small daily changes, (ii) additive over time (multi-day log returns are the sum of daily log returns), and (iii) approximately stationary---an essential property for valid regression inference, since levels of stock prices are typically non-stationary (exhibiting unit roots). The adjusted close price is preferred over the raw close because it accounts for stock splits, dividends, and other corporate actions that mechanically alter the price level without reflecting true performance changes.
 
-Alternative measures one might consider include: (i) \textbf{abnormal returns} (the firm's return minus the market return or minus the expected return from an asset pricing model), which isolate the firm-specific component of performance; (ii) \textbf{log returns}, $\ln(P_{it}/P_{i,t-1})$, which are approximately equal to percentage returns for small changes and have convenient additive properties over time; and (iii) \textbf{trading volume} or \textbf{market capitalization changes}, though these capture liquidity and size rather than performance per se.
+Alternative measures one might consider include: (i) \textbf{abnormal returns} (the firm's return minus the expected return from an asset pricing model), which isolate the firm-specific component of performance; (ii) \textbf{simple percentage returns}, $100 \times (P_{it} - P_{i,t-1})/P_{i,t-1}$, which are nearly identical to log returns for daily data but lack the additive property; and (iii) \textbf{trading volume} or \textbf{market capitalization changes}, though these capture liquidity and size rather than performance per se.
 
 Several timing issues arise with daily financial data. First, there is the question of \textbf{non-synchronous trading}: if some stocks close trading at slightly different times (e.g., due to trading halts or different exchange closing times), daily returns may not reflect the same information set, introducing measurement error. Second, stock prices may react to market-wide news with a \textbf{lag}---particularly for less liquid, smaller-cap stocks---which would argue for including lagged market returns alongside the contemporaneous market return in the regression (the \citealt{Dimson1979} correction). Third, prices respond to information released \textbf{between trading days} (overnight and weekend effects), so the daily close-to-close return conflates intraday movements and overnight reactions. Fourth, announcements or events (earnings releases, Federal Reserve decisions) typically occur at specific times; if the event falls after market close, the price impact appears on the following trading day, creating a one-day lead-lag alignment issue. Finally, the choice of whether to use \textbf{calendar time} or \textbf{trading-day time} matters: regressions should be run on trading days only, as weekends and holidays introduce spurious gaps.
 
 \[
 \boxed{
-r_{it} = 100 \times \frac{P_{it} - P_{i,t-1}}{P_{i,t-1}} \quad \text{(daily percentage return using adjusted close)}
+r_{it} = 100 \times \bigl[\ln(P_{it}) - \ln(P_{i,t-1})\bigr] \quad \text{(daily log return using adjusted close)}
 }
 \]
 \end{solution}
@@ -617,19 +624,20 @@ Key controls: firm FE, time FE, size, book-to-market, momentum, interest rates, 
 Write an equation that allows you to estimate the effects of the overall stock market performance on the percentage change in firm's stock price. How would you estimate this equation? Why would you choose this method?
 \end{problem}
 \begin{solution}
-The baseline equation for estimating the effect of overall market performance on individual firm returns in a panel setting is:
+The baseline equation for estimating the effect of overall market performance on the percentage change in a firm's stock price in a panel setting is:
 \[
 \boxed{
-r_{it} = \alpha_i + \beta \cdot r_{mt} + u_{it}, \qquad i = 1, \ldots, n, \quad t = 1, \ldots, T
+\Delta \ln(P_{it}) = \alpha_i + \beta \cdot \Delta \ln(P_{mt}) + u_{it}, \quad i = 1, \ldots, n, \;\; t = 1, \ldots, T
 }
 \]
-where $r_{it}$ is the daily percentage return of firm $i$ on trading day $t$, $r_{mt}$ is the daily percentage return of the S\&P 500 index on day $t$, $\alpha_i$ is a firm-specific fixed effect (intercept), and $u_{it}$ is the idiosyncratic error term. The parameter of interest is $\beta$, which measures the average sensitivity of firm stock returns to market-wide movements---the ``market beta'' in the Capital Asset Pricing Model (CAPM) tradition (\citealt{Sharpe1964}; \citealt{Lintner1965}).
+where $\Delta \ln(P_{it}) = \ln(P_{it}) - \ln(P_{i,t-1})$ is the daily log return of firm $i$ on trading day $t$ (the log-difference measure of percentage change), $\Delta \ln(P_{mt})$ is the daily log return of the S\&P 500 index on day $t$, $\alpha_i$ is a firm-specific fixed effect (intercept), and $u_{it}$ is the idiosyncratic error term. The parameter of interest is $\beta$, which measures the average sensitivity of firm stock returns to market-wide movements---the ``market beta'' in the Capital Asset Pricing Model (CAPM) tradition (\citealt{Sharpe1964}; \citealt{Lintner1965}).
 
 This equation would be estimated using \textbf{fixed effects (within) estimation}. In Stata, this is implemented via the \texttt{xtreg} command with the \texttt{fe} option:
 
 \begin{verbatim}
     xtset firm_id trading_date
-    xtreg pct_ret_firm pct_ret_market, fe vce(robust)
+    xtreg log_ret_firm log_ret_market, ///
+        fe vce(robust)
 \end{verbatim}
 
 The fixed effects estimator is chosen for several reasons. First, the panel structure of the data (multiple firms observed over the same trading days) naturally calls for a panel estimator rather than pooled OLS. Second, different firms have different average returns (reflecting differences in risk, industry, growth prospects, etc.), and these firm-specific mean returns are captured by $\alpha_i$. If $\alpha_i$ is correlated with $r_{mt}$---which is plausible if, for example, firms with higher average returns are also more sensitive to market conditions---then pooled OLS would yield biased estimates of $\beta$ due to omitted variable bias (\citealt{Wooldridge2019}, Ch.~14). The fixed effects estimator eliminates $\alpha_i$ via the within transformation (demeaning each variable by its firm-specific mean), producing consistent estimates of $\beta$ even when $\text{Cov}(\alpha_i, r_{mt}) \neq 0$ (\citealt{StockWatson2020}, Ch.~10).
@@ -638,13 +646,13 @@ Third, the within estimator is numerically equivalent to the Least Squares Dummy
 
 An extended specification that also controls for aggregate time effects would be:
 \[
-r_{it} = \alpha_i + \delta_t + \beta \cdot r_{mt} + u_{it}
+\Delta \ln(P_{it}) = \alpha_i + \delta_t + \beta \cdot \Delta \ln(P_{mt}) + u_{it}
 \]
 where $\delta_t$ are time (day) fixed effects. However, note that including day fixed effects alongside $r_{mt}$ creates a near-perfect multicollinearity problem, since $r_{mt}$ is constant across firms on any given day and is thus almost perfectly spanned by the day dummies. In practice, one would either include day FE \emph{without} $r_{mt}$ (letting the day dummies absorb all common daily shocks) or include $r_{mt}$ without day FE. The choice depends on the research question: if the goal is to estimate $\beta$, one uses $r_{mt}$ directly; if the goal is to control for all common daily shocks without parametric restriction, one uses day FE.
 \end{solution}
 
 \begin{reflection}
-This equation is essentially the market model from empirical finance, a single-factor version of the CAPM. In the CAPM framework, $\alpha_i$ should equal $r_f(1 - \beta_i)$ where $r_f$ is the risk-free rate, and in an efficient market, the ``Jensen's alpha'' (excess $\alpha_i$) should be zero on average. The fixed effects estimator in a panel setting with a common regressor $r_{mt}$ is equivalent to running separate time-series regressions for each firm and then averaging the slope coefficients (this is the \citealt{FamaMacBeth1973} intuition). The key econometric insight is that firm fixed effects control for all unobserved time-invariant firm characteristics, making the panel FE estimator robust to a wide class of omitted variable problems that would plague pooled OLS.
+This equation is essentially the market model from empirical finance, a single-factor version of the CAPM. In the CAPM framework, $\alpha_i$ should equal $r_f(1 - \beta_i)$ where $r_f$ is the risk-free rate, and in an efficient market, the ``Jensen's alpha'' (excess $\alpha_i$) should be zero on average. The fixed effects estimator in a panel setting with a common regressor $\Delta \ln(P_{mt})$ is equivalent to running separate time-series regressions for each firm and then averaging the slope coefficients (this is the \citealt{FamaMacBeth1973} intuition). The key econometric insight is that firm fixed effects control for all unobserved time-invariant firm characteristics, making the panel FE estimator robust to a wide class of omitted variable problems that would plague pooled OLS.
 \end{reflection}
 
 \item
@@ -677,7 +685,7 @@ Now, in order to implement your strategy discussed above, go to Yahoo Finance we
 \end{center}
 \medskip
 
-Percentage daily returns were computed as $r_{it} = 100 \times (P_{it} - P_{i,t-1}) / P_{i,t-1}$, where $P_{it}$ is the adjusted close price. The first observation for each firm (which yields a missing return due to differencing) was dropped. The data were then stacked into a balanced panel with $n = 10$ firms $\times$ $T = 1{,}254$ trading days $= 12{,}540$ observations, identified by \texttt{firm\_id} and \texttt{stata\_date}.
+Daily log returns were computed as $r_{it} = 100 \times [\ln(P_{it}) - \ln(P_{i,t-1})]$, where $P_{it}$ is the adjusted close price. This log-difference formulation is the standard econometric measure of percentage change (\citealt{StockWatson2020}, Ch.~14). The first observation for each firm (which yields a missing return due to differencing) was dropped. The data were then stacked into a balanced panel with $n = 10$ firms $\times$ $T = 1{,}254$ trading days $= 12{,}540$ observations, identified by \texttt{firm\_id} and \texttt{stata\_date}.
 
 \medskip
 \textbf{(i) Cross-Section Fixed Effects Model.} The following firm fixed effects model was estimated in Stata:
@@ -685,22 +693,23 @@ Percentage daily returns were computed as $r_{it} = 100 \times (P_{it} - P_{i,t-
 \begin{verbatim}
     use "data/stock_panel.dta", clear
     xtset firm_id stata_date
-    xtreg pct_ret_firm pct_ret_market, fe vce(robust)
+    xtreg log_ret_firm log_ret_market, ///
+        fe vce(robust)
 \end{verbatim}
 
 The estimated model is:
 \[
 \boxed{
-\widehat{r}_{it} = \hat{\alpha}_i + \underset{(0.110)}{0.781}\;r_{mt}
+\widehat{\Delta \ln(P_{it})} = \hat{\alpha}_i + \underset{(0.110)}{0.782}\;\Delta \ln(P_{mt})
 }
 \]
 
 \noindent
 $n = 12{,}540$ observations, 10 firms, $T = 1{,}254$ trading days per firm.
 
-Within $R^2 = 0.2771$, \quad Between $R^2 = 0.2769$, \quad Overall $R^2 = 0.2769$.
+Within $R^2 = 0.2770$, \quad Overall $R^2 = 0.2768$.
 
-The estimated market beta is $\hat{\beta} = 0.781$ ($\text{SE} = 0.110$, $t = 7.07$, $p < 0.001$), indicating that a one-percentage-point increase in the S\&P 500 daily return is associated with, on average, a 0.781 percentage-point increase in the firm's daily return, holding firm-specific factors constant. The within $R^2$ of 0.277 means that market movements explain about 27.7\% of the within-firm day-to-day variation in individual stock returns, which is substantial for daily frequency data.
+The estimated market beta is $\hat{\beta} = 0.782$ ($\text{SE} = 0.110$, $t = 7.11$, $p < 0.001$), indicating that a one-percentage-point increase in the S\&P 500 daily log return is associated with, on average, a 0.782 percentage-point increase in the firm's daily log return, holding firm-specific factors constant. The within $R^2$ of 0.277 means that market movements explain about 27.7\% of the within-firm day-to-day variation in individual stock returns, which is substantial for daily frequency data.
 
 The estimated firm fixed effects ($\hat{\alpha}_i$) represent each firm's average daily idiosyncratic return after removing the market component---akin to ``Jensen's alpha'' in the CAPM framework \citep{Jensen1968}. For instance, ExxonMobil (XOM) and Caterpillar (CAT) have the largest positive fixed effects ($\hat{\alpha} \approx 0.056\%$ per day), while Disney (DIS) has the most negative ($\hat{\alpha} \approx -0.077\%$ per day), reflecting differential firm-level performance over the sample period.
 
@@ -709,38 +718,38 @@ See Table~\ref{tab:prob3d_fe} in the Appendix for the full regression output.
 \bigskip
 \textbf{(ii) Controlling for Time Fixed Effects.} To additionally control for time (trading-day) fixed effects, one would augment the model with a full set of day-specific dummy variables:
 \[
-r_{it} = \alpha_i + \delta_t + \beta \cdot r_{mt} + u_{it}
+\Delta \ln(P_{it}) = \alpha_i + \delta_t + \beta \cdot \Delta \ln(P_{mt}) + u_{it}
 \]
 where $\delta_t$ represents the fixed effect for trading day $t$. In Stata, one could either generate day dummies manually or use \texttt{i.stata\_date} factor notation:
 
 \begin{verbatim}
-    reg pct_ret_firm pct_ret_market ///
+    reg log_ret_firm log_ret_market ///
         i.firm_id i.stata_date,     ///
         vce(robust)
 \end{verbatim}
 
-However, there is an important identification problem. The market return $r_{mt}$ varies only across time, not across firms---it takes the same value for all $n$ firms on any given trading day $t$. Including a full set of day fixed effects $\delta_t$ (one dummy per trading day) would absorb all variation that is common to all firms on each day, which is exactly the variation that $r_{mt}$ exploits for identification. In the extreme, $r_{mt}$ is a deterministic function of $\delta_t$ (since $r_{mt}$ is perfectly collinear with the day dummies), and the coefficient $\beta$ would be unidentified.
+However, there is an important identification problem. The market return $\Delta \ln(P_{mt})$ varies only across time, not across firms---it takes the same value for all $n$ firms on any given trading day $t$. Including a full set of day fixed effects $\delta_t$ (one dummy per trading day) would absorb all variation that is common to all firms on each day, which is exactly the variation that $\Delta \ln(P_{mt})$ exploits for identification. In the extreme, $\Delta \ln(P_{mt})$ is a deterministic function of $\delta_t$ (since it is perfectly collinear with the day dummies), and the coefficient $\beta$ would be unidentified.
 
-In practice, if we want to control for aggregate daily shocks while still estimating $\beta$, we have several options. One approach is to include \textbf{time fixed effects but drop $r_{mt}$}, letting the day dummies absorb all common daily variation; this controls for market movements non-parametrically but does not produce an estimate of $\beta$. A second approach is to use \textbf{year or month fixed effects} rather than daily fixed effects, which absorb low-frequency common trends while leaving enough within-period variation in $r_{mt}$ for $\beta$ to be identified. A third approach is to include additional \textbf{time-varying aggregate controls} (such as changes in the VIX volatility index, interest rate changes, or oil price changes) alongside $r_{mt}$, rather than saturating the model with day dummies.
+In practice, if we want to control for aggregate daily shocks while still estimating $\beta$, we have several options. One approach is to include \textbf{time fixed effects but drop $\Delta \ln(P_{mt})$}, letting the day dummies absorb all common daily variation; this controls for market movements non-parametrically but does not produce an estimate of $\beta$. A second approach is to use \textbf{year or month fixed effects} rather than daily fixed effects, which absorb low-frequency common trends while leaving enough within-period variation in $\Delta \ln(P_{mt})$ for $\beta$ to be identified. A third approach is to include additional \textbf{time-varying aggregate controls} (such as changes in the VIX volatility index, interest rate changes, or oil price changes) alongside $\Delta \ln(P_{mt})$, rather than saturating the model with day dummies.
 
 The simplest implementation for time FE that avoids the collinearity issue would be:
 
 \begin{verbatim}
     * Year FE (coarse; avoids collinearity)
     gen year = year(dofC(stata_date))
-    xtreg pct_ret_firm pct_ret_market ///
+    xtreg log_ret_firm log_ret_market ///
         i.year, fe vce(robust)
 \end{verbatim}
 
 \begin{center}
 \fbox{\parbox{0.85\textwidth}{\centering
-Day FE and $r_{mt}$ are collinear; use coarser time FE (year/month) or drop $r_{mt}$.
+Day FE and $\Delta \ln(P_{mt})$ are collinear; use coarser time FE (year/month) or drop $\Delta \ln(P_{mt})$.
 }}
 \end{center}
 \end{solution}
 
 \begin{reflection}
-The collinearity between time fixed effects and aggregate regressors is a fundamental identification issue in panel data. When the regressor of interest varies only across time (like $r_{mt}$), entity fixed effects are fine (they remove cross-sectional variation that the regressor does not exploit), but time fixed effects remove the very source of variation that identifies the coefficient. This is a concrete illustration of the general principle that fixed effects ``eat'' the variation they span: including $T$ time dummies leaves only cross-sectional variation within each period, and if the regressor is identical across entities within each period, there is no variation left.
+The collinearity between time fixed effects and aggregate regressors is a fundamental identification issue in panel data. When the regressor of interest varies only across time (like $\Delta \ln(P_{mt})$), entity fixed effects are fine (they remove cross-sectional variation that the regressor does not exploit), but time fixed effects remove the very source of variation that identifies the coefficient. This is a concrete illustration of the general principle that fixed effects ``eat'' the variation they span: including $T$ time dummies leaves only cross-sectional variation within each period, and if the regressor is identical across entities within each period, there is no variation left.
 
 The recommended approach depends on the research question. If the goal is to estimate market beta ($\beta$), use firm FE without day FE (or with coarse time FE). If the goal is to isolate firm-specific shocks from all aggregate factors, use two-way FE (firm + day) but recognize that $\beta$ is not separately identified from $\delta_t$ (\citealt{StockWatson2020}, Ch.~10).
 \end{reflection}
@@ -749,6 +758,84 @@ The recommended approach depends on the research question. If the goal is to est
 
 \newpage
 
+% ============================================================
+% UNGRADED EXERCISES
+% ============================================================
+
+\section*{Ungraded Exercises}
+
+\textit{The following questions will not be graded; they are for practice and will be discussed at the recitation.}
+
+\bigskip
+
+\subsection*{SW Exercise 10.1}
+
+\begin{problem}
+This exercise refers to the drunk driving panel data regression summarized in Table 10.1.
+
+\begin{enumerate}
+\item New Jersey has a population of 8.85 million people. Suppose New Jersey increased the tax on a case of beer by \$2 (in 1988 dollars). Use the results in column (5) to predict the number of lives that would be saved over the next year. Construct a 99\% confidence interval for your answer.
+\item The drinking age in New Jersey is 21. Suppose that New Jersey lowered its drinking age to 19. Use the results in column (5) to predict the change in the number of traffic fatalities in the next year. Construct a 95\% confidence interval for your answer.
+\item Suppose real income per capita in New Jersey increases by 3\% in the next year. Use the results in column (6) to predict the change in the number of traffic fatalities in the next year. Construct a 95\% confidence interval for your answer.
+\item How should standard errors be clustered in the regressions in columns (2) through (7)?
+\item How should minimum drinking age be included in the regressions? Should it enter as a continuous variable or as a series of indicator variables? Be specific about the information you use to assess this question.
+\end{enumerate}
+\end{problem}
+
+\bigskip
+
+\subsection*{SW Exercise 10.5}
+
+\begin{problem}
+Consider the model with a single regressor. This model also can be written as
+\begin{align*}
+Y_{it} = \beta_0 &+ \beta_1 X_{1,it} + \delta_2 B2_t + \cdots + \delta_T BT_t \\
+&+ \gamma_2 D2_i + \cdots + \gamma_n Dn_i + u_{it},
+\end{align*}
+where $B2_t = 1$ if $t = 2$ and $0$ otherwise, $D2_i = 1$ if $i = 2$ and $0$ otherwise, and so forth.
+How are the coefficients $(\beta_0, \delta_2, \ldots, \delta_T, \gamma_2, \ldots, \gamma_n)$ related to $(\alpha_1, \ldots, \alpha_n, \lambda_1, \ldots, \lambda_T)$?
+\end{problem}
+
+\bigskip
+
+\subsection*{SW Empirical Exercise E10.2}
+
+\begin{problem}
+Do citizens demand more democracy and political freedom as their incomes grow? That is, is democracy a normal good? On the text website, you will find the data file \textbf{Income\_Democracy}, which contains a panel data set from 195 countries for the years 1960, 1965, \ldots, 2000. A detailed description is given in \textbf{Income\_Democracy\_Description}, available on the website. The data set contains an index of political freedom/democracy for each country in each year, together with data on each country's income and various demographic controls. (The income and demographic controls are lagged five years relative to the democracy index to allow time for democracy to adjust to changes in these variables.)
+
+\begin{enumerate}
+\item Is the data set a balanced panel? Explain.
+
+\item The index of political freedom/democracy is labeled \textit{Dem\_ind}.
+\begin{enumerate}[label=(\roman*)]
+\item What are the minimum and maximum values of \textit{Dem\_ind} in the data set? What are the mean and standard deviation of \textit{Dem\_ind} in the data set? What are the 10th, 25th, 50th, 75th, and 90th percentiles of its distribution?
+\item What is the value of \textit{Dem\_ind} for the United States in 2000? Averaged over all years in the data set?
+\item What is the value of \textit{Dem\_ind} for Libya in 2000? Averaged over all years in the data set?
+\item List five countries with an average value of \textit{Dem\_ind} greater than 0.95; less than 0.10; and between 0.3 and 0.7.
+\end{enumerate}
+
+\item The logarithm of per capita income is labeled \textit{Log\_GDPPC}. Regress \textit{Dem\_ind} on \textit{Log\_GDPPC}. Use standard errors that are clustered by country.
+\begin{enumerate}[label=(\roman*)]
+\item How large is the estimated coefficient on \textit{Log\_GDPPC}? Is the coefficient statistically significant?
+\item If per capita income in a country increases by 20\%, by how much is \textit{Dem\_ind} predicted to increase? What is a 95\% confidence interval for the prediction? Is the predicted increase in \textit{Dem\_ind} large or small? (Explain what you mean by large or small.)
+\item Why is it important to use clustered standard errors for the regression? Do the results change if you do not use clustered standard errors?
+\end{enumerate}
+
+\item
+\begin{enumerate}[label=(\roman*)]
+\item Suggest a variable that varies across countries but plausibly varies little---or not at all---over time and that could cause omitted variable bias in the regression in (c).
+\item Estimate the regression in (c), allowing for country fixed effects. How do your answers to (c)(i) and (c)(ii) change?
+\item Exclude the data for Azerbaijan, and rerun the regression. Do the results change? Why or why not?
+\item Suggest a variable that varies over time but plausibly varies little---or not at all---across countries and that could cause omitted variable bias in the regression in (c).
+\item Estimate the regression in (c), allowing for time and country fixed effects. How do your answers to (c)(i) and (c)(ii) change?
+\item There are additional demographic controls in the data set. Should these variables be included in the regression? If so, how do the results change when they are included?
+\end{enumerate}
+
+\item Based on your analysis, what conclusions do you draw about the effects of income on democracy?
+\end{enumerate}
+\end{problem}
+
+\newpage
 
 % ============================================================
 % APPENDIX
