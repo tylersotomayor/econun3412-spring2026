@@ -1,0 +1,76 @@
+\begin{thebibliography}{}
+
+\bibitem[Arellano, 1987]{Arellano1987}
+Arellano, M. (1987).
+\newblock Computing robust standard errors for within-groups estimators.
+\newblock {\em Oxford Bulletin of Economics and Statistics}, 49(4):431--434.
+
+\bibitem[Bertrand et~al., 2004]{BertrandDufloMullainathan2004}
+Bertrand, M., Duflo, E., and Mullainathan, S. (2004).
+\newblock How much should we trust differences-in-differences estimates?
+\newblock {\em Quarterly Journal of Economics}, 119(1):249--275.
+
+\bibitem[Dimson, 1979]{Dimson1979}
+Dimson, E. (1979).
+\newblock Risk measurement when shares are subject to infrequent trading.
+\newblock {\em Journal of Financial Economics}, 7(2):197--226.
+
+\bibitem[Donohue and Ayres, 2003]{DonohueAyres2003}
+Donohue, III, J.~J. and Ayres, I. (2003).
+\newblock Shooting down the ``{M}ore guns, less crime'' hypothesis.
+\newblock {\em Stanford Law Review}, 55(4):1193--1312.
+
+\bibitem[Fama and French, 1993]{FamaFrench1993}
+Fama, E.~F. and French, K.~R. (1993).
+\newblock Common risk factors in the returns on stocks and bonds.
+\newblock {\em Journal of Financial Economics}, 33(1):3--56.
+
+\bibitem[Fama and MacBeth, 1973]{FamaMacBeth1973}
+Fama, E.~F. and MacBeth, J.~D. (1973).
+\newblock Risk, return, and equilibrium: Empirical tests.
+\newblock {\em Journal of Political Economy}, 81(3):607--636.
+
+\bibitem[Jegadeesh and Titman, 1993]{JegadeeshTitman1993}
+Jegadeesh, N. and Titman, S. (1993).
+\newblock Returns to buying winners and selling losers: Implications for stock
+  market efficiency.
+\newblock {\em Journal of Finance}, 48(1):65--91.
+
+\bibitem[Jensen, 1968]{Jensen1968}
+Jensen, M.~C. (1968).
+\newblock The performance of mutual funds in the period 1945--1964.
+\newblock {\em Journal of Finance}, 23(2):389--416.
+
+\bibitem[Lintner, 1965]{Lintner1965}
+Lintner, J. (1965).
+\newblock The valuation of risk assets and the selection of risky investments
+  in stock portfolios and capital budgets.
+\newblock {\em Review of Economics and Statistics}, 47(1):13--37.
+
+\bibitem[Lott and Mustard, 1997]{LottMustard1997}
+Lott, Jr., J.~R. and Mustard, D.~B. (1997).
+\newblock Crime, deterrence, and right-to-carry concealed handguns.
+\newblock {\em Journal of Legal Studies}, 26(1):1--68.
+
+\bibitem[{National Research Council}, 2005]{NRC2005}
+{National Research Council} (2005).
+\newblock Firearms and violence: A critical review.
+\newblock Technical report, The National Academies Press, Washington, DC.
+
+\bibitem[Sharpe, 1964]{Sharpe1964}
+Sharpe, W.~F. (1964).
+\newblock Capital asset prices: A theory of market equilibrium under conditions
+  of risk.
+\newblock {\em Journal of Finance}, 19(3):425--442.
+
+\bibitem[Stock and Watson, 2020]{StockWatson2020}
+Stock, J.~H. and Watson, M.~W. (2020).
+\newblock {\em Introduction to Econometrics}.
+\newblock Pearson, New York, 4th edition.
+
+\bibitem[Wooldridge, 2019]{Wooldridge2019}
+Wooldridge, J.~M. (2019).
+\newblock {\em Introductory Econometrics: A Modern Approach}.
+\newblock Cengage Learning, Boston, 7th edition.
+
+\end{thebibliography}
