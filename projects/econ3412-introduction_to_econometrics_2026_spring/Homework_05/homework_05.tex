@@ -121,8 +121,8 @@
 % ------------------------------------------------------------
 \input{tyler-pset.tex}
 
-% Override citation link color to black
-\hypersetup{citecolor=black}
+% Override link colors to black
+\hypersetup{citecolor=black, linkcolor=black}
 
 % Optional compile toggles
 % \excludeversion{problem}
@@ -776,42 +776,47 @@ The recommended approach depends on the research question. If the goal is to est
 \bigskip
 
 \subsection*{SW Exercise 10.1}
+\addcontentsline{toc}{subsection}{SW Exercise 10.1: Drunk Driving Panel Data}
 
 \begin{problem}
 This exercise refers to the drunk driving panel data regression summarized in Table 10.1.
+\end{problem}
 
-\begin{enumerate}
-\item New Jersey has a population of 8.85 million people. Suppose New Jersey increased the tax on a case of beer by \$2 (in 1988 dollars). Use the results in column (5) to predict the number of lives that would be saved over the next year. Construct a 99\% confidence interval for your answer.
-\item The drinking age in New Jersey is 21. Suppose that New Jersey lowered its drinking age to 19. Use the results in column (5) to predict the change in the number of traffic fatalities in the next year. Construct a 95\% confidence interval for your answer.
-\item Suppose real income per capita in New Jersey increases by 3\% in the next year. Use the results in column (6) to predict the change in the number of traffic fatalities in the next year. Construct a 95\% confidence interval for your answer.
-\item How should standard errors be clustered in the regressions in columns (2) through (7)?
-\item How should minimum drinking age be included in the regressions? Should it enter as a continuous variable or as a series of indicator variables? Be specific about the information you use to assess this question.
-\end{enumerate}
+% --- 10.1(a) ---
+\begin{problem}{\textbf{(a)}}
+New Jersey has a population of 8.85 million people. Suppose New Jersey increased the tax on a case of beer by \$2 (in 1988 dollars). Use the results in column (5) to predict the number of lives that would be saved over the next year. Construct a 99\% confidence interval for your answer.
 \end{problem}
 
 \begin{solution}
-This exercise uses the regressions in Table 10.1 (\citealt{StockWatson2020}, p.~336), which reports panel regressions of the traffic fatality rate (deaths per 10,000 people) on beer taxes, drinking-age laws, and other controls for 48 U.S.\ states over 1982--1988, with state and year fixed effects and clustered standard errors.
-
-\medskip
-\textbf{(a)} From column (5), the coefficient on \textit{Beer tax} is $\hat{\beta} = -0.69$ with $\text{SE} = 0.35$ and 95\% CI $[-1.38, 0.00]$. The dependent variable is the fatality rate per 10,000 people. The predicted change in the fatality rate from a \$2 tax increase is $\Delta \widehat{\textit{FatalityRate}} = -0.69 \times 2 = -1.38$ deaths per 10,000. For New Jersey (population 8.85 million = 885 units of 10,000), the predicted number of lives saved is
+From column (5) of Table 10.1 (\citealt{StockWatson2020}, p.~336), the coefficient on \textit{Beer tax} is $\hat{\beta} = -0.69$ with $\text{SE} = 0.35$ and 95\% CI $[-1.38, 0.00]$. The dependent variable is the fatality rate per 10,000 people. The predicted change in the fatality rate from a \$2 tax increase is $\Delta \widehat{\textit{FatalityRate}} = -0.69 \times 2 = -1.38$ deaths per 10,000. For New Jersey (population 8.85 million = 885 units of 10,000), the predicted number of lives saved is
 \[
 \Delta \widehat{\textit{Deaths}} = -1.38 \times 885 = -1221.3.
 \]
 For the 99\% CI, note that $\Delta \widehat{\textit{Deaths}} = \hat{\beta} \times 2 \times 885 = 1770 \times \hat{\beta}$. The 99\% CI for $\hat{\beta}$ is $\hat{\beta} \pm 2.576 \times \text{SE} = -0.69 \pm 2.576(0.35) = [-1.59, 0.21]$. Multiplying by $1770$:
 \[
-\boxed{99\%\;\text{CI for lives saved} = [1770 \times (-1.59),\; 1770 \times 0.21] = [-2814,\; 372].}
+\boxed{99\%\;\text{CI for lives saved} = [-2814,\; 372].}
 \]
 The point estimate predicts about 1,221 lives saved, but the confidence interval includes positive values (i.e., more deaths), reflecting the imprecision of the beer tax coefficient.
+\end{solution}
 
-\medskip
-\textbf{(b)} From column (5), the drinking-age variables enter as indicators for ages 18, 19, and 20 (with age 21 as the omitted category). To predict the effect of lowering the drinking age from 21 to 19, we use the coefficient on ``Drinking age 19,'' which is $\hat{\delta}_{19} = -0.08$ with $\text{SE} = 0.07$ and 95\% CI $[-0.21, 0.06]$. The predicted change in the fatality rate is $\Delta \widehat{\textit{FatalityRate}} = -0.08$ per 10,000. For New Jersey: $\Delta \widehat{\textit{Deaths}} = -0.08 \times 885 = -70.8$. The 95\% CI is $[885 \times (-0.21),\; 885 \times 0.06]$:
+% --- 10.1(b) ---
+\begin{problem}{\textbf{(b)}}
+The drinking age in New Jersey is 21. Suppose that New Jersey lowered its drinking age to 19. Use the results in column (5) to predict the change in the number of traffic fatalities in the next year. Construct a 95\% confidence interval for your answer.
+\end{problem}
+\begin{solution}
+From column (5), the drinking-age variables enter as indicators for ages 18, 19, and 20 (with age 21 as the omitted category). To predict the effect of lowering the drinking age from 21 to 19, we use the coefficient on ``Drinking age 19,'' which is $\hat{\delta}_{19} = -0.08$ with $\text{SE} = 0.07$ and 95\% CI $[-0.21, 0.06]$. The predicted change in the fatality rate is $\Delta \widehat{\textit{FatalityRate}} = -0.08$ per 10,000. For New Jersey: $\Delta \widehat{\textit{Deaths}} = -0.08 \times 885 = -70.8$. The 95\% CI is $[885 \times (-0.21),\; 885 \times 0.06]$:
 \[
 \boxed{95\%\;\text{CI for change in deaths} = [-185.9,\; 53.1].}
 \]
 The point estimate suggests about 71 fewer deaths (counterintuitively), but the coefficient is statistically insignificant and the confidence interval includes both negative and positive values. The negative sign likely reflects that variation in drinking-age laws is limited and the effect is imprecisely estimated once state and year fixed effects are included.
+\end{solution}
 
-\medskip
-\textbf{(c)} From column (6), the coefficient on \textit{Real income per capita (logarithm)} is $\hat{\beta}_{\textit{inc}} = 1.79$ with $\text{SE} = 0.64$ and 95\% CI $[1.79 \pm 1.96(0.64)] = [0.54, 3.04]$. Because the regressor is $\ln(\textit{income})$, a 3\% increase in real income corresponds to $\Delta \ln(\textit{income}) = \ln(1.03) \approx 0.0296$. The predicted change in the fatality rate is $\Delta \widehat{\textit{FatalityRate}} = 1.79 \times 0.0296 = 0.0530$ per 10,000. For New Jersey:
+% --- 10.1(c) ---
+\begin{problem}{\textbf{(c)}}
+Suppose real income per capita in New Jersey increases by 3\% in the next year. Use the results in column (6) to predict the change in the number of traffic fatalities in the next year. Construct a 95\% confidence interval for your answer.
+\end{problem}
+\begin{solution}
+From column (6), the coefficient on \textit{Real income per capita (logarithm)} is $\hat{\beta}_{\textit{inc}} = 1.79$ with $\text{SE} = 0.64$ and 95\% CI $[1.79 \pm 1.96(0.64)] = [0.54, 3.04]$. Because the regressor is $\ln(\textit{income})$, a 3\% increase in real income corresponds to $\Delta \ln(\textit{income}) = \ln(1.03) \approx 0.0296$. The predicted change in the fatality rate is $\Delta \widehat{\textit{FatalityRate}} = 1.79 \times 0.0296 = 0.0530$ per 10,000. For New Jersey:
 \[
 \Delta \widehat{\textit{Deaths}} = 0.0530 \times 885 \approx 46.9.
 \]
@@ -820,16 +825,30 @@ The 95\% CI is $[0.54 \times 0.0296 \times 885,\; 3.04 \times 0.0296 \times 885]
 \boxed{95\%\;\text{CI} = [14.2,\; 79.7] \text{ additional deaths}.}
 \]
 Higher income is associated with more traffic deaths, plausibly because higher income leads to more driving. The effect is statistically significant.
-
-\medskip
-\textbf{(d)} Standard errors should be \textbf{clustered at the state level}. Each state is observed over multiple years, and the error terms for a given state are likely serially correlated (e.g., a state with unusually dangerous roads in 1984 will probably still have dangerous roads in 1985). Clustering at the state level allows for arbitrary within-state correlation over time and for heteroskedasticity across states. This is the approach recommended by \citet{BertrandDufloMullainathan2004} and implemented in all columns (2)--(7) of Table 10.1.
-
-\medskip
-\textbf{(e)} The minimum drinking age should enter as a \textbf{series of indicator (dummy) variables} rather than as a continuous variable. The reason is that Table 10.1 provides evidence to assess this question directly. In columns (4) and (5), the drinking age enters as three dummies (age 18, 19, 20), with age 21 as the omitted category. The coefficients are $0.03$, $-0.02$, and $0.03$ in column (4) and $-0.01$, $-0.08$, $-0.10$ in column (5)---they do not follow a monotonic linear pattern. In column (6), the drinking age enters as a single continuous variable with a coefficient of $0.00$ ($\text{SE} = 0.02$), which is completely insignificant. The $F$-test for the joint significance of the three drinking-age dummies yields $F = 0.35$ ($p = 0.786$) in column (4) and $F = 1.41$ ($p = 0.253$) in column (5), both insignificant. The continuous specification masks the potentially nonlinear relationship; thus, indicator variables are preferred because they allow the effect of each age level to be estimated freely without imposing linearity.
 \end{solution}
 
 \begin{reflection}
-Exercise 10.1 reinforces several core panel data concepts. The key calculation skill is translating regression coefficients into real-world predictions: multiplying the coefficient by the change in the regressor and then scaling by the population. The log-level specification in part (c) requires computing $\Delta \ln(\textit{income}) = \ln(1.03)$ rather than simply using 0.03. Part (d) reinforces that clustering at the entity level is essential in panel data to account for serial correlation (\citealt{Arellano1987}; \citealt{BertrandDufloMullainathan2004}). Part (e) illustrates the ``continuous vs.\ dummies'' modeling choice: when the relationship between the regressor and the dependent variable may be nonlinear, indicator variables are more flexible, and the $F$-test for joint significance of the dummies tests whether the variable matters at all.
+Parts (a)--(c) reinforce the key calculation skill of translating regression coefficients into real-world predictions: multiply the coefficient by the change in the regressor, then scale by the population. The log-level specification in part (c) requires computing $\Delta \ln(\textit{income}) = \ln(1.03) \approx 0.0296$ rather than simply using $0.03$---a common mistake. The confidence intervals are constructed by applying the same scaling factor to the endpoints of the coefficient's CI, which is valid because the transformation is linear in $\hat{\beta}$.
+\end{reflection}
+
+% --- 10.1(d) ---
+\begin{problem}{\textbf{(d)}}
+How should standard errors be clustered in the regressions in columns (2) through (7)?
+\end{problem}
+\begin{solution}
+Standard errors should be \textbf{clustered at the state level}. Each state is observed over multiple years, and the error terms for a given state are likely serially correlated (e.g., a state with unusually dangerous roads in 1984 will probably still have dangerous roads in 1985). Clustering at the state level allows for arbitrary within-state correlation over time and for heteroskedasticity across states. This is the approach recommended by \citet{BertrandDufloMullainathan2004} and implemented in all columns (2)--(7) of Table 10.1. Without clustering, standard errors would be too small and we would over-reject the null hypothesis.
+\end{solution}
+
+% --- 10.1(e) ---
+\begin{problem}{\textbf{(e)}}
+How should minimum drinking age be included in the regressions? Should it enter as a continuous variable or as a series of indicator variables? Be specific about the information you use to assess this question.
+\end{problem}
+\begin{solution}
+The minimum drinking age should enter as a \textbf{series of indicator (dummy) variables} rather than as a continuous variable. Table 10.1 provides direct evidence to assess this question. In columns (4) and (5), the drinking age enters as three dummies (age 18, 19, 20), with age 21 as the omitted category. The coefficients are $0.03$, $-0.02$, and $0.03$ in column (4) and $-0.01$, $-0.08$, $-0.10$ in column (5)---they do not follow a monotonic linear pattern. In column (6), the drinking age enters as a single continuous variable with a coefficient of $0.00$ ($\text{SE} = 0.02$), which is completely insignificant. The $F$-test for the joint significance of the three drinking-age dummies yields $F = 0.35$ ($p = 0.786$) in column (4) and $F = 1.41$ ($p = 0.253$) in column (5), both insignificant. The continuous specification masks the potentially nonlinear relationship; thus, indicator variables are preferred because they allow the effect of each age level to be estimated freely without imposing linearity.
+\end{solution}
+
+\begin{reflection}
+Parts (d) and (e) address two important modeling decisions in panel data. Part (d) reinforces that clustering at the entity level is essential to account for serial correlation (\citealt{Arellano1987}; \citealt{BertrandDufloMullainathan2004}). Part (e) illustrates the ``continuous vs.\ dummies'' modeling choice: when the relationship between the regressor and the dependent variable may be nonlinear, indicator variables are more flexible, and the $F$-test for joint significance of the dummies tests whether the variable matters at all. Notably, even though neither the continuous coefficient nor the individual dummies are significant, the dummies are preferred because they do not impose a functional form that the data do not support.
 \end{reflection}
 
 \bigskip
@@ -894,54 +913,34 @@ This exercise clarifies an important but often confusing point about the two equ
 \bigskip
 
 \subsection*{SW Empirical Exercise E10.2}
+\addcontentsline{toc}{subsection}{SW Empirical Exercise E10.2: Income and Democracy}
 
 \begin{problem}
-Do citizens demand more democracy and political freedom as their incomes grow? That is, is democracy a normal good? On the text website, you will find the data file \textbf{Income\_Democracy}, which contains a panel data set from 195 countries for the years 1960, 1965, \ldots, 2000. A detailed description is given in \textbf{Income\_Democracy\_Description}, available on the website. The data set contains an index of political freedom/democracy for each country in each year, together with data on each country's income and various demographic controls. (The income and demographic controls are lagged five years relative to the democracy index to allow time for democracy to adjust to changes in these variables.)
-
-\begin{enumerate}
-\item Is the data set a balanced panel? Explain.
-
-\item The index of political freedom/democracy is labeled \textit{Dem\_ind}.
-\begin{enumerate}[label=(\roman*)]
-\item What are the minimum and maximum values of \textit{Dem\_ind} in the data set? What are the mean and standard deviation of \textit{Dem\_ind} in the data set? What are the 10th, 25th, 50th, 75th, and 90th percentiles of its distribution?
-\item What is the value of \textit{Dem\_ind} for the United States in 2000? Averaged over all years in the data set?
-\item What is the value of \textit{Dem\_ind} for Libya in 2000? Averaged over all years in the data set?
-\item List five countries with an average value of \textit{Dem\_ind} greater than 0.95; less than 0.10; and between 0.3 and 0.7.
-\end{enumerate}
-
-\item The logarithm of per capita income is labeled \textit{Log\_GDPPC}. Regress \textit{Dem\_ind} on \textit{Log\_GDPPC}. Use standard errors that are clustered by country.
-\begin{enumerate}[label=(\roman*)]
-\item How large is the estimated coefficient on \textit{Log\_GDPPC}? Is the coefficient statistically significant?
-\item If per capita income in a country increases by 20\%, by how much is \textit{Dem\_ind} predicted to increase? What is a 95\% confidence interval for the prediction? Is the predicted increase in \textit{Dem\_ind} large or small? (Explain what you mean by large or small.)
-\item Why is it important to use clustered standard errors for the regression? Do the results change if you do not use clustered standard errors?
-\end{enumerate}
-
-\item
-\begin{enumerate}[label=(\roman*)]
-\item Suggest a variable that varies across countries but plausibly varies little---or not at all---over time and that could cause omitted variable bias in the regression in (c).
-\item Estimate the regression in (c), allowing for country fixed effects. How do your answers to (c)(i) and (c)(ii) change?
-\item Exclude the data for Azerbaijan, and rerun the regression. Do the results change? Why or why not?
-\item Suggest a variable that varies over time but plausibly varies little---or not at all---across countries and that could cause omitted variable bias in the regression in (c).
-\item Estimate the regression in (c), allowing for time and country fixed effects. How do your answers to (c)(i) and (c)(ii) change?
-\item There are additional demographic controls in the data set. Should these variables be included in the regression? If so, how do the results change when they are included?
-\end{enumerate}
-
-\item Based on your analysis, what conclusions do you draw about the effects of income on democracy?
-\end{enumerate}
-\end{problem}
-
-\begin{solution}
-The dataset \texttt{income\_democracy.dta} contains a panel of up to 195 countries observed every five years from 1960 to 2000 (9 time periods). The key variables are $\texttt{Dem\_ind}$ (a democracy index scaled 0 to 1) and $\texttt{Log\_GDPPC}$ (the log of real GDP per capita, lagged 5 years). The Stata commands and results below draw on the analysis in Recitation~9.
+Do citizens demand more democracy and political freedom as their incomes grow? That is, is democracy a normal good? The data file \textbf{Income\_Democracy} contains a panel data set from 195 countries for the years 1960, 1965, \ldots, 2000. The data set contains an index of political freedom/democracy (\textit{Dem\_ind}) for each country--year, together with log per capita income (\textit{Log\_GDPPC}) and demographic controls (lagged five years).
 
 \begin{verbatim}
   use "income_democracy.dta", clear
   xtset code year, delta(5)
 \end{verbatim}
+\end{problem}
 
-\medskip
-\textbf{(a)} A \textbf{balanced panel} requires every cross-sectional unit to be observed in every time period. Tabulating observations by year reveals that $N$ ranges from 95 in 1960 to 195 in 2000, so the panel is \textbf{unbalanced}. New countries enter the dataset over time as former colonies gain independence and post-Soviet states appear after 1990.
+% --- E10.2(a) ---
+\begin{problem}{\textbf{(a)}}
+Is the data set a balanced panel? Explain.
+\end{problem}
+\begin{solution}
+A \textbf{balanced panel} requires every cross-sectional unit to be observed in every time period (\citealt{StockWatson2020}, \S10.1). Tabulating observations by year (\texttt{tab year}) reveals that $N$ ranges from 95 in 1960 to 195 in 2000, so the panel is \textbf{unbalanced}. New countries enter the dataset over time as former colonies gain independence and post-Soviet states appear after 1990.
 
-\medskip
+\[
+\boxed{\text{The panel is unbalanced: } N \text{ ranges from 95 (1960) to 195 (2000).}}
+\]
+\end{solution}
+
+% --- E10.2(b) ---
+\begin{problem}{\textbf{(b)}}
+Explore the democracy index \textit{Dem\_ind}: summary statistics, percentiles, values for the U.S.\ and Libya, and country classifications.
+\end{problem}
+\begin{solution}
 \textbf{(b)(i)} Using \texttt{summarize dem\_ind, detail}:
 
 \begin{center}
@@ -961,7 +960,7 @@ The distribution is roughly bimodal: many country-years cluster near 0 (autocrac
 
 \textbf{(b)(ii--iii)} The United States scores 1.0 in 2000 with an all-years average of 0.986 (slightly below 1 because early years capture pre--civil-rights-era restrictions). Libya scores 0.0 in 2000 with an all-years average of 0.109 under the Gaddafi regime.
 
-\textbf{(b)(iv)}
+\textbf{(b)(iv)} Computing country-level means via \texttt{bysort country: egen avg\_dem = mean(dem\_ind)}:
 
 \begin{center}
 \small
@@ -978,28 +977,57 @@ United States & Saudi Arabia & Turkey \\
 \end{tabular}
 \end{center}
 
-\medskip
-\textbf{(c)(i)} The pooled OLS regression $\texttt{Dem\_ind}_{it} = \beta_0 + \beta_1 \texttt{Log\_GDPPC}_{it} + u_{it}$ with clustered standard errors yields $\hat{\beta}_1 = 0.236$ ($\text{SE} = 0.012$, $t = 19.91$, $p < 0.001$). The coefficient is highly statistically significant: a one-unit increase in log GDP per capita (roughly a 170\% increase in income) is associated with a 0.236-point increase in the democracy index.
+The first group consists of long-standing, stable democracies. The second group consists of persistently authoritarian regimes. The third group contains ``hybrid'' or transitional regimes that experienced varying degrees of political freedom over the sample period.
+\end{solution}
 
-\textbf{(c)(ii)} A 20\% increase in income corresponds to $\Delta \ln(\textit{GDPPC}) = \ln(1.20) \approx 0.1823$. The predicted change is $\Delta \widehat{\texttt{Dem\_ind}} = 0.236 \times 0.1823 \approx 0.043$. The 95\% CI for $\hat{\beta}_1$ is $[0.212, 0.259]$, so the 95\% CI for $\Delta \texttt{Dem\_ind}$ is $[0.212 \times 0.1823,\; 0.259 \times 0.1823] = [0.039, 0.047]$. On a 0-to-1 scale, an increase of $\approx 0.043$ is \textbf{relatively small}: a substantial 20\% income increase closes less than 5\% of the gap between a fully autocratic and fully democratic country.
+% --- E10.2(c) ---
+\begin{problem}{\textbf{(c)}}
+Regress \textit{Dem\_ind} on \textit{Log\_GDPPC} with clustered standard errors. Interpret the coefficient, predict the effect of a 20\% income increase, and explain why clustering matters.
+\end{problem}
+\begin{solution}
+\textbf{(c)(i)} The pooled OLS regression $\texttt{Dem\_ind}_{it} = \beta_0 + \beta_1 \texttt{Log\_GDPPC}_{it} + u_{it}$ with standard errors clustered by country (\texttt{reg dem\_ind log\_gdppc, cluster(code)}) yields $\hat{\beta}_1 = 0.236$ ($\text{SE} = 0.012$, $t = 19.91$, $p < 0.001$). The coefficient is highly statistically significant: a one-unit increase in log GDP per capita (roughly a 170\% increase in income) is associated with a 0.236-point increase in the democracy index on a 0-to-1 scale.
+
+\textbf{(c)(ii)} A 20\% increase in income corresponds to $\Delta \ln(\textit{GDPPC}) = \ln(1.20) \approx 0.1823$. The predicted change is
+\[
+\Delta \widehat{\texttt{Dem\_ind}} = 0.236 \times 0.1823 \approx \boxed{0.043}.
+\]
+The 95\% CI for $\hat{\beta}_1$ is $[0.212, 0.259]$, so the 95\% CI for $\Delta \texttt{Dem\_ind}$ is $[0.039, 0.047]$. On a 0-to-1 scale, this is \textbf{relatively small}: a substantial 20\% income increase closes less than 5\% of the gap between a fully autocratic and fully democratic country.
 
 \textbf{(c)(iii)} Clustering is essential because panel observations within each country are serially correlated: a country that is more democratic than predicted in 1980 is likely still so in 1985. Without clustering, standard errors are too small ($\text{SE} = 0.0086$ vs.\ $0.012$ clustered), leading to inflated $t$-statistics and spuriously precise confidence intervals. The point estimate is unaffected by clustering---only the standard errors change.
+\end{solution}
 
-\medskip
-\textbf{(d)(i)} A strong candidate is a country's \textbf{colonial/legal origin} (e.g., British common law vs.\ French civil law). This is essentially time-invariant, varies across countries, and is correlated with both income (former British colonies tend to be richer) and democracy (they inherited democratic institutions). Omitting it biases the pooled OLS upward.
+\begin{reflection}
+The pooled OLS estimate of $\hat{\beta}_1 = 0.236$ is large and highly significant, suggesting that richer countries are substantially more democratic. However, this regression exploits both between-country and within-country variation, and the between-country component is likely contaminated by time-invariant confounders. The clustering discussion reinforces \citet{BertrandDufloMullainathan2004}: without clustering, standard errors are biased downward by about 27\% here, which could lead to over-rejection of the null in weaker settings.
+\end{reflection}
 
-\textbf{(d)(ii)} With country fixed effects (\texttt{xtreg dem\_ind log\_gdppc, fe cluster(code)}), the coefficient drops dramatically from 0.236 to $\hat{\beta}_1 = 0.084$ ($\text{SE} = 0.032$, $t = 2.66$, $p = 0.009$)---a 64\% reduction. The effect of a 20\% income increase falls from 0.043 to $0.084 \times 0.1823 \approx 0.015$. Most of the pooled OLS correlation was driven by between-country differences (rich countries are democracies), not within-country income growth causing democratization.
+% --- E10.2(d) ---
+\begin{problem}{\textbf{(d)}}
+Investigate omitted variable bias, country fixed effects, the Azerbaijan exclusion, time-varying confounders, two-way fixed effects, and demographic controls.
+\end{problem}
+\begin{solution}
+\textbf{(d)(i)} A strong candidate for a time-invariant omitted variable is a country's \textbf{colonial/legal origin} (e.g., British common law vs.\ French civil law). This is essentially fixed over time, varies across countries, and is correlated with both income (former British colonies tend to be richer) and democracy (they inherited parliamentary institutions and common-law protections). Omitting it biases the pooled OLS coefficient upward. Other valid examples include geography/climate, ethnic fractionalization, and religious composition.
 
-\textbf{(d)(iii)} Excluding Azerbaijan has \textbf{no effect} on the results ($\hat{\beta}_1 = 0.084$, $n$ drops from 958 to 957). Azerbaijan has only one observation (year 2000), so the within estimator---which requires over-time variation---assigns it zero weight. Its demeaned values are identically zero. Any country observed in only one period is automatically irrelevant to the FE estimator.
+\textbf{(d)(ii)} With country fixed effects (\texttt{xtreg dem\_ind log\_gdppc, fe cluster(code)}), the coefficient drops dramatically from 0.236 to $\hat{\beta}_1 = 0.084$ ($\text{SE} = 0.032$, $t = 2.66$, $p = 0.009$)---a 64\% reduction. The effect of a 20\% income increase falls to $0.084 \times 0.1823 \approx 0.015$. Most of the pooled OLS correlation was driven by between-country differences, not within-country income growth causing democratization. The coefficient remains significant, but the standard error nearly triples.
 
-\textbf{(d)(iv)} A natural candidate is a \textbf{global democratization wave} (the international political ``climate'' in each period). This varies over time (decolonization in the 1960s, the third wave of democratization in the 1980s--90s, the end of the Cold War) but is roughly constant across countries in any given year. It is correlated with both global income growth and democracy, creating omitted variable bias. The fix is to include time fixed effects (year dummies).
+\textbf{(d)(iii)} Excluding Azerbaijan has \textbf{no effect} on the results ($\hat{\beta}_1 = 0.084$, $n$ drops from 958 to 957). Azerbaijan has only one observation (year 2000), so the within estimator---which identifies $\beta_1$ from over-time variation---assigns it zero weight. When a country has only one observation, its demeaned values are identically zero: $\tilde{y}_{it} = y_{it} - \bar{y}_i = 0$. Any country observed in only one period is automatically irrelevant to the FE estimator, regardless of whether it is formally included.
 
-\textbf{(d)(v)} With two-way FE (entity + time: \texttt{xtreg dem\_ind log\_gdppc i.year, fe cluster(code)}), the coefficient drops further to $\hat{\beta}_1 = 0.054$ ($\text{SE} = 0.042$, $t = 1.26$, $p = 0.209$). The 95\% CI is $[-0.030, 0.137]$, which \textbf{includes zero}. The effect of a 20\% income increase is now $0.054 \times 0.1823 \approx 0.010$---less than one percentage point and statistically insignificant. The year $F$-test yields $F = 5.73$ ($p < 0.001$), confirming that time effects are jointly significant.
+\textbf{(d)(iv)} A natural candidate for a time-varying, cross-sectionally-constant omitted variable is a \textbf{global democratization wave}---the international political ``climate'' in each period. Decolonization in the 1960s, the third wave of democratization in the 1980s--90s, and the end of the Cold War all affected democracy worldwide. These global forces also coincided with income growth trends, creating omitted variable bias. The fix is to include time fixed effects (year dummies).
 
-\textbf{(d)(vi)} Adding demographic controls (age shares, education, log population) to the two-way FE model further attenuates the coefficient to $\hat{\beta}_1 = 0.025$ ($\text{SE} = 0.054$, $t = 0.47$, $p = 0.642$). The 95\% CI is $[-0.082, 0.132]$. The $F$-test for joint significance of all demographic controls yields $F = 1.44$ ($p = 0.21$)---they are not jointly significant. The sample drops from 958 to 680 due to missing education data.
+\textbf{(d)(v)} With two-way FE (\texttt{xtreg dem\_ind log\_gdppc i.year, fe cluster(code)}), the coefficient drops further to $\hat{\beta}_1 = 0.054$ ($\text{SE} = 0.042$, $t = 1.26$, $p = 0.209$). The 95\% CI is $[-0.030, 0.137]$, which \textbf{includes zero}. The effect of a 20\% income increase is now $0.054 \times 0.1823 \approx 0.010$---less than one percentage point and statistically insignificant. The year $F$-test yields $F = 5.73$ ($p < 0.001$), confirming that time effects are jointly significant and should be included.
 
-\medskip
-\textbf{(e)} The progressive results are summarized in the table below:
+\textbf{(d)(vi)} Adding demographic controls (five age-distribution shares, average years of education, log population) to the two-way FE model further attenuates the coefficient to $\hat{\beta}_1 = 0.025$ ($\text{SE} = 0.054$, $t = 0.47$, $p = 0.642$). The 95\% CI is $[-0.082, 0.132]$. The $F$-test for joint significance of all demographic controls yields $F = 1.44$ ($p = 0.21$)---they are not jointly significant. The sample drops from 958 to 680 due to missing education data. The bottom line is unchanged: once entity and time FE are accounted for, income has no significant effect on democracy.
+\end{solution}
+
+\begin{reflection}
+The progressive attenuation of $\hat{\beta}_1$ from 0.236 to 0.025 as controls are added is the single most important takeaway from this exercise. It mirrors exactly the pattern in Problems 1--2 of this problem set, where the shall-issue coefficient shrank from $-0.443$ to $-0.028$. In both cases, pooled OLS is severely biased by time-invariant confounders, and the within estimator eliminates this bias. The Azerbaijan example is a subtle but important point: entities observed in only one period have zero within-variation and contribute nothing to the FE estimator. This is a fundamental feature of the within transformation and a key difference from pooled OLS, which uses all observations regardless.
+\end{reflection}
+
+% --- E10.2(e) ---
+\begin{problem}{\textbf{(e)}}
+Based on your analysis, what conclusions do you draw about the effects of income on democracy?
+\end{problem}
+\begin{solution}
+The progressive results are summarized below:
 
 \begin{center}
 \small
@@ -1016,7 +1044,7 @@ $+$ Entity \& Time FE & Demographics & 0.025 & No ($p = 0.642$) \\
 \end{tabular}
 \end{center}
 
-The strong cross-country correlation between income and democracy ($\hat{\beta}_1 = 0.236$ in pooled OLS) is largely spurious, driven by time-invariant confounders such as colonial history, geography, and culture. Once country fixed effects are included, the coefficient drops by 64\%, and once time fixed effects are added, it becomes statistically insignificant. In the most demanding specifications (two-way FE $\pm$ controls), the effect of income on democracy is small, insignificant, and its confidence interval includes zero. A 20\% increase in per capita income---substantial economic growth---is predicted to raise the democracy index by less than one percentage point, and we cannot reject a true effect of zero.
+The strong cross-country correlation between income and democracy ($\hat{\beta}_1 = 0.236$ in pooled OLS) is largely spurious, driven by time-invariant confounders such as colonial history, geography, and culture. Once country fixed effects are included, the coefficient drops by 64\%, and once time fixed effects are added, it becomes statistically insignificant. In the most demanding specifications, the effect is small, insignificant, and its confidence interval includes zero. A 20\% increase in per capita income is predicted to raise the democracy index by less than one percentage point, and we cannot reject a true effect of zero.
 
 \begin{center}
 \fbox{\parbox{0.85\textwidth}{\centering
@@ -1028,9 +1056,7 @@ This conclusion is consistent with \citet{StockWatson2020}, Ch.~10, and the infl
 \end{solution}
 
 \begin{reflection}
-Empirical Exercise E10.2 is the single most instructive exercise in the chapter because it demonstrates the entire logic of panel data econometrics in a single application. The key lesson is that the cross-sectional (between-country) correlation between income and democracy is large and statistically significant, but it is almost entirely attributable to omitted time-invariant confounders. As we progressively add entity FE, time FE, and controls, the coefficient shrinks from 0.236 to 0.025 and loses significance. This pattern is strikingly parallel to the concealed-carry analysis in Problems 1--2 of this problem set, where the shall-issue coefficient shrank from $-0.443$ to $-0.028$ as fixed effects were added. In both cases, the moral is the same: pooled OLS can be severely misleading when unobserved heterogeneity is present, and fixed effects estimation is essential for credible causal inference in panel data.
-
-The Azerbaijan example is a subtle but important pedagogical point: entities observed in only one time period contribute zero information to the within estimator, because there is no within-entity variation to exploit. This is a fundamental feature of the FE approach and a key difference from pooled OLS, which uses all observations regardless of how many periods each entity contributes.
+The overarching lesson of E10.2 is that \emph{correlation is not causation}, and panel data methods provide a powerful toolkit for distinguishing the two. The fact that rich countries tend to be democracies does not mean that making a country richer will make it more democratic. The between-country correlation reflects centuries of divergent institutional development---colonial legacies, legal traditions, geographic endowments---that simultaneously determined both income levels and political institutions. Fixed effects estimation strips away these confounders by focusing on within-country changes over time, revealing that the causal effect of income growth on democratization is, at best, very small. This finding has profound implications for development policy: promoting economic growth alone is unlikely to trigger political liberalization without complementary institutional reforms.
 \end{reflection}
 
 \newpage
