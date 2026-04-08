@@ -163,7 +163,7 @@ Estimate
 A regression of $\ln(\textit{vio})$ against \textit{shall}.
 \end{problem}
 \begin{solution}
-The baseline specification regresses the natural log of the violent crime rate on the shall-issue indicator alone, using heteroskedasticity-robust (Eicker--Huber--White) standard errors. In Stata:
+The data are from \texttt{handguns.dta}, a balanced panel of 51 U.S.\ states (including D.C.) over 1977--1999 ($n = 1{,}173$), with crime rates from the Bureau of Justice Statistics \citep{BJS}. This dataset was used in the influential debate between \citet{LottMustard1997} and \citet{DonohueAyres2003} on shall-issue laws and crime. The baseline specification regresses the natural log of the violent crime rate on the shall-issue indicator alone, using heteroskedasticity-robust (Eicker--Huber--White) standard errors. In Stata:
 
 \begin{verbatim}
     use "handguns.dta", clear
@@ -667,7 +667,7 @@ Now, in order to implement your strategy discussed above, go to Yahoo Finance we
 \end{problem}
 \begin{solution}
 
-\textbf{Data Collection and Construction.} Daily adjusted close prices were downloaded from Yahoo Finance for ten U.S.\ companies spanning diverse sectors and the S\&P 500 index (\texttt{\textasciicircum GSPC}) for the period January 1, 2021 through January 1, 2026. The ten firms are:
+\textbf{Data Collection and Construction.} Daily adjusted close prices were downloaded from Yahoo Finance \citep{YahooFinance2026} using the \texttt{yfinance} Python package \citep{yfinance} for ten U.S.\ companies spanning diverse sectors and the S\&P 500 index (\texttt{\textasciicircum GSPC}) for the period January 1, 2021 through January 1, 2026. The ten firms are:
 
 \medskip
 \begin{center}
@@ -1052,7 +1052,7 @@ Democracy does not appear to be a ``normal good'' in the causal sense. The incom
 }}
 \end{center}
 
-This conclusion is consistent with \citet{StockWatson2020}, Ch.~10, and the influential findings of Acemoglu, Johnson, Robinson, and Yared (2008, \textit{American Economic Review}), who argue that the income--democracy relationship reflects joint determination by historical institutional development rather than a causal ``modernization'' effect.
+This conclusion is consistent with \citet{StockWatson2020}, Ch.~10, and the influential findings of \citet{AcemogluEtAl2008}, who argue that the income--democracy relationship reflects joint determination by historical institutional development rather than a causal ``modernization'' effect.
 \end{solution}
 
 \begin{reflection}

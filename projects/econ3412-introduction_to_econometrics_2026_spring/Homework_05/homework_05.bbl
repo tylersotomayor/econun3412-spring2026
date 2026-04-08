@@ -1,14 +1,33 @@
 \begin{thebibliography}{}
 
+\bibitem[Acemoglu et~al., 2008]{AcemogluEtAl2008}
+Acemoglu, D., Johnson, S., Robinson, J.~A., and Yared, P. (2008).
+\newblock Income and democracy.
+\newblock {\em American Economic Review}, 98(3):808--842.
+
 \bibitem[Arellano, 1987]{Arellano1987}
 Arellano, M. (1987).
 \newblock Computing robust standard errors for within-groups estimators.
 \newblock {\em Oxford Bulletin of Economics and Statistics}, 49(4):431--434.
 
+\bibitem[Aroussi, 2024]{yfinance}
+Aroussi, R. (2024).
+\newblock \texttt{yfinance}: Download market data from {Yahoo! Finance}'s
+  {API}.
+\newblock \url{https://github.com/ranaroussi/yfinance}.
+\newblock Python package, version 0.2.x.
+
 \bibitem[Bertrand et~al., 2004]{BertrandDufloMullainathan2004}
 Bertrand, M., Duflo, E., and Mullainathan, S. (2004).
 \newblock How much should we trust differences-in-differences estimates?
 \newblock {\em Quarterly Journal of Economics}, 119(1):249--275.
+
+\bibitem[{Bureau of Justice Statistics}, 2003]{BJS}
+{Bureau of Justice Statistics} (2003).
+\newblock Uniform crime reports: State-level crime data.
+\newblock Technical report, U.S.\ Department of Justice.
+\newblock Data provided by Donohue and Ayres (2003) via Stock and Watson
+  companion website.
 
 \bibitem[Dimson, 1979]{Dimson1979}
 Dimson, E. (1979).
@@ -72,5 +91,12 @@ Stock, J.~H. and Watson, M.~W. (2020).
 Wooldridge, J.~M. (2019).
 \newblock {\em Introductory Econometrics: A Modern Approach}.
 \newblock Cengage Learning, Boston, 7th edition.
+
+\bibitem[{Yahoo Finance}, 2026]{YahooFinance2026}
+{Yahoo Finance} (2026).
+\newblock Historical price data.
+\newblock \url{https://finance.yahoo.com}.
+\newblock Adjusted close prices retrieved via the \texttt{yfinance} Python
+  package (v0.2.x) on April 7, 2026.
 
 \end{thebibliography}
