@@ -1,0 +1,317 @@
+------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/homework_06/do_files/explore_data.log
+  log type:  text
+ opened on:  13 Apr 2026, 12:10:16
+
+. 
+. * ----------------------------------------------------------
+. * 1. employment_08_09.dta  (used for SW 11.1 parts a-g)
+. * ----------------------------------------------------------
+. use "../data/employment_08_09.dta", clear
+
+. describe
+
+Contains data from ../data/employment_08_09.dta
+ Observations:         5,412                  
+    Variables:            21                  14 Oct 2014 16:02
+------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+------------------------------------------------------------------------------
+age             byte    %8.0g                 Age
+race            byte    %8.0g                 Race
+earnwke         double  %10.0g                (e&dp) Earnings per week
+employed        float   %9.0g                 
+unemployed      float   %9.0g                 
+married         float   %9.0g                 
+union           float   %9.0g                 
+ne_states       float   %9.0g                 
+so_states       float   %9.0g                 
+ce_states       float   %9.0g                 
+we_states       float   %9.0g                 
+government      float   %9.0g                 
+private         float   %9.0g                 
+self            float   %9.0g                 
+educ_lths       float   %9.0g                 
+educ_hs         float   %9.0g                 
+educ_somecol    float   %9.0g                 
+educ_aa         float   %9.0g                 
+educ_bac        float   %9.0g                 
+educ_adv        float   %9.0g                 
+female          float   %9.0g                 
+------------------------------------------------------------------------------
+Sorted by: 
+
+. summarize
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         age |      5,412    42.60237    11.56349         18         63
+        race |      5,412    1.227827    .5647976          1          3
+     earnwke |      4,773    848.4194    586.2927          0    2884.61
+    employed |      5,412    .8754619    .3302249          0          1
+  unemployed |      5,412    .0441611    .2054719          0          1
+-------------+---------------------------------------------------------
+     married |      5,412    .6505913    .4768273          0          1
+       union |      5,412    .1269401    .3329367          0          1
+   ne_states |      5,412    .2104582    .4076718          0          1
+   so_states |      5,412    .2921286    .4547831          0          1
+   ce_states |      5,412    .2498152     .432946          0          1
+-------------+---------------------------------------------------------
+   we_states |      5,412    .2475979    .4316568          0          1
+  government |      5,412    .1762749    .3810891          0          1
+     private |      5,412    .7056541    .4557903          0          1
+        self |      5,412     .118071    .3227219          0          1
+   educ_lths |      5,412     .067997    .2517641          0          1
+-------------+---------------------------------------------------------
+     educ_hs |      5,412    .2758684    .4469921          0          1
+educ_somecol |      5,412    .1969697     .397746          0          1
+     educ_aa |      5,412    .1097561    .3126144          0          1
+    educ_bac |      5,412    .2208056     .414828          0          1
+    educ_adv |      5,412    .1286031    .3347911          0          1
+-------------+---------------------------------------------------------
+      female |      5,412    .4883592    .4999107          0          1
+
+. codebook, compact
+
+Variable       Obs Unique      Mean  Min      Max  Label
+------------------------------------------------------------------------------
+age           5412     46  42.60237   18       63  Age
+race          5412      3  1.227827    1        3  Race
+earnwke       4773   1303  848.4194    0  2884.61  (e&dp) Earnings per week
+employed      5412      2  .8754619    0        1  
+unemployed    5412      2  .0441611    0        1  
+married       5412      2  .6505913    0        1  
+union         5412      2  .1269401    0        1  
+ne_states     5412      2  .2104582    0        1  
+so_states     5412      2  .2921286    0        1  
+ce_states     5412      2  .2498152    0        1  
+we_states     5412      2  .2475979    0        1  
+government    5412      2  .1762749    0        1  
+private       5412      2  .7056541    0        1  
+self          5412      2   .118071    0        1  
+educ_lths     5412      2   .067997    0        1  
+educ_hs       5412      2  .2758684    0        1  
+educ_somecol  5412      2  .1969697    0        1  
+educ_aa       5412      2  .1097561    0        1  
+educ_bac      5412      2  .2208056    0        1  
+educ_adv      5412      2  .1286031    0        1  
+female        5412      2  .4883592    0        1  
+------------------------------------------------------------------------------
+
+. tab employed, missing
+
+   employed |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        674       12.45       12.45
+          1 |      4,738       87.55      100.00
+------------+-----------------------------------
+      Total |      5,412      100.00
+
+. tab unemployed, missing
+
+ unemployed |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      5,173       95.58       95.58
+          1 |        239        4.42      100.00
+------------+-----------------------------------
+      Total |      5,412      100.00
+
+. 
+. * ----------------------------------------------------------
+. * 2. employment_06_07.dta  (used for SW 11.1 part h)
+. * ----------------------------------------------------------
+. use "../data/employment_06_07.dta", clear
+
+. describe
+
+Contains data from ../data/employment_06_07.dta
+ Observations:         5,220                  
+    Variables:            21                  14 Oct 2014 16:01
+------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+------------------------------------------------------------------------------
+age             byte    %26.0g                Age
+race            byte    %36.0g                Race
+earnwke         double  %10.0g                (e&dp) Earnings per week
+employed        float   %9.0g                 
+unemployed      float   %9.0g                 
+married         float   %9.0g                 
+union           float   %9.0g                 
+ne_states       float   %9.0g                 
+so_states       float   %9.0g                 
+ce_states       float   %9.0g                 
+we_states       float   %9.0g                 
+government      float   %9.0g                 
+private         float   %9.0g                 
+self            float   %9.0g                 
+educ_lths       float   %9.0g                 
+educ_hs         float   %9.0g                 
+educ_somecol    float   %9.0g                 
+educ_aa         float   %9.0g                 
+educ_bac        float   %9.0g                 
+educ_adv        float   %9.0g                 
+female          float   %9.0g                 
+------------------------------------------------------------------------------
+Sorted by: 
+
+. summarize
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         age |      5,220    42.34751    11.44868         18         63
+        race |      5,220    1.204981    .5408527          1          3
+     earnwke |      4,569    786.7278    570.4494          0    2884.61
+    employed |      5,220    .8977011    .3030699          0          1
+  unemployed |      5,220    .0164751    .1273058          0          1
+-------------+---------------------------------------------------------
+     married |      5,220    .6542146    .4756692          0          1
+       union |      5,220    .1137931    .3175902          0          1
+   ne_states |      5,220    .2101533    .4074563          0          1
+   so_states |      5,220    .2863985    .4521212          0          1
+   ce_states |      5,220    .2614943    .4394906          0          1
+-------------+---------------------------------------------------------
+   we_states |      5,220     .241954    .4283076          0          1
+  government |      5,220    .1680077    .3739089          0          1
+     private |      5,220    .7072797    .4550547          0          1
+        self |      5,220    .1247126    .3304244          0          1
+   educ_lths |      5,220    .0735632    .2610838          0          1
+-------------+---------------------------------------------------------
+     educ_hs |      5,220    .2944444    .4558363          0          1
+educ_somecol |      5,220    .1913793    .3934246          0          1
+     educ_aa |      5,220    .1145594      .31852          0          1
+    educ_bac |      5,220      .21341     .409754          0          1
+    educ_adv |      5,220    .1126437     .316187          0          1
+-------------+---------------------------------------------------------
+      female |      5,220    .4762452    .4994832          0          1
+
+. codebook, compact
+
+Variable       Obs Unique      Mean  Min      Max  Label
+------------------------------------------------------------------------------
+age           5220     46  42.34751   18       63  Age
+race          5220      3  1.204981    1        3  Race
+earnwke       4569   1261  786.7278    0  2884.61  (e&dp) Earnings per week
+employed      5220      2  .8977011    0        1  
+unemployed    5220      2  .0164751    0        1  
+married       5220      2  .6542146    0        1  
+union         5220      2  .1137931    0        1  
+ne_states     5220      2  .2101533    0        1  
+so_states     5220      2  .2863985    0        1  
+ce_states     5220      2  .2614943    0        1  
+we_states     5220      2   .241954    0        1  
+government    5220      2  .1680077    0        1  
+private       5220      2  .7072797    0        1  
+self          5220      2  .1247126    0        1  
+educ_lths     5220      2  .0735632    0        1  
+educ_hs       5220      2  .2944444    0        1  
+educ_somecol  5220      2  .1913793    0        1  
+educ_aa       5220      2  .1145594    0        1  
+educ_bac      5220      2    .21341    0        1  
+educ_adv      5220      2  .1126437    0        1  
+female        5220      2  .4762452    0        1  
+------------------------------------------------------------------------------
+
+. tab employed, missing
+
+   employed |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        534       10.23       10.23
+          1 |      4,686       89.77      100.00
+------------+-----------------------------------
+      Total |      5,220      100.00
+
+. 
+. * ----------------------------------------------------------
+. * 3. Smoking.dta  (used for SW 11.2 all parts)
+. * ----------------------------------------------------------
+. use "../data/Smoking.dta", clear
+
+. describe
+
+Contains data from ../data/Smoking.dta
+ Observations:        10,000                  
+    Variables:            10                  11 Feb 2002 16:44
+------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+------------------------------------------------------------------------------
+smoker          byte    %8.0g                 =1 if a current smoker
+smkban          byte    %9.0g                 =1 if there is a work area
+                                                smoking bans
+age             byte    %9.0g                 age in years
+hsdrop          byte    %9.0g                 =1 if hs dropout
+hsgrad          byte    %9.0g                 =1 if hs grad
+colsome         byte    %9.0g                 =1 if some college
+colgrad         byte    %9.0g                 =1 if college grad
+black           byte    %9.0g                 =1 if black
+hispanic        byte    %9.0g                 =1 if hispanic
+female          byte    %9.0g                 =1 if female
+------------------------------------------------------------------------------
+Sorted by: 
+
+. summarize
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+      smoker |     10,000       .2423    .4284963          0          1
+      smkban |     10,000       .6098    .4878194          0          1
+         age |     10,000     38.6932    12.11378         18         88
+      hsdrop |     10,000       .0912    .2879077          0          1
+      hsgrad |     10,000       .3266     .468993          0          1
+-------------+---------------------------------------------------------
+     colsome |     10,000       .2802    .4491193          0          1
+     colgrad |     10,000       .1972    .3979045          0          1
+       black |     10,000       .0769     .266446          0          1
+    hispanic |     10,000       .1134     .317097          0          1
+      female |     10,000       .5637    .4959505          0          1
+
+. codebook, compact
+
+Variable     Obs Unique     Mean  Min  Max  Label
+------------------------------------------------------------------------------
+smoker     10000      2    .2423    0    1  =1 if a current smoker
+smkban     10000      2    .6098    0    1  =1 if there is a work area smok...
+age        10000     65  38.6932   18   88  age in years
+hsdrop     10000      2    .0912    0    1  =1 if hs dropout
+hsgrad     10000      2    .3266    0    1  =1 if hs grad
+colsome    10000      2    .2802    0    1  =1 if some college
+colgrad    10000      2    .1972    0    1  =1 if college grad
+black      10000      2    .0769    0    1  =1 if black
+hispanic   10000      2    .1134    0    1  =1 if hispanic
+female     10000      2    .5637    0    1  =1 if female
+------------------------------------------------------------------------------
+
+. tab smoker, missing
+
+    =1 if a |
+    current |
+     smoker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      7,577       75.77       75.77
+          1 |      2,423       24.23      100.00
+------------+-----------------------------------
+      Total |     10,000      100.00
+
+. tab smkban, missing
+
+=1 if there |
+  is a work |
+       area |
+    smoking |
+       bans |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      3,902       39.02       39.02
+          1 |      6,098       60.98      100.00
+------------+-----------------------------------
+      Total |     10,000      100.00
+
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/homework_06/do_files/explore_data.log
+  log type:  text
+ closed on:  13 Apr 2026, 12:10:16
+------------------------------------------------------------------------------

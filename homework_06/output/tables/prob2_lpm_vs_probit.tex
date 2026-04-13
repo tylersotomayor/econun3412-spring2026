@@ -1,0 +1,53 @@
+\begin{table}[H]\centering\footnotesize\renewcommand{\arraystretch}{0.92}
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{LPM vs Probit: Determinants of Smoking\label{tab:prob2-vs}}
+\begin{tabular}{l*{2}{c}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}\\
+                    &\multicolumn{1}{c}{LPM}&\multicolumn{1}{c}{Probit}\\
+\midrule
+main                &                     &                     \\
+=1 if there is a work area smoking bans&     -0.0472\sym{***}&      -0.159\sym{***}\\
+                    &   (0.00897)         &    (0.0291)         \\
+\addlinespace
+=1 if female        &     -0.0333\sym{***}&      -0.112\sym{***}\\
+                    &   (0.00857)         &    (0.0288)         \\
+\addlinespace
+age in years        &     0.00967\sym{***}&      0.0345\sym{***}\\
+                    &   (0.00190)         &   (0.00688)         \\
+\addlinespace
+age squared         &   -0.000132\sym{***}&   -0.000468\sym{***}\\
+                    & (0.0000219)         & (0.0000826)         \\
+\addlinespace
+=1 if hs dropout    &       0.323\sym{***}&       1.142\sym{***}\\
+                    &    (0.0195)         &    (0.0730)         \\
+\addlinespace
+=1 if hs grad       &       0.233\sym{***}&       0.883\sym{***}\\
+                    &    (0.0126)         &    (0.0604)         \\
+\addlinespace
+=1 if some college  &       0.164\sym{***}&       0.677\sym{***}\\
+                    &    (0.0126)         &    (0.0614)         \\
+\addlinespace
+=1 if college grad  &      0.0448\sym{***}&       0.235\sym{***}\\
+                    &    (0.0120)         &    (0.0654)         \\
+\addlinespace
+=1 if black         &     -0.0276\sym{*}  &     -0.0843         \\
+                    &    (0.0161)         &    (0.0535)         \\
+\addlinespace
+=1 if hispanic      &      -0.105\sym{***}&      -0.338\sym{***}\\
+                    &    (0.0140)         &    (0.0494)         \\
+\addlinespace
+Constant            &     -0.0141         &      -1.735\sym{***}\\
+                    &    (0.0414)         &     (0.152)         \\
+\midrule
+Observations        &      10,000         &      10,000         \\
+$R^2$               &      0.0570         &                     \\
+Pseudo $R^2$        &                     &      0.0544         \\
+Log-likelihood      &    -5420.74         &    -5235.87         \\
+\bottomrule
+\multicolumn{3}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{3}{l}{\footnotesize Heteroskedasticity-robust standard errors in parentheses.}\\
+\multicolumn{3}{l}{\footnotesize Probit coefficients are index coefficients, NOT marginal effects.}\\
+\multicolumn{3}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

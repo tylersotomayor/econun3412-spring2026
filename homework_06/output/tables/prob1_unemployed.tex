@@ -1,0 +1,68 @@
+\begin{table}[H]\centering\footnotesize\renewcommand{\arraystretch}{0.92}
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Determinants of Becoming Unemployed by April 2009\label{tab:prob1-unemp}}
+\begin{tabular}{l*{3}{c}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
+                    &\multicolumn{1}{c}{LPM}&\multicolumn{1}{c}{Probit}&\multicolumn{1}{c}{Logit}\\
+\midrule
+main                &                     &                     &                     \\
+Age                 &    -0.00506\sym{**} &     -0.0438\sym{**} &     -0.0898\sym{**} \\
+                    &   (0.00232)         &    (0.0195)         &    (0.0415)         \\
+\addlinespace
+age squared         &   0.0000601\sym{**} &    0.000537\sym{**} &     0.00110\sym{**} \\
+                    & (0.0000271)         &  (0.000234)         &  (0.000499)         \\
+\addlinespace
+female              &     -0.0202\sym{***}&      -0.209\sym{***}&      -0.452\sym{***}\\
+                    &   (0.00662)         &    (0.0666)         &     (0.145)         \\
+\addlinespace
+=1 if race != white &     0.00983         &       0.104         &       0.192         \\
+                    &   (0.00934)         &    (0.0837)         &     (0.179)         \\
+\addlinespace
+married             &     -0.0151\sym{**} &      -0.159\sym{**} &      -0.327\sym{**} \\
+                    &   (0.00726)         &    (0.0705)         &     (0.155)         \\
+\addlinespace
+union               &     0.00119         &    -0.00468         &      0.0160         \\
+                    &   (0.00875)         &    (0.0916)         &     (0.200)         \\
+\addlinespace
+ne\_states           &     -0.0182\sym{**} &      -0.175\sym{*}  &      -0.401\sym{*}  \\
+                    &   (0.00922)         &    (0.0946)         &     (0.206)         \\
+\addlinespace
+so\_states           &    -0.00974         &     -0.0796         &      -0.192         \\
+                    &   (0.00904)         &    (0.0836)         &     (0.178)         \\
+\addlinespace
+ce\_states           &     -0.0143         &      -0.130         &      -0.306         \\
+                    &   (0.00909)         &    (0.0887)         &     (0.194)         \\
+\addlinespace
+educ\_lths           &      0.0699\sym{***}&       0.627\sym{***}&       1.347\sym{***}\\
+                    &    (0.0189)         &     (0.161)         &     (0.361)         \\
+\addlinespace
+educ\_hs             &      0.0339\sym{***}&       0.397\sym{***}&       0.892\sym{***}\\
+                    &    (0.0100)         &     (0.134)         &     (0.314)         \\
+\addlinespace
+educ\_somecol        &      0.0112         &       0.186         &       0.443         \\
+                    &    (0.0101)         &     (0.143)         &     (0.337)         \\
+\addlinespace
+educ\_aa             &     0.00936         &       0.145         &       0.338         \\
+                    &    (0.0105)         &     (0.158)         &     (0.370)         \\
+\addlinespace
+educ\_bac            &      0.0124         &       0.193         &       0.440         \\
+                    &   (0.00897)         &     (0.137)         &     (0.323)         \\
+\addlinespace
+Weekly earnings, Apr. 2008 (per 100 USD)&   -0.000378         &    -0.00433         &    -0.00892         \\
+                    &  (0.000645)         &   (0.00738)         &    (0.0170)         \\
+\addlinespace
+Constant            &       0.158\sym{***}&      -0.823\sym{**} &      -1.295         \\
+                    &    (0.0457)         &     (0.381)         &     (0.803)         \\
+\midrule
+Observations        &       4,773         &       4,773         &       4,773         \\
+$R^2$               &      0.0154         &                     &                     \\
+Pseudo $R^2$        &                     &      0.0371         &      0.0369         \\
+Log-likelihood      &      619.68         &     -887.65         &     -887.83         \\
+\bottomrule
+\multicolumn{4}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{4}{l}{\footnotesize Heteroskedasticity-robust standard errors in parentheses.}\\
+\multicolumn{4}{l}{\footnotesize Dependent variable = 1 if unemployed in April 2009; =0 otherwise (including out-of-labor-force).}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

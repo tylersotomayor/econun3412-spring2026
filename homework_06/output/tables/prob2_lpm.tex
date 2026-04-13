@@ -1,0 +1,51 @@
+\begin{table}[H]\centering\small
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Linear Probability Model of Smoking, Smoking.dta (n=10{,}000)\label{tab:prob2-lpm}}
+\begin{tabular}{l*{2}{c}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}\\
+                    &\multicolumn{1}{c}{LPM simple}&\multicolumn{1}{c}{LPM full controls}\\
+\midrule
+=1 if there is a work area smoking bans&     -0.0776\sym{***}&     -0.0472\sym{***}\\
+                    &   (0.00895)         &   (0.00897)         \\
+\addlinespace
+=1 if female        &                     &     -0.0333\sym{***}\\
+                    &                     &   (0.00857)         \\
+\addlinespace
+age in years        &                     &     0.00967\sym{***}\\
+                    &                     &   (0.00190)         \\
+\addlinespace
+age squared         &                     &   -0.000132\sym{***}\\
+                    &                     & (0.0000219)         \\
+\addlinespace
+=1 if hs dropout    &                     &       0.323\sym{***}\\
+                    &                     &    (0.0195)         \\
+\addlinespace
+=1 if hs grad       &                     &       0.233\sym{***}\\
+                    &                     &    (0.0126)         \\
+\addlinespace
+=1 if some college  &                     &       0.164\sym{***}\\
+                    &                     &    (0.0126)         \\
+\addlinespace
+=1 if college grad  &                     &      0.0448\sym{***}\\
+                    &                     &    (0.0120)         \\
+\addlinespace
+=1 if black         &                     &     -0.0276\sym{*}  \\
+                    &                     &    (0.0161)         \\
+\addlinespace
+=1 if hispanic      &                     &      -0.105\sym{***}\\
+                    &                     &    (0.0140)         \\
+\addlinespace
+Constant            &       0.290\sym{***}&     -0.0141         \\
+                    &   (0.00726)         &    (0.0414)         \\
+\midrule
+Observations        &      10,000         &      10,000         \\
+$R^2$               &      0.0078         &      0.0570         \\
+Adjusted $R^2$      &      0.0077         &      0.0560         \\
+\bottomrule
+\multicolumn{3}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{3}{l}{\footnotesize Heteroskedasticity-robust standard errors in parentheses.}\\
+\multicolumn{3}{l}{\footnotesize Omitted education category: advanced degree.}\\
+\multicolumn{3}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

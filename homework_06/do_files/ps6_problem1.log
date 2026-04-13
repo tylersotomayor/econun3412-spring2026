@@ -1,0 +1,1079 @@
+------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/homework_06/do_files/ps6_problem1.log
+  log type:  text
+ opened on:  13 Apr 2026, 12:23:35
+
+. 
+. * ----------------------------------------------------------
+. *  HELPER: define a consistent academic graph style for all
+. *  plots produced in this file.  The "s2mono" scheme yields
+. *  a clean, journal-style monochrome palette; we override a
+. *  few parameters so that reference markers (20, 40, 60 yrs)
+. *  remain visible against the background.
+. * ----------------------------------------------------------
+. set scheme s2mono
+
+. graph set window fontface "Times New Roman"
+
+. 
+. 
+. * ==========================================================
+. *  PART (a)  --  FRACTION EMPLOYED IN APRIL 2009 AND 95% CI
+. *                FOR THE PROBABILITY OF EMPLOYMENT
+. * ==========================================================
+. *
+. *  Because the sample consists only of workers who were
+. *  employed full-time in April 2008, the sample mean of
+. *  `employed' is precisely the sample analogue of
+. *  P(employed_2009 = 1 | employed_2008 = 1).  A 95%
+. *  large-sample CI for a proportion is the usual
+. *      phat +/- 1.96 * sqrt( phat*(1-phat)/n ).
+. 
+. use "../data/employment_08_09.dta", clear
+
+. 
+. * Save the sample size for later reference
+. scalar n_obs = _N
+
+. 
+. * Unconditional sample mean (= P(Y=1))
+. summarize employed, meanonly
+
+. scalar phat = r(mean)
+
+. 
+. * Standard error of a proportion (Bernoulli):   sqrt(p(1-p)/n)
+. scalar se_p = sqrt(phat*(1-phat)/n_obs)
+
+. scalar ci_lo = phat - 1.96*se_p
+
+. scalar ci_hi = phat + 1.96*se_p
+
+. 
+. display as text _newline "=== Part (a) ==="
+
+=== Part (a) ===
+
+. display as text "Sample size (n)                     = " %9.0fc n_obs
+Sample size (n)                     =     5,412
+
+. display as text "P(employed_2009 | employed_2008)    = " %6.4f phat
+P(employed_2009 | employed_2008)    = 0.8755
+
+. display as text "Standard error (Bernoulli formula)  = " %6.4f se_p
+Standard error (Bernoulli formula)  = 0.0045
+
+. display as text "95% CI: [" %6.4f ci_lo ", " %6.4f ci_hi "]"
+95% CI: [0.8667, 0.8843]
+
+. 
+. * Store result for later export
+. file open f_parta using "../output/tables/prob1_parta.tex", write replace
+
+. file write f_parta "% Part (a) numbers, produced by ps6_problem1.do" _n
+
+. file write f_parta "\newcommand{\partaphat}{" %6.4f (phat) "}" _n
+
+. file write f_parta "\newcommand{\partase}{"   %6.4f (se_p) "}" _n
+
+. file write f_parta "\newcommand{\partacilo}{" %6.4f (ci_lo) "}" _n
+
+. file write f_parta "\newcommand{\partacihi}{" %6.4f (ci_hi) "}" _n
+
+. file write f_parta "\newcommand{\partaN}{"    %9.0fc (n_obs) "}" _n
+
+. file close f_parta
+
+. 
+. 
+. * ==========================================================
+. *  PART (b)  --  LPM REGRESSION ON AGE AND AGE^2
+. *    (b.i)  Significance of age / nonlinearity
+. *    (b.ii) Discussed narratively in the write-up
+. *    (b.iii) Predicted P at ages 20, 40, 60
+. * ==========================================================
+. 
+. * Generate age-squared
+. gen age2 = age^2
+
+.     label var age2 "age squared"
+
+. 
+. * LPM  =  OLS on the binary Y with robust (HC1) SEs
+. reg employed age age2, robust
+
+Linear regression                               Number of obs     =      5,412
+                                                F(2, 5409)        =      37.50
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0197
+                                                Root MSE          =     .32702
+
+------------------------------------------------------------------------------
+             |               Robust
+    employed | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .0282722   .0032812     8.62   0.000     .0218398    .0347047
+        age2 |  -.0003266   .0000388    -8.42   0.000    -.0004026   -.0002506
+       _cons |   .3074929   .0668583     4.60   0.000     .1764237    .4385621
+------------------------------------------------------------------------------
+
+. estimates store lpm_age
+
+. 
+. * Joint test that both age coefficients are zero (tests
+. * whether age matters at all for the probability of
+. * employment in 2009, conditional on 2008 employment).
+. test age age2
+
+ ( 1)  age = 0
+ ( 2)  age2 = 0
+
+       F(  2,  5409) =   37.50
+            Prob > F =    0.0000
+
+. scalar F_age_lpm  = r(F)
+
+. scalar p_age_lpm  = r(p)
+
+. 
+. * (b.iii) Predicted probability at ages 20, 40, 60
+. *   We use `margins' because it conveniently reports SEs
+. *   and it treats the quadratic piece correctly.
+. *   (factor-variable notation lets `margins' differentiate
+. *    through the quadratic without our having to recompute.)
+. quietly reg employed c.age##c.age, robust
+
+. estimates store lpm_age_fv
+
+. margins, at(age=(20 40 60)) post
+
+Adjusted predictions                                     Number of obs = 5,412
+Model VCE: Robust
+
+Expression: Linear prediction, predict()
+1._at: age = 20
+2._at: age = 40
+3._at: age = 60
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         _at |
+          1  |   .7422841   .0181674    40.86   0.000     .7066688    .7778995
+          2  |   .9157685   .0060658   150.97   0.000      .903877    .9276599
+          3  |   .8279458   .0120139    68.92   0.000     .8043938    .8514979
+------------------------------------------------------------------------------
+
+. estimates store lpm_marg
+
+. 
+. * Keep these predictions for comparison with probit/logit
+. matrix lpm_pred = e(b)
+
+. 
+. * Now re-fit the stored LPM in the non-factor form so that
+. * later replay with `estimates restore' still produces the
+. * simple specification.
+. quietly reg employed age age2, robust
+
+. 
+. 
+. * ==========================================================
+. *  PART (c)  --  PROBIT
+. * ==========================================================
+. *
+. *  Probit model:  Pr(Y=1 | X) = Phi(X' beta), Phi = standard
+. *  normal CDF.  Coefficients are not marginal effects and
+. *  require transformation (or `margins') to be interpretable
+. *  on the probability scale.
+. 
+. probit employed age age2, vce(robust)
+
+Iteration 0:  Log pseudolikelihood = -2034.2101  
+Iteration 1:  Log pseudolikelihood = -1987.1391  
+Iteration 2:  Log pseudolikelihood = -1986.9186  
+Iteration 3:  Log pseudolikelihood = -1986.9186  
+
+Probit regression                                       Number of obs =  5,412
+                                                        Wald chi2(2)  =  92.89
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -1986.9186                       Pseudo R2     = 0.0232
+
+------------------------------------------------------------------------------
+             |               Robust
+    employed | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .1217233   .0128959     9.44   0.000     .0964477    .1469988
+        age2 |  -.0014125   .0001555    -9.09   0.000    -.0017172   -.0011078
+       _cons |  -1.257933   .2499188    -5.03   0.000    -1.747765   -.7681008
+------------------------------------------------------------------------------
+
+. estimates store prob_age
+
+. 
+. * Test joint significance of age and age^2
+. test age age2
+
+ ( 1)  [employed]age = 0
+ ( 2)  [employed]age2 = 0
+
+           chi2(  2) =   92.89
+         Prob > chi2 =    0.0000
+
+. scalar F_age_prob = r(F)
+
+. scalar p_age_prob = r(p)
+
+. 
+. * Factor-variable form for `margins'
+. quietly probit employed c.age##c.age, vce(robust)
+
+. margins, at(age=(20 40 60)) post
+
+Adjusted predictions                                     Number of obs = 5,412
+Model VCE: Robust
+
+Expression: Pr(employed), predict()
+1._at: age = 20
+2._at: age = 40
+3._at: age = 60
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         _at |
+          1  |   .7295815   .0208493    34.99   0.000     .6887176    .7704454
+          2  |   .9116617   .0053358   170.86   0.000     .9012037    .9221198
+          3  |   .8316235   .0123708    67.22   0.000     .8073771      .85587
+------------------------------------------------------------------------------
+
+. estimates store prob_marg
+
+. matrix prob_pred = e(b)
+
+. 
+. * Restore non-FV specification for export
+. quietly probit employed age age2, vce(robust)
+
+. 
+. 
+. * ==========================================================
+. *  PART (d)  --  LOGIT
+. * ==========================================================
+. 
+. logit employed age age2, vce(robust)
+
+Iteration 0:  Log pseudolikelihood = -2034.2101  
+Iteration 1:  Log pseudolikelihood = -1989.3895  
+Iteration 2:  Log pseudolikelihood = -1986.4342  
+Iteration 3:  Log pseudolikelihood = -1986.4295  
+Iteration 4:  Log pseudolikelihood = -1986.4295  
+
+Logistic regression                                     Number of obs =  5,412
+                                                        Wald chi2(2)  =  97.85
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -1986.4295                       Pseudo R2     = 0.0235
+
+------------------------------------------------------------------------------
+             |               Robust
+    employed | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .2254662   .0234547     9.61   0.000     .1794959    .2714366
+        age2 |  -.0026237   .0002848    -9.21   0.000    -.0031818   -.0020655
+       _cons |  -2.489754    .446196    -5.58   0.000    -3.364282   -1.615226
+------------------------------------------------------------------------------
+
+. estimates store logit_age
+
+. 
+. test age age2
+
+ ( 1)  [employed]age = 0
+ ( 2)  [employed]age2 = 0
+
+           chi2(  2) =   97.85
+         Prob > chi2 =    0.0000
+
+. scalar F_age_logit = r(F)
+
+. scalar p_age_logit = r(p)
+
+. 
+. quietly logit employed c.age##c.age, vce(robust)
+
+. margins, at(age=(20 40 60)) post
+
+Adjusted predictions                                     Number of obs = 5,412
+Model VCE: Robust
+
+Expression: Pr(employed), predict()
+1._at: age = 20
+2._at: age = 40
+3._at: age = 60
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         _at |
+          1  |    .725141   .0216658    33.47   0.000     .6826768    .7676051
+          2  |   .9114157   .0052511   173.57   0.000     .9011236    .9217077
+          3  |   .8310454   .0125885    66.02   0.000     .8063724    .8557183
+------------------------------------------------------------------------------
+
+. estimates store logit_marg
+
+. matrix logit_pred = e(b)
+
+. 
+. quietly logit employed age age2, vce(robust)
+
+. 
+. 
+. * ==========================================================
+. *  Consolidated table for parts (b)--(d):  regression output
+. * ==========================================================
+. 
+. esttab lpm_age prob_age logit_age ///
+>     using "../output/tables/prob1_bcd_models.tex", replace ///
+>     se star(* 0.10 ** 0.05 *** 0.01) booktabs label ///
+>     mtitles("LPM" "Probit" "Logit") ///
+>     title("Effect of Age on the Probability of Employment in April 2009\labe
+> l{tab:prob1_bcd}") ///
+>     stats(N r2 r2_p ll, ///
+>         labels("Observations" "\$R^2\$" "Pseudo \$R^2\$" "Log-likelihood") /
+> //
+>         fmt(%9.0fc %9.4f %9.4f %9.2f)) ///
+>     addnotes("Heteroskedasticity-robust standard errors in parentheses." ///
+>              "Dependent variable = 1 if employed in April 2009, conditional 
+> on employment in April 2008.")
+(output written to ../output/tables/prob1_bcd_models.tex)
+
+. 
+. 
+. * ==========================================================
+. *  Consolidated table of predicted probabilities at age
+. *  20 / 40 / 60 across the three models (part b.iii, c, d)
+. * ==========================================================
+. 
+. * Display to screen for easy copy into the write-up
+. display as text _newline "=== Predicted P(employed) at ages 20 / 40 / 60 ===
+> "
+
+=== Predicted P(employed) at ages 20 / 40 / 60 ===
+
+. display as text "              20yr     40yr     60yr"
+              20yr     40yr     60yr
+
+. display as text "LPM    :  " %6.4f lpm_pred[1,1]   "  " %6.4f lpm_pred[1,2] 
+>   "  " %6.4f lpm_pred[1,3]
+LPM    :  0.7423  0.9158  0.8279
+
+. display as text "Probit :  " %6.4f prob_pred[1,1]  "  " %6.4f prob_pred[1,2]
+>   "  " %6.4f prob_pred[1,3]
+Probit :  0.7296  0.9117  0.8316
+
+. display as text "Logit  :  " %6.4f logit_pred[1,1] "  " %6.4f logit_pred[1,2
+> ] "  " %6.4f logit_pred[1,3]
+Logit  :  0.7251  0.9114  0.8310
+
+. 
+. * Also write to a LaTeX fragment for inclusion
+. file open f_pred using "../output/tables/prob1_predprob.tex", write replace
+
+. file write f_pred "\begin{tabular}{lccc}" _n
+
+. file write f_pred "\toprule" _n
+
+. file write f_pred "Model & Age 20 & Age 40 & Age 60 \\\\ \midrule" _n
+
+. file write f_pred "LPM    & " %6.4f (lpm_pred[1,1])   " & " %6.4f (lpm_pred[
+> 1,2])   " & " %6.4f (lpm_pred[1,3])   " \\\\" _n
+
+. file write f_pred "Probit & " %6.4f (prob_pred[1,1])  " & " %6.4f (prob_pred
+> [1,2])  " & " %6.4f (prob_pred[1,3])  " \\\\" _n
+
+. file write f_pred "Logit  & " %6.4f (logit_pred[1,1]) " & " %6.4f (logit_pre
+> d[1,2]) " & " %6.4f (logit_pred[1,3]) " \\\\" _n
+
+. file write f_pred "\bottomrule" _n
+
+. file write f_pred "\end{tabular}" _n
+
+. file close f_pred
+
+. 
+. 
+. * ==========================================================
+. *  FIGURE:  Predicted P(employed) vs age for the three models
+. *           over the support of age in the sample.
+. * ==========================================================
+. 
+. * Predicted probability curves over the integer age grid
+. preserve
+
+.     * Re-estimate cleanly on the full sample so we can
+.     * use -predict- with `xb' / `pr' over a grid of ages.
+.     quietly reg employed c.age##c.age, robust
+
+.     predict yhat_lpm_full, xb
+
+.     quietly probit employed c.age##c.age, vce(robust)
+
+.     predict yhat_prob_full, pr
+
+.     quietly logit employed c.age##c.age, vce(robust)
+
+.     predict yhat_logit_full, pr
+
+. 
+.     * Collapse to one observation per age so the plot is
+.     * smooth and does not overlap thousands of points.
+.     collapse (mean) yhat_lpm_full yhat_prob_full yhat_logit_full, by(age)
+
+. 
+.     twoway ///
+>         (line yhat_lpm_full   age, lwidth(medthick) lcolor(black)    lpatter
+> n(solid)) ///
+>         (line yhat_prob_full  age, lwidth(medthick) lcolor(navy)     lpatter
+> n(dash)) ///
+>         (line yhat_logit_full age, lwidth(medthick) lcolor(maroon)   lpatter
+> n(shortdash)), ///
+>         xlabel(20(10)60, nogrid) ///
+>         ylabel(0.70(0.05)0.95, nogrid format(%4.2f) angle(horizontal)) ///
+>         xtitle("Age (years)", size(medsmall)) ///
+>         ytitle("Predicted P(employed in April 2009)", size(medsmall)) ///
+>         title("Predicted Probability of Employment by Age", size(medium)) //
+> /
+>         subtitle("Great Recession Sample, April 2008 {&rarr} April 2009", si
+> ze(small)) ///
+>         legend(order(1 "LPM" 2 "Probit" 3 "Logit") rows(1) region(lcolor(non
+> e)) size(small)) ///
+>         graphregion(color(white)) plotregion(color(white) margin(medium)) //
+> /
+>         xsize(7) ysize(4.5)
+
+.     graph export "../output/figures/prob1_predprob_age.pdf", replace as(pdf)
+file
+    /Users/tylersotomayor/homework_06/do_files/../output/figures/prob1_predp
+    > rob_age.pdf saved as PDF format
+
+. restore
+
+. 
+. 
+. * ==========================================================
+. *  PART (f)  --  FULL TABLE LIKE SW TABLE 11.2
+. *    Includes education, sex, race, marital status, region,
+. *    and April-2008 weekly earnings as additional controls.
+. * ==========================================================
+. *
+. *  Construction notes:
+. *   1. "Nonwhite" combines race categories 2 and 3 (Black,
+. *      Other) so that `white' (race==1) is the omitted group.
+. *   2. "West" region is the omitted reference for the four
+. *      regional dummies.
+. *   3. "educ_adv" (advanced degree) is the omitted reference
+. *      for the five education dummies in the regression to
+. *      avoid the dummy-variable trap.  The coefficient on
+. *      each remaining education dummy therefore measures the
+. *      shift in P(employed) relative to an advanced-degree
+. *      worker, holding all other covariates fixed.
+. *   4. Earnings are divided by 100 so the coefficient is
+. *      expressed per \$100 of April-2008 weekly earnings.
+. 
+. gen nonwhite = (race != 1)
+
+.     label var nonwhite "=1 if race != white"
+
+. 
+. gen earnwk_100 = earnwke / 100
+(639 missing values generated)
+
+.     label var earnwk_100 "Weekly earnings, Apr. 2008 (per 100 USD)"
+
+. 
+. * LPM with full controls  (corresponds to column 1)
+. reg employed age age2 female nonwhite married union ///
+>     ne_states so_states ce_states ///
+>     educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>     earnwk_100, robust
+
+Linear regression                               Number of obs     =      4,773
+                                                F(15, 4757)       =       9.94
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0355
+                                                Root MSE          =     .32519
+
+------------------------------------------------------------------------------
+             |               Robust
+    employed | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .0252919    .003555     7.11   0.000     .0183225    .0322613
+        age2 |  -.0002935   .0000419    -7.00   0.000    -.0003757   -.0002113
+      female |  -.0066436   .0100269    -0.66   0.508     -.026301    .0130137
+    nonwhite |  -.0186461   .0138347    -1.35   0.178    -.0457684    .0084762
+     married |  -.0019084   .0104489    -0.18   0.855    -.0223931    .0185762
+       union |  -.0576744   .0148856    -3.87   0.000     -.086857   -.0284917
+   ne_states |   .0163757   .0143212     1.14   0.253    -.0117006     .044452
+   so_states |    .015068    .013461     1.12   0.263    -.0113217    .0414578
+   ce_states |   .0405767   .0134186     3.02   0.003     .0142701    .0668834
+   educ_lths |  -.0882375   .0267962    -3.29   0.001    -.1407704   -.0357046
+     educ_hs |  -.0251427   .0163512    -1.54   0.124    -.0571986    .0069133
+educ_somecol |  -.0050943    .016735    -0.30   0.761    -.0379028    .0277141
+     educ_aa |   .0031639   .0178681     0.18   0.859    -.0318658    .0381935
+    educ_bac |   -.016196   .0151855    -1.07   0.286    -.0459667    .0135747
+  earnwk_100 |   .0034788   .0009526     3.65   0.000     .0016113    .0053464
+       _cons |   .3560212   .0716479     4.97   0.000     .2155582    .4964843
+------------------------------------------------------------------------------
+
+. estimates store lpm_full
+
+. 
+. * Probit with full controls (column 2)
+. probit employed age age2 female nonwhite married union ///
+>     ne_states so_states ce_states ///
+>     educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>     earnwk_100, vce(robust)
+
+Iteration 0:  Log pseudolikelihood = -1797.1074  
+Iteration 1:  Log pseudolikelihood = -1716.9142  
+Iteration 2:  Log pseudolikelihood = -1716.0097  
+Iteration 3:  Log pseudolikelihood = -1716.0092  
+Iteration 4:  Log pseudolikelihood = -1716.0092  
+
+Probit regression                                       Number of obs =  4,773
+                                                        Wald chi2(15) = 161.78
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -1716.0092                       Pseudo R2     = 0.0451
+
+------------------------------------------------------------------------------
+             |               Robust
+    employed | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .1084843   .0147378     7.36   0.000     .0795988    .1373698
+        age2 |   -.001272   .0001764    -7.21   0.000    -.0016177   -.0009262
+      female |  -.0348781   .0502044    -0.69   0.487    -.1332769    .0635207
+    nonwhite |  -.0814358   .0631681    -1.29   0.197     -.205243    .0423715
+     married |    -.00954   .0532121    -0.18   0.858    -.1138339    .0947538
+       union |   -.291106   .0650006    -4.48   0.000    -.4185048   -.1637073
+   ne_states |   .0916934   .0689442     1.33   0.184    -.0434348    .2268216
+   so_states |   .0718823   .0641193     1.12   0.262    -.0537893    .1975539
+   ce_states |   .2092035   .0687478     3.04   0.002     .0744602    .3439467
+   educ_lths |  -.3728784   .1177921    -3.17   0.002    -.6037467     -.14201
+     educ_hs |  -.1361194   .0924411    -1.47   0.141    -.3173006    .0450617
+educ_somecol |  -.0361247   .0969807    -0.37   0.710    -.2262034     .153954
+     educ_aa |   .0122229   .1088664     0.11   0.911    -.2011513    .2255971
+    educ_bac |  -.0975763   .0917653    -1.06   0.288    -.2774331    .0822804
+  earnwk_100 |    .021727   .0059963     3.62   0.000     .0099744    .0334796
+       _cons |  -1.046961   .2875928    -3.64   0.000    -1.610633   -.4832897
+------------------------------------------------------------------------------
+
+. estimates store prob_full
+
+. 
+. * Logit with full controls (column 3)
+. logit employed age age2 female nonwhite married union ///
+>     ne_states so_states ce_states ///
+>     educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>     earnwk_100, vce(robust)
+
+Iteration 0:  Log pseudolikelihood = -1797.1074  
+Iteration 1:  Log pseudolikelihood = -1722.4149  
+Iteration 2:  Log pseudolikelihood = -1716.1998  
+Iteration 3:  Log pseudolikelihood = -1716.1798  
+Iteration 4:  Log pseudolikelihood = -1716.1798  
+
+Logistic regression                                     Number of obs =  4,773
+                                                        Wald chi2(15) = 165.47
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -1716.1798                       Pseudo R2     = 0.0450
+
+------------------------------------------------------------------------------
+             |               Robust
+    employed | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .1968685   .0272028     7.24   0.000      .143552     .250185
+        age2 |  -.0023116   .0003271    -7.07   0.000    -.0029528   -.0016704
+      female |  -.0530302   .0942237    -0.56   0.574    -.2377053     .131645
+    nonwhite |  -.1464421    .116637    -1.26   0.209    -.3750465    .0821623
+     married |  -.0314049   .1012644    -0.31   0.756    -.2298794    .1670697
+       union |  -.5333642   .1188447    -4.49   0.000    -.7662955   -.3004329
+   ne_states |    .154248   .1276216     1.21   0.227    -.0958857    .4043818
+   so_states |   .1338352   .1189484     1.13   0.261    -.0992993    .3669697
+   ce_states |   .3951467   .1302992     3.03   0.002      .139765    .6505284
+   educ_lths |  -.6373864   .2207739    -2.89   0.004    -1.070095   -.2046776
+     educ_hs |  -.2334393   .1794685    -1.30   0.193     -.585191    .1183125
+educ_somecol |  -.0542256   .1885609    -0.29   0.774    -.4237983     .315347
+     educ_aa |   .0379383   .2132795     0.18   0.859    -.3800817    .4559584
+    educ_bac |  -.1790635   .1784054    -1.00   0.316    -.5287317    .1706046
+  earnwk_100 |   .0443919   .0125406     3.54   0.000     .0198129     .068971
+       _cons |  -2.063365   .5238672    -3.94   0.000    -3.090126   -1.036604
+------------------------------------------------------------------------------
+
+. estimates store logit_full
+
+. 
+. * Export the three-column "Table 11.2"-style table
+. esttab lpm_full prob_full logit_full ///
+>     using "../output/tables/prob1_fullmodel.tex", replace ///
+>     se star(* 0.10 ** 0.05 *** 0.01) booktabs label ///
+>     mtitles("LPM" "Probit" "Logit") ///
+>     title("Determinants of Employment Retention, April 2008 -> April 2009\la
+> bel{tab:prob1_full}") ///
+>     stats(N r2 r2_p ll, ///
+>         labels("Observations" "\$R^2\$" "Pseudo \$R^2\$" "Log-likelihood") /
+> //
+>         fmt(%9.0fc %9.4f %9.4f %9.2f)) ///
+>     order(age age2 female nonwhite married union ///
+>           ne_states so_states ce_states ///
+>           educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>           earnwk_100 _cons) ///
+>     addnotes("Heteroskedasticity-robust standard errors in parentheses." ///
+>              "Omitted reference groups: white, western region, advanced degr
+> ee.")
+(output written to ../output/tables/prob1_fullmodel.tex)
+
+. 
+. 
+. * ==========================================================
+. *  PART (g)  --  REPEAT USING Unemployed AS DEPENDENT VAR
+. * ==========================================================
+. 
+. reg unemployed age age2 female nonwhite married union ///
+>     ne_states so_states ce_states ///
+>     educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>     earnwk_100, robust
+
+Linear regression                               Number of obs     =      4,773
+                                                F(15, 4757)       =       3.85
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0154
+                                                Root MSE          =     .21287
+
+------------------------------------------------------------------------------
+             |               Robust
+  unemployed | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |  -.0050614   .0023202    -2.18   0.029    -.0096101   -.0005126
+        age2 |   .0000601   .0000271     2.21   0.027     6.88e-06    .0001133
+      female |   -.020233   .0066192    -3.06   0.002    -.0332097   -.0072564
+    nonwhite |   .0098281   .0093444     1.05   0.293    -.0084913    .0281476
+     married |   -.015109   .0072629    -2.08   0.038    -.0293476   -.0008704
+       union |   .0011854   .0087519     0.14   0.892    -.0159724    .0183431
+   ne_states |  -.0182043   .0092205    -1.97   0.048    -.0362808   -.0001278
+   so_states |  -.0097356   .0090364    -1.08   0.281    -.0274511    .0079799
+   ce_states |  -.0142726   .0090924    -1.57   0.117    -.0320979    .0035527
+   educ_lths |   .0698686   .0189058     3.70   0.000     .0328045    .1069326
+     educ_hs |   .0339286   .0100463     3.38   0.001     .0142333    .0536239
+educ_somecol |   .0111542   .0101392     1.10   0.271    -.0087233    .0310317
+     educ_aa |   .0093584   .0105433     0.89   0.375    -.0113114    .0300283
+    educ_bac |   .0124151   .0089746     1.38   0.167    -.0051793    .0300095
+  earnwk_100 |  -.0003776   .0006449    -0.59   0.558    -.0016418    .0008866
+       _cons |   .1580165   .0457376     3.45   0.001     .0683497    .2476834
+------------------------------------------------------------------------------
+
+. estimates store lpm_unemp
+
+. 
+. probit unemployed age age2 female nonwhite married union ///
+>     ne_states so_states ce_states ///
+>     educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>     earnwk_100, vce(robust)
+
+Iteration 0:  Log pseudolikelihood = -921.87692  
+Iteration 1:  Log pseudolikelihood =  -888.4623  
+Iteration 2:  Log pseudolikelihood = -887.64822  
+Iteration 3:  Log pseudolikelihood = -887.64736  
+Iteration 4:  Log pseudolikelihood = -887.64736  
+
+Probit regression                                       Number of obs =  4,773
+                                                        Wald chi2(15) =  69.56
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -887.64736                       Pseudo R2     = 0.0371
+
+------------------------------------------------------------------------------
+             |               Robust
+  unemployed | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |  -.0438197   .0194921    -2.25   0.025    -.0820235   -.0056159
+        age2 |   .0005367   .0002336     2.30   0.022     .0000789    .0009945
+      female |  -.2089998   .0666221    -3.14   0.002    -.3395767   -.0784229
+    nonwhite |   .1039482    .083727     1.24   0.214    -.0601537    .2680501
+     married |  -.1592482   .0704629    -2.26   0.024    -.2973529   -.0211435
+       union |  -.0046848   .0915767    -0.05   0.959    -.1841718    .1748022
+   ne_states |  -.1749527   .0946242    -1.85   0.064    -.3604128    .0105073
+   so_states |  -.0796497   .0836408    -0.95   0.341    -.2435827    .0842833
+   ce_states |  -.1304859   .0887301    -1.47   0.141    -.3043938     .043422
+   educ_lths |   .6272533   .1610004     3.90   0.000     .3116982    .9428083
+     educ_hs |   .3966974   .1342869     2.95   0.003     .1334998    .6598949
+educ_somecol |   .1860223   .1433968     1.30   0.195    -.0950303    .4670749
+     educ_aa |   .1449198   .1581865     0.92   0.360    -.1651201    .4549596
+    educ_bac |   .1926951   .1368319     1.41   0.159    -.0754905    .4608808
+  earnwk_100 |  -.0043346   .0073777    -0.59   0.557    -.0187946    .0101255
+       _cons |  -.8231166   .3813546    -2.16   0.031    -1.570558   -.0756754
+------------------------------------------------------------------------------
+
+. estimates store prob_unemp
+
+. 
+. logit unemployed age age2 female nonwhite married union ///
+>     ne_states so_states ce_states ///
+>     educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>     earnwk_100, vce(robust)
+
+Iteration 0:  Log pseudolikelihood = -921.87692  
+Iteration 1:  Log pseudolikelihood =  -892.9404  
+Iteration 2:  Log pseudolikelihood = -887.83452  
+Iteration 3:  Log pseudolikelihood = -887.82697  
+Iteration 4:  Log pseudolikelihood = -887.82697  
+
+Logistic regression                                     Number of obs =  4,773
+                                                        Wald chi2(15) =  74.21
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -887.82697                       Pseudo R2     = 0.0369
+
+------------------------------------------------------------------------------
+             |               Robust
+  unemployed | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |  -.0897767   .0414754    -2.16   0.030    -.1710671   -.0084863
+        age2 |   .0010959   .0004989     2.20   0.028      .000118    .0020738
+      female |  -.4518659   .1453477    -3.11   0.002    -.7367421   -.1669896
+    nonwhite |   .1917464   .1788105     1.07   0.284    -.1587157    .5422086
+     married |  -.3266036   .1549579    -2.11   0.035    -.6303156   -.0228916
+       union |   .0159982   .1998891     0.08   0.936    -.3757771    .4077736
+   ne_states |  -.4009474   .2058249    -1.95   0.051    -.8043569     .002462
+   so_states |  -.1916182   .1783702    -1.07   0.283    -.5412175     .157981
+   ce_states |  -.3062578   .1939477    -1.58   0.114    -.6863884    .0738727
+   educ_lths |   1.346522    .361406     3.73   0.000     .6381792    2.054865
+     educ_hs |   .8920185   .3138321     2.84   0.004     .2769189    1.507118
+educ_somecol |   .4429006   .3365439     1.32   0.188    -.2167132    1.102514
+     educ_aa |   .3382629   .3699804     0.91   0.361    -.3868854    1.063411
+    educ_bac |   .4403999   .3233211     1.36   0.173    -.1932978    1.074098
+  earnwk_100 |  -.0089181   .0170221    -0.52   0.600    -.0422809    .0244447
+       _cons |  -1.294815   .8033512    -1.61   0.107    -2.869354    .2797244
+------------------------------------------------------------------------------
+
+. estimates store logit_unemp
+
+. 
+. esttab lpm_unemp prob_unemp logit_unemp ///
+>     using "../output/tables/prob1_unemployed.tex", replace ///
+>     se star(* 0.10 ** 0.05 *** 0.01) booktabs label ///
+>     mtitles("LPM" "Probit" "Logit") ///
+>     title("Determinants of Becoming Unemployed by April 2009\label{tab:prob1
+> _unemp}") ///
+>     stats(N r2 r2_p ll, ///
+>         labels("Observations" "\$R^2\$" "Pseudo \$R^2\$" "Log-likelihood") /
+> //
+>         fmt(%9.0fc %9.4f %9.4f %9.2f)) ///
+>     order(age age2 female nonwhite married union ///
+>           ne_states so_states ce_states ///
+>           educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>           earnwk_100 _cons) ///
+>     addnotes("Heteroskedasticity-robust standard errors in parentheses." ///
+>              "Dependent variable = 1 if unemployed in April 2009; =0 otherwi
+> se (including out-of-labor-force).")
+(output written to ../output/tables/prob1_unemployed.tex)
+
+. 
+. 
+. * ==========================================================
+. *  PART (h)  --  NORMAL-TIMES COMPARISON WITH 2006-2007 DATA
+. * ==========================================================
+. 
+. use "../data/employment_06_07.dta", clear
+
+. gen age2       = age^2
+
+.     label var age2 "age squared"
+
+. gen nonwhite   = (race != 1)
+
+.     label var nonwhite "=1 if race != white"
+
+. gen earnwk_100 = earnwke/100
+(651 missing values generated)
+
+.     label var earnwk_100 "Weekly earnings, Apr. 2006 (per 100 USD)"
+
+. 
+. * Sample proportion of workers still employed one year later
+. summarize employed, meanonly
+
+. scalar phat_06 = r(mean)
+
+. scalar se_06   = sqrt(phat_06*(1-phat_06)/_N)
+
+. scalar ci_lo06 = phat_06 - 1.96*se_06
+
+. scalar ci_hi06 = phat_06 + 1.96*se_06
+
+. 
+. display as text _newline "=== Part (h) -- 2006/2007 sample ==="
+
+=== Part (h) -- 2006/2007 sample ===
+
+. display as text "P(employed_07 | employed_06)  = " %6.4f phat_06
+P(employed_07 | employed_06)  = 0.8977
+
+. display as text "95% CI                         = [" %6.4f ci_lo06 ", " %6.4
+> f ci_hi06 "]"
+95% CI                         = [0.8895, 0.9059]
+
+. 
+. file open f_parth using "../output/tables/prob1_parth.tex", write replace
+
+. file write f_parth "\newcommand{\parthphat}{" %6.4f (phat_06) "}" _n
+
+. file write f_parth "\newcommand{\parthse}{"   %6.4f (se_06)   "}" _n
+
+. file write f_parth "\newcommand{\parthcilo}{" %6.4f (ci_lo06) "}" _n
+
+. file write f_parth "\newcommand{\parthcihi}{" %6.4f (ci_hi06) "}" _n
+
+. file write f_parth "\newcommand{\parthN}{"    %9.0fc (_N)      "}" _n
+
+. file close f_parth
+
+. 
+. * Full-controls specification on the normal-times sample
+. reg employed age age2 female nonwhite married union ///
+>     ne_states so_states ce_states ///
+>     educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>     earnwk_100, robust
+
+Linear regression                               Number of obs     =      4,569
+                                                F(15, 4553)       =       9.55
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0359
+                                                Root MSE          =      .2954
+
+------------------------------------------------------------------------------
+             |               Robust
+    employed | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .0197754   .0034079     5.80   0.000     .0130942    .0264566
+        age2 |  -.0002299   .0000403    -5.71   0.000    -.0003088    -.000151
+      female |  -.0334772   .0091558    -3.66   0.000    -.0514271   -.0155273
+    nonwhite |  -.0154062   .0133453    -1.15   0.248    -.0415696    .0107571
+     married |   .0225087    .009902     2.27   0.023      .003096    .0419214
+       union |  -.0118677   .0132276    -0.90   0.370    -.0378002    .0140649
+   ne_states |   .0012456   .0135915     0.09   0.927    -.0254004    .0278917
+   so_states |   .0061951    .012514     0.50   0.621    -.0183384    .0307285
+   ce_states |   .0181939   .0125133     1.45   0.146    -.0063382    .0427261
+   educ_lths |  -.0507012   .0238739    -2.12   0.034    -.0975057   -.0038968
+     educ_hs |  -.0080234   .0152768    -0.53   0.599    -.0379733    .0219265
+educ_somecol |    -.00104   .0164371    -0.06   0.950    -.0332648    .0311848
+     educ_aa |   .0117923   .0170557     0.69   0.489    -.0216452    .0452297
+    educ_bac |   .0013961   .0143073     0.10   0.922    -.0266532    .0294453
+  earnwk_100 |   .0035733   .0008241     4.34   0.000     .0019577    .0051889
+       _cons |   .4811927   .0686294     7.01   0.000     .3466458    .6157396
+------------------------------------------------------------------------------
+
+. estimates store lpm_06
+
+. 
+. probit employed age age2 female nonwhite married union ///
+>     ne_states so_states ce_states ///
+>     educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>     earnwk_100, vce(robust)
+
+Iteration 0:  Log pseudolikelihood = -1487.7196  
+Iteration 1:  Log pseudolikelihood = -1409.8977  
+Iteration 2:  Log pseudolikelihood = -1408.0749  
+Iteration 3:  Log pseudolikelihood = -1408.0693  
+Iteration 4:  Log pseudolikelihood = -1408.0693  
+
+Probit regression                                       Number of obs =  4,569
+                                                        Wald chi2(15) = 144.97
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -1408.0693                       Pseudo R2     = 0.0535
+
+------------------------------------------------------------------------------
+             |               Robust
+    employed | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |   .0907915   .0158202     5.74   0.000     .0597844    .1217986
+        age2 |  -.0010752   .0001913    -5.62   0.000    -.0014501   -.0007003
+      female |  -.1957134   .0543756    -3.60   0.000    -.3022875   -.0891392
+    nonwhite |   -.070663   .0713182    -0.99   0.322    -.2104441    .0691182
+     married |   .1388301   .0566971     2.45   0.014     .0277058    .2499543
+       union |  -.1029426   .0799508    -1.29   0.198    -.2596433    .0537582
+   ne_states |   .0161041    .078625     0.20   0.838    -.1379981    .1702062
+   so_states |   .0414396   .0718547     0.58   0.564    -.0993931    .1822722
+   ce_states |   .1086844   .0742639     1.46   0.143    -.0368702     .254239
+   educ_lths |  -.2075796   .1310164    -1.58   0.113    -.4643671    .0492079
+     educ_hs |  -.0362014   .1078312    -0.34   0.737    -.2475466    .1751438
+educ_somecol |   .0004647    .114569     0.00   0.997    -.2240863    .2250157
+     educ_aa |   .0735157   .1251289     0.59   0.557    -.1717325    .3187638
+    educ_bac |   .0041161   .1099255     0.04   0.970    -.2113339    .2195661
+  earnwk_100 |   .0305254    .007423     4.11   0.000     .0159767    .0450742
+       _cons |  -.6607832    .309201    -2.14   0.033    -1.266806   -.0547604
+------------------------------------------------------------------------------
+
+. estimates store prob_06
+
+. 
+. logit employed age age2 female nonwhite married union ///
+>     ne_states so_states ce_states ///
+>     educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>     earnwk_100, vce(robust)
+
+Iteration 0:  Log pseudolikelihood = -1487.7196  
+Iteration 1:  Log pseudolikelihood = -1416.6933  
+Iteration 2:  Log pseudolikelihood = -1407.0723  
+Iteration 3:  Log pseudolikelihood = -1407.0496  
+Iteration 4:  Log pseudolikelihood = -1407.0496  
+
+Logistic regression                                     Number of obs =  4,569
+                                                        Wald chi2(15) = 147.83
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -1407.0496                       Pseudo R2     = 0.0542
+
+------------------------------------------------------------------------------
+             |               Robust
+    employed | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         age |    .165524   .0300439     5.51   0.000     .1066391     .224409
+        age2 |  -.0019613   .0003648    -5.38   0.000    -.0026764   -.0012463
+      female |  -.3656124   .1062788    -3.44   0.001     -.573915   -.1573097
+    nonwhite |  -.1434759   .1355224    -1.06   0.290     -.409095    .1221432
+     married |   .2496155   .1105289     2.26   0.024     .0329829    .4662481
+       union |  -.1884453   .1562447    -1.21   0.228    -.4946793    .1177886
+   ne_states |   .0291008   .1522893     0.19   0.848    -.2693808    .3275824
+   so_states |   .0674958   .1389333     0.49   0.627    -.2048085    .3398001
+   ce_states |   .2182006   .1444496     1.51   0.131    -.0649153    .5013165
+   educ_lths |  -.3757643   .2536615    -1.48   0.139    -.8729317    .1214031
+     educ_hs |  -.0532454   .2176929    -0.24   0.807    -.4799156    .3734248
+educ_somecol |   .0311629   .2299036     0.14   0.892    -.4194398    .4817656
+     educ_aa |   .1607277   .2523919     0.64   0.524    -.3339513    .6554068
+    educ_bac |   .0142143   .2231947     0.06   0.949    -.4232392    .4516679
+  earnwk_100 |   .0674619   .0163606     4.12   0.000     .0353956    .0995281
+       _cons |  -1.403613    .580206    -2.42   0.016    -2.540796   -.2664304
+------------------------------------------------------------------------------
+
+. estimates store logit_06
+
+. 
+. esttab lpm_06 prob_06 logit_06 ///
+>     using "../output/tables/prob1_parth_models.tex", replace ///
+>     se star(* 0.10 ** 0.05 *** 0.01) booktabs label ///
+>     mtitles("LPM" "Probit" "Logit") ///
+>     title("Determinants of Employment Retention, April 2006 -> April 2007 (N
+> ormal Times)\label{tab:prob1_parth}") ///
+>     stats(N r2 r2_p ll, ///
+>         labels("Observations" "\$R^2\$" "Pseudo \$R^2\$" "Log-likelihood") /
+> //
+>         fmt(%9.0fc %9.4f %9.4f %9.2f)) ///
+>     order(age age2 female nonwhite married union ///
+>           ne_states so_states ce_states ///
+>           educ_lths educ_hs educ_somecol educ_aa educ_bac ///
+>           earnwk_100 _cons) ///
+>     addnotes("Heteroskedasticity-robust standard errors in parentheses." ///
+>              "Sample: workers employed full-time in April 2006.")
+(output written to ../output/tables/prob1_parth_models.tex)
+
+. 
+. * Comparative age-profile figure:  predicted P(employed) by
+. * age for the three models, overlaid for recession (2008/09)
+. * vs normal times (2006/07).  We re-fit each model in the
+. * simple age / age^2 form for a cleaner visualization.
+. preserve
+
+.     quietly reg employed c.age##c.age, robust
+
+.     predict yh_lpm_06, xb
+
+.     quietly probit employed c.age##c.age, vce(robust)
+
+.     predict yh_prob_06, pr
+
+.     quietly logit employed c.age##c.age, vce(robust)
+
+.     predict yh_logit_06, pr
+
+.     collapse (mean) yh_lpm_06 yh_prob_06 yh_logit_06, by(age)
+
+.     tempfile pred06
+
+.     save    `pred06'
+file /var/folders/bk/6srdc2qx62b56c7594wqt1yw0000gn/T//S_46911.000003 saved
+    as .dta format
+
+. restore
+
+. 
+. use "../data/employment_08_09.dta", clear
+
+. gen age2 = age^2
+
+. quietly reg employed c.age##c.age, robust
+
+. predict yh_lpm_08, xb
+
+. quietly probit employed c.age##c.age, vce(robust)
+
+. predict yh_prob_08, pr
+
+. quietly logit employed c.age##c.age, vce(robust)
+
+. predict yh_logit_08, pr
+
+. collapse (mean) yh_lpm_08 yh_prob_08 yh_logit_08, by(age)
+
+. merge 1:1 age using `pred06'
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                                46  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. 
+. twoway ///
+>     (line yh_prob_06 age, lwidth(medthick) lcolor(navy) lpattern(solid)) ///
+>     (line yh_prob_08 age, lwidth(medthick) lcolor(maroon) lpattern(dash)), /
+> //
+>     xlabel(20(10)60, nogrid) ///
+>     ylabel(0.70(0.05)0.95, nogrid format(%4.2f) angle(horizontal)) ///
+>     xtitle("Age (years)", size(medsmall)) ///
+>     ytitle("Predicted P(employed one year later)", size(medsmall)) ///
+>     title("Age Profile of Employment Retention: Recession vs Normal Times", 
+> size(medium)) ///
+>     subtitle("Probit estimates from the two CPS linked cross-sections", size
+> (small)) ///
+>     legend(order(1 "April 2006 {&rarr} April 2007 (normal)" ///
+>                  2 "April 2008 {&rarr} April 2009 (recession)") ///
+>            rows(2) region(lcolor(none)) size(small)) ///
+>     graphregion(color(white)) plotregion(color(white) margin(medium)) ///
+>     xsize(7) ysize(4.5)
+
+. graph export "../output/figures/prob1_recession_vs_normal.pdf", replace as(p
+> df)
+file
+    /Users/tylersotomayor/homework_06/do_files/../output/figures/prob1_reces
+    > sion_vs_normal.pdf saved as PDF format
+
+. 
+. 
+. * ==========================================================
+. *  HOUSEKEEPING
+. * ==========================================================
+. 
+. display as text _newline "=== All Problem 1 outputs written ==="
+
+=== All Problem 1 outputs written ===
+
+. log close
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/homework_06/do_files/ps6_problem1.log
+  log type:  text
+ closed on:  13 Apr 2026, 12:23:37
+------------------------------------------------------------------------------

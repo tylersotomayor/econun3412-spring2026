@@ -1,0 +1,68 @@
+\begin{table}[H]\centering\footnotesize\renewcommand{\arraystretch}{0.92}
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Determinants of Employment Retention, April 2008 to April 2009\label{tab:prob1-full}}
+\begin{tabular}{l*{3}{c}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
+                    &\multicolumn{1}{c}{LPM}&\multicolumn{1}{c}{Probit}&\multicolumn{1}{c}{Logit}\\
+\midrule
+main                &                     &                     &                     \\
+Age                 &      0.0253\sym{***}&       0.108\sym{***}&       0.197\sym{***}\\
+                    &   (0.00355)         &    (0.0147)         &    (0.0272)         \\
+\addlinespace
+age squared         &   -0.000293\sym{***}&    -0.00127\sym{***}&    -0.00231\sym{***}\\
+                    & (0.0000419)         &  (0.000176)         &  (0.000327)         \\
+\addlinespace
+female              &    -0.00664         &     -0.0349         &     -0.0530         \\
+                    &    (0.0100)         &    (0.0502)         &    (0.0942)         \\
+\addlinespace
+=1 if race != white &     -0.0186         &     -0.0814         &      -0.146         \\
+                    &    (0.0138)         &    (0.0632)         &     (0.117)         \\
+\addlinespace
+married             &    -0.00191         &    -0.00954         &     -0.0314         \\
+                    &    (0.0104)         &    (0.0532)         &     (0.101)         \\
+\addlinespace
+union               &     -0.0577\sym{***}&      -0.291\sym{***}&      -0.533\sym{***}\\
+                    &    (0.0149)         &    (0.0650)         &     (0.119)         \\
+\addlinespace
+ne\_states           &      0.0164         &      0.0917         &       0.154         \\
+                    &    (0.0143)         &    (0.0689)         &     (0.128)         \\
+\addlinespace
+so\_states           &      0.0151         &      0.0719         &       0.134         \\
+                    &    (0.0135)         &    (0.0641)         &     (0.119)         \\
+\addlinespace
+ce\_states           &      0.0406\sym{***}&       0.209\sym{***}&       0.395\sym{***}\\
+                    &    (0.0134)         &    (0.0687)         &     (0.130)         \\
+\addlinespace
+educ\_lths           &     -0.0882\sym{***}&      -0.373\sym{***}&      -0.637\sym{***}\\
+                    &    (0.0268)         &     (0.118)         &     (0.221)         \\
+\addlinespace
+educ\_hs             &     -0.0251         &      -0.136         &      -0.233         \\
+                    &    (0.0164)         &    (0.0924)         &     (0.179)         \\
+\addlinespace
+educ\_somecol        &    -0.00509         &     -0.0361         &     -0.0542         \\
+                    &    (0.0167)         &    (0.0970)         &     (0.189)         \\
+\addlinespace
+educ\_aa             &     0.00316         &      0.0122         &      0.0379         \\
+                    &    (0.0179)         &     (0.109)         &     (0.213)         \\
+\addlinespace
+educ\_bac            &     -0.0162         &     -0.0976         &      -0.179         \\
+                    &    (0.0152)         &    (0.0918)         &     (0.178)         \\
+\addlinespace
+Weekly earnings, Apr. 2008 (per 100 USD)&     0.00348\sym{***}&      0.0217\sym{***}&      0.0444\sym{***}\\
+                    &  (0.000953)         &   (0.00600)         &    (0.0125)         \\
+\addlinespace
+Constant            &       0.356\sym{***}&      -1.047\sym{***}&      -2.063\sym{***}\\
+                    &    (0.0716)         &     (0.288)         &     (0.524)         \\
+\midrule
+Observations        &       4,773         &       4,773         &       4,773         \\
+$R^2$               &      0.0355         &                     &                     \\
+Pseudo $R^2$        &                     &      0.0451         &      0.0450         \\
+Log-likelihood      &    -1402.86         &    -1716.01         &    -1716.18         \\
+\bottomrule
+\multicolumn{4}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{4}{l}{\footnotesize Heteroskedasticity-robust standard errors in parentheses.}\\
+\multicolumn{4}{l}{\footnotesize Omitted reference groups: white, western region, advanced degree.}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

@@ -1,0 +1,28 @@
+\begin{thebibliography}{}
+
+\bibitem[Amemiya, 1981]{Amemiya1981}
+Amemiya, T. (1981).
+\newblock Qualitative response models: A survey.
+\newblock {\em Journal of Economic Literature}, 19(4):1483--1536.
+
+\bibitem[Angrist and Pischke, 2009]{AngristPischke2009}
+Angrist, J.~D. and Pischke, J.-S. (2009).
+\newblock {\em Mostly Harmless Econometrics: An Empiricist's Companion}.
+\newblock Princeton University Press, Princeton, NJ.
+
+\bibitem[Cameron and Trivedi, 2005]{CameronTrivedi2005}
+Cameron, A.~C. and Trivedi, P.~K. (2005).
+\newblock {\em Microeconometrics: Methods and Applications}.
+\newblock Cambridge University Press, New York.
+
+\bibitem[Evans et~al., 1999]{Evans1999}
+Evans, W.~N., Farrelly, M.~C., and Montgomery, E. (1999).
+\newblock Do workplace smoking bans reduce smoking?
+\newblock Technical Report~4, American Economic Association.
+
+\bibitem[Stock and Watson, 2020]{StockWatson2020}
+Stock, J.~H. and Watson, M.~W. (2020).
+\newblock {\em Introduction to Econometrics}.
+\newblock Pearson, New York, 4th edition.
+
+\end{thebibliography}

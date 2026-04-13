@@ -1,0 +1,29 @@
+\begin{table}[H]\centering\small
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Effect of Age on the Probability of Employment in April 2009\label{tab:prob1-bcd}}
+\begin{tabular}{l*{3}{c}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}\\
+                    &\multicolumn{1}{c}{LPM}&\multicolumn{1}{c}{Probit}&\multicolumn{1}{c}{Logit}\\
+\midrule
+main                &                     &                     &                     \\
+Age                 &      0.0283\sym{***}&       0.122\sym{***}&       0.225\sym{***}\\
+                    &   (0.00328)         &    (0.0129)         &    (0.0235)         \\
+\addlinespace
+age squared         &   -0.000327\sym{***}&    -0.00141\sym{***}&    -0.00262\sym{***}\\
+                    & (0.0000388)         &  (0.000155)         &  (0.000285)         \\
+\addlinespace
+Constant            &       0.307\sym{***}&      -1.258\sym{***}&      -2.490\sym{***}\\
+                    &    (0.0669)         &     (0.250)         &     (0.446)         \\
+\midrule
+Observations        &       5,412         &       5,412         &       5,412         \\
+$R^2$               &      0.0197         &                     &                     \\
+Pseudo $R^2$        &                     &      0.0232         &      0.0235         \\
+Log-likelihood      &    -1628.68         &    -1986.92         &    -1986.43         \\
+\bottomrule
+\multicolumn{4}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{4}{l}{\footnotesize Heteroskedasticity-robust standard errors in parentheses.}\\
+\multicolumn{4}{l}{\footnotesize Dependent variable = 1 if employed in April 2009, conditional on employment in April 2008.}\\
+\multicolumn{4}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}
