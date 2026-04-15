@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.10)  15 APR 2026 08:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.10)  15 APR 2026 09:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1522,10 +1522,10 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [4]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 250.
+(Font)              using `OT1/cmr/m/sc' instead on input line 273.
 
 
-Overfull \hbox (0.85681pt too wide) in paragraph at lines 269--270
+Overfull \hbox (0.85681pt too wide) in paragraph at lines 292--293
  [] 
  []
 
@@ -1534,7 +1534,7 @@ Overfull \hbox (0.85681pt too wide) in paragraph at lines 269--270
 [5]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 278.
+(Font)              using `OT1/cmr/m/sc' instead on input line 301.
 
 
 
@@ -1543,71 +1543,72 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [7]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 309.
+(Font)              using `OT1/cmr/m/sc' instead on input line 332.
 
 
 
 [8]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 323.
-
-
-LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 332.
+(Font)              using `OT1/cmr/m/sc' instead on input line 368.
 
 
 
 [9]
 
+LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
+(Font)              using `OT1/cmr/m/sc' instead on input line 376.
+
+
+
 [10]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 344.
-
-
-LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 356.
-
-
-Underfull \hbox (badness 5893) in paragraph at lines 356--358
- \OT1/cmr/m/n/12 For logit and pro-bit the co-ef-fi-cient it-self is not a marg
-inal ef-
- []
-
-
-Underfull \hbox (badness 6741) in paragraph at lines 356--358
-\OT1/cmr/m/n/12 fect. Us-ing [][]\OT1/pcr/m/n/12 margins, dydx(majordrg) []\OT1
-/cmr/m/n/12 at the sam-ple me-di-ans
- []
+(Font)              using `OT1/cmr/m/sc' instead on input line 388.
 
 
 
 [11]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 382.
+(Font)              using `OT1/cmr/m/sc' instead on input line 400.
+
+
+Underfull \hbox (badness 5893) in paragraph at lines 400--402
+ \OT1/cmr/m/n/12 For logit and pro-bit the co-ef-fi-cient it-self is not a marg
+inal ef-
+ []
+
+
+Underfull \hbox (badness 6741) in paragraph at lines 400--402
+\OT1/cmr/m/n/12 fect. Us-ing [][]\OT1/pcr/m/n/12 margins, dydx(majordrg) []\OT1
+/cmr/m/n/12 at the sam-ple me-di-ans
+ []
 
 
 
 [12]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 392.
+(Font)              using `OT1/cmr/m/sc' instead on input line 426.
 
 
 
 [13]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 404.
+(Font)              using `OT1/cmr/m/sc' instead on input line 436.
+
+
+LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
+(Font)              using `OT1/cmr/m/sc' instead on input line 448.
 
 
 
 [14]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 414.
+(Font)              using `OT1/cmr/m/sc' instead on input line 458.
 
 
 
@@ -1618,46 +1619,46 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [17]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 466.
+(Font)              using `OT1/cmr/m/sc' instead on input line 510.
 
 
 
 [18]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 493.
+(Font)              using `OT1/cmr/m/sc' instead on input line 537.
 
 
 
 [19]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 518.
+(Font)              using `OT1/cmr/m/sc' instead on input line 562.
 
 
 
 [20]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 534.
+(Font)              using `OT1/cmr/m/sc' instead on input line 578.
 
 
 
 [21]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 556.
+(Font)              using `OT1/cmr/m/sc' instead on input line 600.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 573.
+(Font)              using `OT1/cmr/m/sc' instead on input line 617.
 
 
 
 [22]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 599.
+(Font)              using `OT1/cmr/m/sc' instead on input line 643.
 
 
 
@@ -1666,14 +1667,14 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [24]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 610.
+(Font)              using `OT1/cmr/m/sc' instead on input line 654.
 
 
 
 [25]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 621.
+(Font)              using `OT1/cmr/m/sc' instead on input line 665.
 
 
 
@@ -1684,18 +1685,18 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [28]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 656.
+(Font)              using `OT1/cmr/m/sc' instead on input line 700.
 
 
 
 [29]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 675.
+(Font)              using `OT1/cmr/m/sc' instead on input line 719.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 693.
+(Font)              using `OT1/cmr/m/sc' instead on input line 737.
 
 
 
@@ -1704,18 +1705,18 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [31]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 708.
+(Font)              using `OT1/cmr/m/sc' instead on input line 752.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 717.
+(Font)              using `OT1/cmr/m/sc' instead on input line 761.
 
 
 
 [32]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 740.
+(Font)              using `OT1/cmr/m/sc' instead on input line 784.
 
 
 
@@ -1756,37 +1757,37 @@ LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <12> not available
 [43
 
 ]
-<output/figures/prob1_amex_fitted_hist.pdf, id=381, 397.485pt x 289.08pt>
+<output/figures/prob1_amex_fitted_hist.pdf, id=379, 397.485pt x 289.08pt>
 File: output/figures/prob1_amex_fitted_hist.pdf Graphic file (type pdf)
 <use output/figures/prob1_amex_fitted_hist.pdf>
 Package pdftex.def Info: output/figures/prob1_amex_fitted_hist.pdf  used on inp
-ut line 797.
+ut line 841.
 (pdftex.def)             Requested size: 446.26582pt x 324.56577pt.
-<output/figures/prob1_predprob_age.pdf, id=382, 505.89pt x 325.215pt>
+<output/figures/prob1_predprob_age.pdf, id=380, 505.89pt x 325.215pt>
 File: output/figures/prob1_predprob_age.pdf Graphic file (type pdf)
 <use output/figures/prob1_predprob_age.pdf>
 Package pdftex.def Info: output/figures/prob1_predprob_age.pdf  used on input l
-ine 804.
+ine 848.
 (pdftex.def)             Requested size: 432.17375pt x 277.83344pt.
 
 
 [44
 
  <./output/figures/prob1_amex_fitted_hist.pdf>]
-<output/figures/prob1_recession_vs_normal.pdf, id=394, 505.89pt x 325.215pt>
+<output/figures/prob1_recession_vs_normal.pdf, id=392, 505.89pt x 325.215pt>
 File: output/figures/prob1_recession_vs_normal.pdf Graphic file (type pdf)
 <use output/figures/prob1_recession_vs_normal.pdf>
 Package pdftex.def Info: output/figures/prob1_recession_vs_normal.pdf  used on 
-input line 811.
+input line 855.
 (pdftex.def)             Requested size: 432.17375pt x 277.83344pt.
 
 
 [45 <./output/figures/prob1_predprob_age.pdf>]
-<output/figures/prob2_predprob_educ.pdf, id=411, 505.89pt x 325.215pt>
+<output/figures/prob2_predprob_educ.pdf, id=409, 505.89pt x 325.215pt>
 File: output/figures/prob2_predprob_educ.pdf Graphic file (type pdf)
 <use output/figures/prob2_predprob_educ.pdf>
 Package pdftex.def Info: output/figures/prob2_predprob_educ.pdf  used on input 
-line 818.
+line 862.
 (pdftex.def)             Requested size: 432.17375pt x 277.83344pt.
 
 
@@ -1794,13 +1795,13 @@ line 818.
 
 [47 <./output/figures/prob2_predprob_educ.pdf>]
 LaTeX Font Info:    Trying to load font information for OMS+pcr on input line 8
-35.
+79.
 
 (/usr/local/texlive/2024/texmf-dist/tex/latex/psnfss/omspcr.fd
 File: omspcr.fd 
 )
 LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 835.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 879.
 
 
 [48] (./homework_06.bbl)
@@ -1814,13 +1815,13 @@ Package rerunfilecheck Info: File `homework_06.out' has not changed.
 (rerunfilecheck)             Checksum: DB7431CD5D52F00A539D10D337DA203D;1396.
  ) 
 Here is how much of TeX's memory you used:
- 47858 strings out of 473201
- 1105360 string characters out of 5716120
+ 47857 strings out of 473201
+ 1105332 string characters out of 5716120
  1770831 words of memory out of 5000000
- 70108 multiletter control sequences out of 15000+600000
+ 70107 multiletter control sequences out of 15000+600000
  584120 words of font info for 103 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,13n,94p,1715b,1644s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,13n,94p,1715b,1645s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb
 ></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb>
@@ -1847,10 +1848,10 @@ onts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2024/texmf-di
 st/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2024/texmf-dist
 /fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2024/texmf-dist/fonts/t
 ype1/urw/courier/ucrro8a.pfb>
-Output written on homework_06.pdf (52 pages, 758697 bytes).
+Output written on homework_06.pdf (52 pages, 767937 bytes).
 PDF statistics:
- 596 PDF objects out of 1000 (max. 8388607)
- 467 compressed objects within 5 object streams
+ 594 PDF objects out of 1000 (max. 8388607)
+ 465 compressed objects within 5 object streams
  122 named destinations out of 1000 (max. 500000)
  78 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -154,18 +154,18 @@
 \addcontentsline{toc}{section}{Problem 1: American Express Credit Card Applicants}
 
 \begin{problem}
-This question deals with the dataset of American Express credit card applicants \texttt{AmEx.dta}. To be able to view the dataset with STATA, you may need to write \texttt{set memory 32m} on the command window first. For each part, you will need to report results for the linear probability model, logit, and probit models. The best way to organize your results is in the form of a table. Report the log-likelihood and pseudo $R^2$ for the nonlinear models and the $R^2$ and adjusted $R^2$ for the linear model.
+This question deals with the dataset of American Express credit card applicants \texttt{AmEx.dta}. To be able to view the data set with STATA, you may need to write \texttt{set memory 32m} on the command window first. For each part, you will need to report results for the linear probability model, logit, and probit models. The best way to organize your results is in the form of a table. Report the log-likelihood and pseudo $R^2$ for the nonlinear models and the $R^2$ and adjusted $R^2$ for the linear model
 
 \smallskip
 \begin{tabularx}{\textwidth}{@{}lL@{}}
 \textit{cardhldr}:  & a binary indicator for whether or not the individual is approved as cardholder \\
-\textit{income}:    & the applicant's income \\
-\textit{age}:       & the applicant's age in years \\
+\textit{income}    & the applicants income \\
+\textit{age}:       & the applicants age in years \\
 \textit{selfempl}:  & a binary indicator for whether or not the individual is self-employed \\
 \textit{ownrent}:   & an indicator for whether or not an individual owns or rents their primary residence \\
-\textit{acadmos}:   & the number of months an individual has resided at their current address \\
+\textit{acadmos}:   & the number of months and individual has resided at their current address \\
 \textit{majdrg}:    & the number of major derogatory credit events in the last 12 months \\
-\textit{mindrg}:    & the number of minor derogatory credit events in the last 12 months \\
+\textit{mindrg}:    & the number of minor derogatory credit events in the last 12 months. \\
 \end{tabularx}
 \end{problem}
 
@@ -173,11 +173,11 @@ This question deals with the dataset of American Express credit card applicants 
 
 \item
 \begin{problem}{\points{3}}
-First, to get the scale of the coefficients right, replace $\mathit{income} = \mathit{income}/1000$. You only need a few of the variables from the data set. So, it is a good idea to keep those and not the rest. You can do this with the following command:
-\begin{lstlisting}[language=Stata,basicstyle=\footnotesize\ttfamily,breaklines=true]
+First, To get the scale of the coefficients right, \texttt{replace} \textit{income} $=$ \textit{income}$/$\textit{1000}. You only need a few of the variables from the data set. So, it is a good idea to keep those and not the rest. You can do this with the following command:
+\begin{lstlisting}[language=Stata,basicstyle=\footnotesize\ttfamily,frame=none,breaklines=true,xleftmargin=1em,backgroundcolor=\color{white}]
 keep cardhldr income age selfempl ownrent acadmos majordrg minordrg
 \end{lstlisting}
-Now, what fraction of consumers in the sample are cardholders? What does this tell us in terms of external validity? (\textit{hint}: use the \texttt{tabulate} command.)
+Now, what fraction of consumers in the sample are cardholders? What does this tell us in terms of external validity? (\textit{hint}: use \texttt{tabulate} command)
 \end{problem}
 \begin{solution}
 The sample contains $n = \amexN$ applicants, of whom
@@ -246,6 +246,29 @@ For the LPM the marginal effect of each dummy is identically its regression coef
 \item
 \begin{problem}{\points{15}}
 Repeat the previous exercise for someone whose income is at the 20\% and 80\% of the consumers in the sample.
+\begin{center}
+\begin{tabular}{l ccc}
+\toprule
+                          & LPM & Logit & Probit \\ \midrule
+$\Delta\mathit{selfemp}$  &     &       &        \\
+$\Delta\mathit{ownrent}$  &     &       &        \\
+$\%\Delta\mathit{selfemp}$ &    &       &        \\
+$\%\Delta\mathit{ownrent}$ &    &       &        \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.6em}
+
+\begin{tabular}{l ccc}
+\toprule
+                          & LPM & Logit & Probit \\ \midrule
+$\Delta\mathit{selfemp}$  &     &       &        \\
+$\Delta\mathit{ownrent}$  &     &       &        \\
+$\%\Delta\mathit{selfemp}$ &    &       &        \\
+$\%\Delta\mathit{ownrent}$ &    &       &        \\
+\bottomrule
+\end{tabular}
+\end{center}
 \end{problem}
 \begin{solution}
 The empirical $20$th and $80$th percentiles of \texttt{inc} are $\$\amexIncP\text{k}$ and $\$\amexIncQ\text{k}$, respectively. Replacing the income slot while keeping age and address tenure at their medians yields the marginal-effect profile shown in Table~\ref{tab:prob1-me} (Appendix). The headline numbers are
@@ -304,7 +327,7 @@ The relative smallness of the LPM-to-logit-to-probit spread is striking: across 
 
 \item
 \begin{problem}{\points{4}}
-Now consider a specification that includes major and minor derogatory credit events in the last year (\textit{majdrg}, \textit{mindrg}). Write commands for LPM, logit and probit.
+Now consider a specification that includes major and minor derogatory credit events in the last year (\textit{majdrg},\textit{mindrg}). Write commands for LPM, logit and probit.
 \end{problem}
 \begin{solution}
 The variable names in \texttt{AmEx.dta} are actually \texttt{majordrg} and \texttt{minordrg}. Appending both to the right-hand side gives
@@ -319,10 +342,31 @@ Columns (4)--(6) of Table~\ref{tab:prob1-six} show these estimates. Adding the t
 \item
 \begin{problem}{\points{18}}
 Report the full table of specifications (there should be 6) with all relevant statistics. Mark 1\%, 5\% and 10\% significance levels using the key at the bottom of the table.
+\begin{center}
+\footnotesize
+\begin{tabular}{l cccccc}
+\toprule
+$VARIABLES$ & \shortstack{(1)\\$LPM$} & \shortstack{(2)\\$Logit$} & \shortstack{(3)\\$Probit$} & \shortstack{(4)\\$LPM$} & \shortstack{(5)\\$Logit$} & \shortstack{(6)\\$Probit$} \\ \midrule
+$income$   & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) \\
+$age$      & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) \\
+$selfemp$  & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) \\
+$ownrent$  & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) \\
+$acadmos$  & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) \\
+$majordrg$ & --     & --     & --     & (\,\,) & (\,\,) & (\,\,) \\
+$minordgr$ & --     & --     & --     & (\,\,) & (\,\,) & (\,\,) \\
+$Constant$ & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) & (\,\,) \\
+\midrule
+$Observations$     &        &        &        &        &        &        \\
+$R^{2}$            &        & --     & --     &        & --     & --     \\
+$Pseudo\ R^{2}$    & --     &        &        & --     &        &        \\
+\bottomrule
+\multicolumn{7}{c}{\textit{Robust standard errors in parentheses}} \\
+\multicolumn{7}{c}{$^{**}\,p<0.01,\ ^{*}\,p<0.05,\ ^{+}\,p<0.1$} \\
+\end{tabular}
+\end{center}
 \end{problem}
 \begin{solution}
-The six-column table is in the Appendix (Table~\ref{tab:prob1-six}). Some features to call out:
-The derogatory-event controls dominate the expanded specification. In the LPM, each additional major derogatory event cuts the approval probability by $11.7$ pp ($p<0.01$); each minor event by $3.2$ pp; and the logit and probit estimates imply very similar average marginal effects, which part (j) takes up directly. The income effect survives intact---the coefficient on \texttt{inc} (per \$1,000) moves only from $0.00390$ to $0.00393$ in the LPM---confirming that income and credit-history are largely orthogonal as sources of underwriting information. The two dummies are similarly stable: \texttt{selfempl} stays at roughly $-10$ pp and \texttt{ownrent} at roughly $+4.5$ pp in the LPM. The change that does occur is in the age coefficient, which collapses from $-0.00130$ ($p=0.003$) in the reduced model to statistically insignificant once derogatory events are present ($p=0.55$ for the LPM, $p\approx 0.70$ for probit and logit), indicating that the ``age effect'' in parts (b)--(c) was largely proxying for accumulated derogatory marks on older applicants' records. The one coefficient that gains significance is \texttt{acadmos}: address tenure reaches the $1\%$ level in the full model, picking up a modest but real stability-of-residence signal once credit history is held fixed.
+The six-column table is in the Appendix (Table~\ref{tab:prob1-six}), and several features of that specification deserve attention. The derogatory-event controls dominate the expanded specification. In the LPM, each additional major derogatory event cuts the approval probability by $11.7$ pp ($p<0.01$); each minor event by $3.2$ pp; and the logit and probit estimates imply very similar average marginal effects, which part (j) takes up directly. The income effect survives intact---the coefficient on \texttt{inc} (per \$1,000) moves only from $0.00390$ to $0.00393$ in the LPM---confirming that income and credit-history are largely orthogonal as sources of underwriting information. The two dummies are similarly stable: \texttt{selfempl} stays at roughly $-10$ pp and \texttt{ownrent} at roughly $+4.5$ pp in the LPM. The change that does occur is in the age coefficient, which collapses from $-0.00130$ ($p=0.003$) in the reduced model to statistically insignificant once derogatory events are present ($p=0.55$ for the LPM, $p\approx 0.70$ for probit and logit), indicating that the ``age effect'' in parts (b)--(c) was largely proxying for accumulated derogatory marks on older applicants' records. The one coefficient that gains significance is \texttt{acadmos}: address tenure reaches the $1\%$ level in the full model, picking up a modest but real stability-of-residence signal once credit history is held fixed.
 \end{solution}
 
 \item
@@ -339,7 +383,7 @@ I prefer the model that includes the derogatory-event counts. The reduced specif
 
 \item
 \begin{problem}{\points{6}}
-Construct a 95\% confidence interval for the effect of an additional major derogatory credit event on being an American Express cardholder under the linear probability model.
+Construct a 95\% confidence interval for the effect of an additional major derogatory credit event has on being an American Express cardholder under the linear probability model.
 \end{problem}
 \begin{solution}
 From Table~\ref{tab:prob1-six} column (4), $\hat\beta_{\texttt{majordrg}}^{\mathrm{LPM}} = \amexLPMbetamaj$ with heteroskedasticity-robust standard error $\amexLPMsemaj$. The $95\%$ normal-approximation interval is
@@ -409,7 +453,7 @@ The LPM gets the sign and significance pattern exactly right, and its coefficien
 
 \item
 \begin{problem}{\points{6}}
-A well-known result by \citet{Amemiya1981} is that over the range of probabilities from 30\% to 70\% the following approximations should hold: $\beta_{\mathrm{LPM}} \approx 0.4\,\beta_{\mathrm{probit}}$ and $\beta_{\mathrm{LPM}} \approx 0.25\,\beta_{\mathrm{logit}}$. Take your results for logit and probit; how does this result look for $\beta_{\mathit{majordrg}}$?
+A well-known result by Amemiya (1981) is that over the range of probabilities from 30\% to 70\% the following approximations should hold: $\beta_{\mathrm{LPM}} \approx 0.4\,\beta_{\mathrm{probit}}$ and $\beta_{\mathrm{LPM}} \approx 0.25\,\beta_{\mathrm{logit}}$. Take your results for logit and probit, how does this result look for the $\beta_{\mathit{majordrg}}$?
 \end{problem}
 \begin{solution}
 The relevant coefficients from Table~\ref{tab:prob1-six} are
