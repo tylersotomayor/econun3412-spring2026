@@ -1,0 +1,26 @@
+\begin{table}[H]
+\centering
+\caption{Marginal Effects on $\Pr(\text{cardhldr}=1)$ of \texttt{selfempl} and \texttt{ownrent}, by Income Level (reduced model)\label{tab:prob1-me}}
+\begin{tabular}{l ccc ccc}
+\toprule
+ & \multicolumn{3}{c}{Absolute change $\Delta\hat{P}$} & \multicolumn{3}{c}{Percent change $\%\Delta\hat{P}$} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Income level & LPM & Probit & Logit & LPM & Probit & Logit \\
+\midrule
+\multicolumn{7}{l}{\emph{$\Delta$\texttt{selfempl} (switch from 0 to 1; \texttt{ownrent}=0, rest at medians)}} \\
+20\% income (\$19.00k)  & -0.1020 & -0.1274 & -0.1317 & -0.1407 & -0.1771 & -0.1837 \\
+50\% income (\$26.16k)  & -0.1020 & -0.1209 & -0.1222 & -0.1355 & -0.1599 & -0.1613 \\
+80\% income (\$38.80k)  & -0.1020 & -0.1068 & -0.1025 & -0.1272 & -0.1311 & -0.1249 \\
+\midrule
+\multicolumn{7}{l}{\emph{$\Delta$\texttt{ownrent} (switch from 0 to 1; \texttt{selfempl}=0, rest at medians)}} \\
+20\% income (\$19.00k)  &  0.0501 &  0.0555 &  0.0549 &  0.0691 &  0.0771 &  0.0767 \\
+50\% income (\$26.16k)  &  0.0501 &  0.0511 &  0.0491 &  0.0666 &  0.0675 &  0.0648 \\
+80\% income (\$38.80k)  &  0.0501 &  0.0428 &  0.0388 &  0.0625 &  0.0525 &  0.0473 \\
+\bottomrule
+\end{tabular}
+\parbox{0.95\textwidth}{\footnotesize \emph{Notes.}
+ Other continuous covariates (\texttt{age}, \texttt{acadmos}) are held at their sample medians.
+ Marginal effects are discrete differences in predicted probability from switching the indicator from 0 to 1.
+ Percent changes are $\Delta\hat{P}/\hat{P}_{0}$.
+}
+\end{table}

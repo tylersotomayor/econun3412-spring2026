@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering
+\caption{Change in Log-Odds of Approval, $\Delta\log[P/(1-P)]$, Across Income Levels\label{tab:prob1-logodds}}
+\begin{tabular}{l l ccc}
+\toprule
+Change & Income level & LPM & Probit & Logit \\
+\midrule
+\multicolumn{5}{l}{\emph{$\Delta\log\frac{P}{1-P}$ for switching \texttt{selfempl} from 0 to 1}} \\
+ & 20\%  & -0.4668 & -0.5691 & -0.5847 \\
+ & median  & -0.4908 & -0.5771 & -0.5847 \\
+ & 80\%  & -0.5513 & -0.5959 & -0.5847 \\
+\midrule
+\multicolumn{5}{l}{\emph{$\Delta\log\frac{P}{1-P}$ for switching \texttt{ownrent} from 0 to 1}} \\
+ & 20\%  &  0.2677 &  0.2944 &  0.2894 \\
+ & median  &  0.2907 &  0.3006 &  0.2894 \\
+ & 80\%  &  0.3521 &  0.3140 &  0.2894 \\
+\midrule
+\bottomrule
+\end{tabular}
+\parbox{0.9\textwidth}{\footnotesize \emph{Notes.} For the logit model these values should equal the dummy's regression coefficient (invariant to income); small departures reflect rounding.}
+\end{table}

@@ -1,0 +1,1025 @@
+------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/homework_06/do_files/ps6_amex.log
+  log type:  text
+ opened on:  15 Apr 2026, 07:54:59
+
+. 
+. set scheme s2mono
+
+. graph set window fontface "Times New Roman"
+
+. 
+. 
+. * ==========================================================
+. *  Load data and apply preprocessing from Part (a)
+. * ==========================================================
+. 
+. use "../data/AmEx.dta", clear
+
+. 
+. keep cardhldr income age selfempl ownrent acadmos majordrg minordrg
+
+. 
+. * Rescale income (per $1,000) so coefficients are interpretable
+. replace income = income/1000
+variable income was long now double
+(12,604 real changes made)
+
+. rename income inc
+
+. label var inc       "Income (\$1,000s)"
+
+. label var age       "Age (years)"
+
+. label var selfempl  "Self-employed = 1"
+
+. label var ownrent   "Own residence = 1"
+
+. label var acadmos   "Months at current address"
+
+. label var majordrg  "Major derogatory events (12 mo)"
+
+. label var minordrg  "Minor derogatory events (12 mo)"
+
+. label var cardhldr  "Approved cardholder = 1"
+
+. 
+. 
+. * ==========================================================
+. *  PART (a)  --  Fraction of cardholders
+. * ==========================================================
+. 
+. display as text _newline "=== Part (a): tabulate cardhldr ==="
+
+=== Part (a): tabulate cardhldr ===
+
+. tabulate cardhldr
+
+   Approved |
+ cardholder |
+        = 1 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      2,737       21.72       21.72
+          1 |      9,867       78.28      100.00
+------------+-----------------------------------
+      Total |     12,604      100.00
+
+. 
+. summarize cardhldr, meanonly
+
+. scalar phat_a = r(mean)
+
+. scalar n_a    = r(N)
+
+. display as text "Fraction of sample approved: " %6.4f phat_a  "  (n = " %9.0
+> fc n_a ")"
+Fraction of sample approved: 0.7828  (n =    12,604)
+
+. 
+. 
+. * ==========================================================
+. *  PART (b)  --  Reduced-form LPM / Logit / Probit
+. * ==========================================================
+. 
+. display as text _newline "=== Part (b): LPM / logit / probit (reduced) ==="
+
+=== Part (b): LPM / logit / probit (reduced) ===
+
+. 
+. reg    cardhldr inc age selfempl ownrent acadmos, robust
+
+Linear regression                               Number of obs     =     12,604
+                                                F(5, 12598)       =      83.07
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0269
+                                                Root MSE          =     .40682
+
+------------------------------------------------------------------------------
+             |               Robust
+    cardhldr | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         inc |   .0038973    .000246    15.84   0.000      .003415    .0043796
+         age |  -.0012988   .0004349    -2.99   0.003    -.0021513   -.0004462
+    selfempl |  -.1019954   .0169662    -6.01   0.000    -.1352517   -.0687391
+     ownrent |   .0501025   .0082655     6.06   0.000      .033901    .0663041
+     acadmos |   .0000211   .0000613     0.34   0.731    -.0000991    .0001413
+       _cons |   .6908898   .0133786    51.64   0.000     .6646657    .7171139
+------------------------------------------------------------------------------
+
+. estimates store lpm_red
+
+. 
+. logit  cardhldr inc age selfempl ownrent acadmos, vce(robust)
+
+Iteration 0:  Log pseudolikelihood = -6595.4373  
+Iteration 1:  Log pseudolikelihood = -6410.1744  
+Iteration 2:  Log pseudolikelihood = -6404.0384  
+Iteration 3:  Log pseudolikelihood = -6404.0212  
+Iteration 4:  Log pseudolikelihood = -6404.0212  
+
+Logistic regression                                     Number of obs = 12,604
+                                                        Wald chi2(5)  = 288.37
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -6404.0212                       Pseudo R2     = 0.0290
+
+------------------------------------------------------------------------------
+             |               Robust
+    cardhldr | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         inc |    .029831   .0023069    12.93   0.000     .0253095    .0343525
+         age |   -.007822   .0024851    -3.15   0.002    -.0126927   -.0029513
+    selfempl |  -.5846753   .0908283    -6.44   0.000    -.7626955   -.4066551
+     ownrent |   .2894486   .0509553     5.68   0.000      .189578    .3893191
+     acadmos |    .000139   .0003772     0.37   0.713    -.0006004    .0008784
+       _cons |   .6032759   .0851845     7.08   0.000     .4363173    .7702345
+------------------------------------------------------------------------------
+
+. estimates store log_red
+
+. 
+. probit cardhldr inc age selfempl ownrent acadmos, vce(robust)
+
+Iteration 0:  Log pseudolikelihood = -6595.4373  
+Iteration 1:  Log pseudolikelihood = -6409.4985  
+Iteration 2:  Log pseudolikelihood =  -6408.237  
+Iteration 3:  Log pseudolikelihood =  -6408.237  
+
+Probit regression                                       Number of obs = 12,604
+                                                        Wald chi2(5)  = 294.64
+                                                        Prob > chi2   = 0.0000
+Log pseudolikelihood = -6408.237                        Pseudo R2     = 0.0284
+
+------------------------------------------------------------------------------
+             |               Robust
+    cardhldr | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         inc |   .0158957   .0012121    13.11   0.000       .01352    .0182714
+         age |  -.0044125   .0014598    -3.02   0.003    -.0072737   -.0015512
+    selfempl |  -.3482648   .0535764    -6.50   0.000    -.4532725    -.243257
+     ownrent |   .1738629   .0290702     5.98   0.000     .1168864    .2308394
+     acadmos |   .0000575   .0002191     0.26   0.793     -.000372    .0004869
+       _cons |   .4160202   .0484661     8.58   0.000     .3210283    .5110121
+------------------------------------------------------------------------------
+
+. estimates store prob_red
+
+. 
+. 
+. * ==========================================================
+. *  Pre-compute the median and quantile values we will need
+. *  downstream for parts (c)--(e).
+. * ==========================================================
+. 
+. foreach v in inc age acadmos {
+  2.     quietly summarize `v', detail
+  3.     scalar med_`v' = r(p50)
+  4. }
+
+. display as text "Medians used:  inc=" %5.2f med_inc ///
+>                 "  age=" %5.2f med_age ///
+>                 "  acadmos=" %5.2f med_acadmos
+Medians used:  inc=26.16  age=31.50  acadmos=30.00
+
+. 
+. centile inc, centile(20 50 80)
+
+                                                          Binom. interp.   
+    Variable |       Obs  Percentile    Centile        [95% conf. interval]
+-------------+-------------------------------------------------------------
+         inc |    12,604         20          19            18.5          19
+             |                   50      26.155              26    26.91202
+             |                   80        38.8              38    39.64344
+
+. scalar inc_p20 = r(c_1)
+
+. scalar inc_p50 = r(c_2)
+
+. scalar inc_p80 = r(c_3)
+
+. display as text "Income percentiles (\$1,000s):  p20=" %6.2f inc_p20 ///
+>                 "  p50=" %6.2f inc_p50 "  p80=" %6.2f inc_p80
+Income percentiles ($1,000s):  p20= 19.00  p50= 26.16  p80= 38.80
+
+. 
+. 
+. * ==========================================================
+. *  Helper: compute predicted probabilities at two scenarios
+. *  (dummy d = 0 and d = 1) holding other vars fixed, and
+. *  return the four scalars P0, P1, Delta, %Delta by assigning
+. *  to global macros of the user's choice.
+. * ==========================================================
+. 
+. capture program drop _me
+
+. program define _me
+  1.     syntax, MODel(string) DUMmy(string) OTHer(string) ///
+>             INC(real) AGE(real) ACADmos(real) TAG(string)
+  2.     * Other dummy held at 0 in both scenarios; dummy varies 0->1.
+.     quietly estimates restore `model'
+  3.     quietly margins, at(inc=`inc' age=`age' acadmos=`acadmos' ///
+>                         `other'=0 `dummy'=(0 1)) post
+  4.     matrix B_ = e(b)
+  5.     scalar `tag'_P0    = B_[1,1]
+  6.     scalar `tag'_P1    = B_[1,2]
+  7.     scalar `tag'_D     = B_[1,2] - B_[1,1]
+  8.     scalar `tag'_PCT   = (B_[1,2] - B_[1,1]) / B_[1,1]
+  9.     display as text "  `model'  (`dummy' 0->1):  P0=" %6.4f `tag'_P0 ///
+>                     "  P1=" %6.4f `tag'_P1 ///
+>                     "  D=" %7.4f `tag'_D ///
+>                     "  %D=" %7.4f `tag'_PCT
+ 10. end
+
+. 
+. 
+. * ==========================================================
+. *  PART (c)  --  MEs at median X
+. * ==========================================================
+. 
+. display as text _newline "=== Part (c): MEs at median X ==="
+
+=== Part (c): MEs at median X ===
+
+. 
+. * (income, age, acadmos) at medians.  "dummy" varies 0->1;
+. * "otherdummy" held at 0 in both scenarios.
+. foreach mod in lpm_red prob_red log_red {
+  2.     _me, model(`mod') dummy(selfempl) other(ownrent) ///
+>          inc(`=med_inc') age(`=med_age') acadmos(`=med_acadmos') tag(c50s_`m
+> od')
+  3.     _me, model(`mod') dummy(ownrent) other(selfempl) ///
+>          inc(`=med_inc') age(`=med_age') acadmos(`=med_acadmos') tag(c50o_`m
+> od')
+  4. }
+  lpm_red  (selfempl 0->1):  P0=0.7525  P1=0.6505  D=-0.1020  %D=-0.1355
+  lpm_red  (ownrent 0->1):  P0=0.7525  P1=0.8026  D= 0.0501  %D= 0.0666
+  prob_red  (selfempl 0->1):  P0=0.7563  P1=0.6354  D=-0.1209  %D=-0.1599
+  prob_red  (ownrent 0->1):  P0=0.7563  P1=0.8074  D= 0.0511  %D= 0.0675
+  log_red  (selfempl 0->1):  P0=0.7579  P1=0.6357  D=-0.1222  %D=-0.1613
+  log_red  (ownrent 0->1):  P0=0.7579  P1=0.8070  D= 0.0491  %D= 0.0648
+
+. 
+. 
+. * ==========================================================
+. *  PART (d)  --  MEs at income p20 and p80 (age, acadmos
+. *                still at medians).
+. * ==========================================================
+. 
+. display as text _newline "=== Part (d): MEs at income p20 and p80 ==="
+
+=== Part (d): MEs at income p20 and p80 ===
+
+. 
+. foreach mod in lpm_red prob_red log_red {
+  2.     _me, model(`mod') dummy(selfempl) other(ownrent) ///
+>          inc(`=inc_p20') age(`=med_age') acadmos(`=med_acadmos') tag(c20s_`m
+> od')
+  3.     _me, model(`mod') dummy(ownrent) other(selfempl) ///
+>          inc(`=inc_p20') age(`=med_age') acadmos(`=med_acadmos') tag(c20o_`m
+> od')
+  4.     _me, model(`mod') dummy(selfempl) other(ownrent) ///
+>          inc(`=inc_p80') age(`=med_age') acadmos(`=med_acadmos') tag(c80s_`m
+> od')
+  5.     _me, model(`mod') dummy(ownrent) other(selfempl) ///
+>          inc(`=inc_p80') age(`=med_age') acadmos(`=med_acadmos') tag(c80o_`m
+> od')
+  6. }
+  lpm_red  (selfempl 0->1):  P0=0.7247  P1=0.6227  D=-0.1020  %D=-0.1407
+  lpm_red  (ownrent 0->1):  P0=0.7247  P1=0.7748  D= 0.0501  %D= 0.0691
+  lpm_red  (selfempl 0->1):  P0=0.8018  P1=0.6998  D=-0.1020  %D=-0.1272
+  lpm_red  (ownrent 0->1):  P0=0.8018  P1=0.8519  D= 0.0501  %D= 0.0625
+  prob_red  (selfempl 0->1):  P0=0.7193  P1=0.5919  D=-0.1274  %D=-0.1771
+  prob_red  (ownrent 0->1):  P0=0.7193  P1=0.7748  D= 0.0555  %D= 0.0771
+  prob_red  (selfempl 0->1):  P0=0.8147  P1=0.7079  D=-0.1068  %D=-0.1311
+  prob_red  (ownrent 0->1):  P0=0.8147  P1=0.8575  D= 0.0428  %D= 0.0525
+  log_red  (selfempl 0->1):  P0=0.7166  P1=0.5850  D=-0.1317  %D=-0.1837
+  log_red  (ownrent 0->1):  P0=0.7166  P1=0.7716  D= 0.0549  %D= 0.0767
+  log_red  (selfempl 0->1):  P0=0.8203  P1=0.7178  D=-0.1025  %D=-0.1249
+  log_red  (ownrent 0->1):  P0=0.8203  P1=0.8591  D= 0.0388  %D= 0.0473
+
+. 
+. 
+. * ==========================================================
+. *  Export combined (c)+(d) LaTeX table
+. * ==========================================================
+. 
+. file open fme using "../output/tables/prob1_amex_me.tex", write replace
+(file ../output/tables/prob1_amex_me.tex not found)
+
+. file write fme "\begin{table}[H]" _n
+
+. file write fme "\centering" _n
+
+. file write fme "\caption{Marginal Effects on $\Pr(\text{cardhldr}=1)$ of \te
+> xttt{selfempl} and \texttt{ownrent}, by Income Level (reduced model)\label{t
+> ab:prob1-me}}" _n
+
+. file write fme "\begin{tabular}{l ccc ccc}" _n
+
+. file write fme "\toprule" _n
+
+. file write fme " & \multicolumn{3}{c}{Absolute change $\Delta\hat{P}$} & \mu
+> lticolumn{3}{c}{Percent change $\%\Delta\hat{P}$} \\" _n
+
+. file write fme "\cmidrule(lr){2-4}\cmidrule(lr){5-7}" _n
+
+. file write fme "Income level & LPM & Probit & Logit & LPM & Probit & Logit \
+> \" _n
+
+. file write fme "\midrule" _n
+
+. file write fme "\multicolumn{7}{l}{\emph{$\Delta$\texttt{selfempl} (switch f
+> rom 0 to 1; \texttt{ownrent}=0, rest at medians)}} \\" _n
+
+. file write fme "20\% income (\$"  %5.2f (inc_p20) "k) " ///
+>     " & " %7.4f (c20s_lpm_red_D)  " & " %7.4f (c20s_prob_red_D) " & " %7.4f 
+> (c20s_log_red_D)  ///
+>     " & " %7.4f (c20s_lpm_red_PCT)  " & " %7.4f (c20s_prob_red_PCT) " & " %7
+> .4f (c20s_log_red_PCT) " \\" _n
+
+. file write fme "50\% income (\$"  %5.2f (med_inc) "k) " ///
+>     " & " %7.4f (c50s_lpm_red_D)  " & " %7.4f (c50s_prob_red_D) " & " %7.4f 
+> (c50s_log_red_D)   ///
+>     " & " %7.4f (c50s_lpm_red_PCT)  " & " %7.4f (c50s_prob_red_PCT) " & " %7
+> .4f (c50s_log_red_PCT)  " \\" _n
+
+. file write fme "80\% income (\$"  %5.2f (inc_p80) "k) " ///
+>     " & " %7.4f (c80s_lpm_red_D)  " & " %7.4f (c80s_prob_red_D) " & " %7.4f 
+> (c80s_log_red_D)  ///
+>     " & " %7.4f (c80s_lpm_red_PCT)  " & " %7.4f (c80s_prob_red_PCT) " & " %7
+> .4f (c80s_log_red_PCT) " \\" _n
+
+. file write fme "\midrule" _n
+
+. file write fme "\multicolumn{7}{l}{\emph{$\Delta$\texttt{ownrent} (switch fr
+> om 0 to 1; \texttt{selfempl}=0, rest at medians)}} \\" _n
+
+. file write fme "20\% income (\$"  %5.2f (inc_p20) "k) " ///
+>     " & " %7.4f (c20o_lpm_red_D)  " & " %7.4f (c20o_prob_red_D) " & " %7.4f 
+> (c20o_log_red_D)  ///
+>     " & " %7.4f (c20o_lpm_red_PCT)  " & " %7.4f (c20o_prob_red_PCT) " & " %7
+> .4f (c20o_log_red_PCT) " \\" _n
+
+. file write fme "50\% income (\$"  %5.2f (med_inc) "k) " ///
+>     " & " %7.4f (c50o_lpm_red_D)  " & " %7.4f (c50o_prob_red_D) " & " %7.4f 
+> (c50o_log_red_D)   ///
+>     " & " %7.4f (c50o_lpm_red_PCT)  " & " %7.4f (c50o_prob_red_PCT) " & " %7
+> .4f (c50o_log_red_PCT)  " \\" _n
+
+. file write fme "80\% income (\$"  %5.2f (inc_p80) "k) " ///
+>     " & " %7.4f (c80o_lpm_red_D)  " & " %7.4f (c80o_prob_red_D) " & " %7.4f 
+> (c80o_log_red_D)  ///
+>     " & " %7.4f (c80o_lpm_red_PCT)  " & " %7.4f (c80o_prob_red_PCT) " & " %7
+> .4f (c80o_log_red_PCT) " \\" _n
+
+. file write fme "\bottomrule" _n
+
+. file write fme "\end{tabular}" _n
+
+. file write fme `"\parbox{0.95\textwidth}{\footnotesize \emph{Notes.}"' _n
+
+. file write fme `" Other continuous covariates (\texttt{age}, \texttt{acadmos
+> }) are held at their sample medians."' _n
+
+. file write fme `" Marginal effects are discrete differences in predicted pro
+> bability from switching the indicator from 0 to 1."' _n
+
+. file write fme `" Percent changes are $\Delta\hat{P}/\hat{P}_{0}$."' _n
+
+. file write fme `"}"' _n
+
+. file write fme "\end{table}" _n
+
+. file close fme
+
+. 
+. 
+. * ==========================================================
+. *  PART (e)  --  Log-odds summary
+. *  Delta_logodds  =  logit(P1) - logit(P0)
+. *  For the logit model this quantity equals the dummy's
+. *  coefficient regardless of other X's, which is the
+. *  definition of the odds-ratio interpretation of logit.
+. * ==========================================================
+. 
+. display as text _newline "=== Part (e): change in log-odds ==="
+
+=== Part (e): change in log-odds ===
+
+. 
+. * compute logit(P1) - logit(P0)  for each (income level, dummy, model)
+. * using the scalars saved in parts (c) and (d).
+. 
+. file open flo using "../output/tables/prob1_amex_logodds.tex", write replace
+(file ../output/tables/prob1_amex_logodds.tex not found)
+
+. file write flo "\begin{table}[H]" _n
+
+. file write flo "\centering" _n
+
+. file write flo "\caption{Change in Log-Odds of Approval, $\Delta\log[P/(1-P)
+> ]$, Across Income Levels\label{tab:prob1-logodds}}" _n
+
+. file write flo "\begin{tabular}{l l ccc}" _n
+
+. file write flo "\toprule" _n
+
+. file write flo "Change & Income level & LPM & Probit & Logit \\" _n
+
+. file write flo "\midrule" _n
+
+. 
+. foreach dcode in s o {
+  2.     local dname = cond("`dcode'"=="s", "selfempl", "ownrent")
+  3.     file write flo "\multicolumn{5}{l}{\emph{$\Delta\log\frac{P}{1-P}$ fo
+> r switching \texttt{`dname'} from 0 to 1}} \\" _n
+  4.     foreach q in 20 50 80 {
+  5.         local qkey = cond("`q'"=="50", "c50", "c`q'")
+  6.         local qlabel = cond("`q'"=="50", "median", "`q'\%")
+  7.         foreach m in lpm_red prob_red log_red {
+  8.             * avoid log(0) or log(1); both endpoints of fitted probs
+.             * are safely inside (0,1) in practice.
+.             scalar _p0 = `qkey'`dcode'_`m'_P0
+  9.             scalar _p1 = `qkey'`dcode'_`m'_P1
+ 10.             scalar _dlo_`m' = ln(_p1/(1-_p1)) - ln(_p0/(1-_p0))
+ 11.         }
+ 12.         file write flo " & `qlabel' " ///
+>             " & " %7.4f (_dlo_lpm_red) ///
+>             " & " %7.4f (_dlo_prob_red) ///
+>             " & " %7.4f (_dlo_log_red) " \\" _n
+ 13.     }
+ 14.     file write flo "\midrule" _n
+ 15. }
+
+. file write flo "\bottomrule" _n
+
+. file write flo "\end{tabular}" _n
+
+. file write flo `"\parbox{0.9\textwidth}{\footnotesize \emph{Notes.} For the 
+> logit model these values should equal the dummy's regression coefficient (in
+> variant to income); small departures reflect rounding.}"' _n
+
+. file write flo "\end{table}" _n
+
+. file close flo
+
+. 
+. 
+. * ==========================================================
+. *  PART (f)  --  Add majordrg and minordrg to the spec.
+. * ==========================================================
+. 
+. display as text _newline "=== Part (f): LPM/logit/probit with derogatory eve
+> nts ==="
+
+=== Part (f): LPM/logit/probit with derogatory events ===
+
+. 
+. reg    cardhldr inc age selfempl ownrent acadmos majordrg minordrg, robust
+
+Linear regression                               Number of obs     =     12,604
+                                                F(7, 12596)       =     227.09
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.2118
+                                                Root MSE          =     .36616
+
+------------------------------------------------------------------------------
+             |               Robust
+    cardhldr | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         inc |   .0039274   .0002271    17.30   0.000     .0034824    .0043725
+         age |  -.0002363    .000395    -0.60   0.550    -.0010105    .0005378
+    selfempl |  -.1004614    .015695    -6.40   0.000    -.1312259   -.0696969
+     ownrent |   .0455522   .0074121     6.15   0.000     .0310234     .060081
+     acadmos |   .0001679   .0000543     3.09   0.002     .0000615    .0002743
+    majordrg |  -.1174511   .0043113   -27.24   0.000     -.125902   -.1090003
+    minordrg |  -.0317082   .0051734    -6.13   0.000    -.0418489   -.0215675
+       _cons |   .7120459   .0122897    57.94   0.000     .6879563    .7361356
+------------------------------------------------------------------------------
+
+. estimates store lpm_full
+
+. 
+. logit  cardhldr inc age selfempl ownrent acadmos majordrg minordrg, vce(robu
+> st)
+
+Iteration 0:  Log pseudolikelihood = -6595.4373  
+Iteration 1:  Log pseudolikelihood = -5133.6519  
+Iteration 2:  Log pseudolikelihood = -5066.6909  
+Iteration 3:  Log pseudolikelihood = -5066.3688  
+Iteration 4:  Log pseudolikelihood = -5066.3687  
+
+Logistic regression                                    Number of obs =  12,604
+                                                       Wald chi2(7)  = 1329.85
+                                                       Prob > chi2   =  0.0000
+Log pseudolikelihood = -5066.3687                      Pseudo R2     =  0.2318
+
+------------------------------------------------------------------------------
+             |               Robust
+    cardhldr | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         inc |   .0451923   .0031562    14.32   0.000     .0390062    .0513784
+         age |   .0010693   .0031053     0.34   0.731    -.0050169    .0071556
+    selfempl |  -.7695201   .1052807    -7.31   0.000    -.9758664   -.5631737
+     ownrent |   .3190327   .0585612     5.45   0.000     .2042548    .4338106
+     acadmos |   .0019826   .0004757     4.17   0.000     .0010503    .0029149
+    majordrg |  -1.234444   .0373602   -33.04   0.000    -1.307668   -1.161219
+    minordrg |  -.0695153   .0359552    -1.93   0.053    -.1399861    .0009556
+       _cons |   .4196797   .1066585     3.93   0.000     .2106328    .6287266
+------------------------------------------------------------------------------
+Note: 8 failures and 0 successes completely determined.
+
+. estimates store log_full
+
+. 
+. probit cardhldr inc age selfempl ownrent acadmos majordrg minordrg, vce(robu
+> st)
+
+Iteration 0:  Log pseudolikelihood = -6595.4373  
+Iteration 1:  Log pseudolikelihood = -5171.6945  
+Iteration 2:  Log pseudolikelihood = -5081.6686  
+Iteration 3:  Log pseudolikelihood = -5080.8124  
+Iteration 4:  Log pseudolikelihood = -5080.8122  
+
+Probit regression                                      Number of obs =  12,604
+                                                       Wald chi2(7)  = 1391.08
+                                                       Prob > chi2   =  0.0000
+Log pseudolikelihood = -5080.8122                      Pseudo R2     =  0.2296
+
+------------------------------------------------------------------------------
+             |               Robust
+    cardhldr | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         inc |   .0222316   .0016063    13.84   0.000     .0190833      .02538
+         age |   .0006981   .0017148     0.41   0.684    -.0026629     .004059
+    selfempl |  -.4445728   .0597599    -7.44   0.000       -.5617   -.3274456
+     ownrent |   .1910995   .0321634     5.94   0.000     .1280603    .2541387
+     acadmos |    .001039   .0002628     3.95   0.000     .0005239    .0015542
+    majordrg |  -.7058988   .0210948   -33.46   0.000    -.7472439   -.6645536
+    minordrg |  -.0356392   .0198276    -1.80   0.072    -.0745006    .0032223
+       _cons |    .361243   .0579932     6.23   0.000     .2475785    .4749075
+------------------------------------------------------------------------------
+Note: 55 failures and 0 successes completely determined.
+
+. estimates store prob_full
+
+. 
+. 
+. * ==========================================================
+. *  PART (g)  --  Full 6-column table
+. * ==========================================================
+. 
+. esttab lpm_red prob_red log_red lpm_full prob_full log_full ///
+>     using "../output/tables/prob1_amex_six.tex", replace ///
+>     se star(* 0.10 ** 0.05 *** 0.01) booktabs label ///
+>     mtitles("LPM"    "Probit"  "Logit"   ///
+>             "LPM+drg" "Probit+drg" "Logit+drg") ///
+>     title("Determinants of Being an AmEx Cardholder (Problem~1 Table)\label{
+> tab:prob1-six}") ///
+>     stats(N r2 r2_a r2_p ll, ///
+>         labels("Observations" "\$R^2\$" "Adjusted \$R^2\$" "Pseudo \$R^2\$" 
+> "Log-likelihood") ///
+>         fmt(%9.0fc %9.4f %9.4f %9.4f %9.2f)) ///
+>     order(inc age selfempl ownrent acadmos majordrg minordrg _cons) ///
+>     addnotes("Heteroskedasticity-robust standard errors in parentheses." ///
+>              "Stars: *p<0.10, **p<0.05, ***p<0.01." ///
+>              "Dependent variable: cardhldr = 1 if applicant approved as card
+> holder.")
+(file ../output/tables/prob1_amex_six.tex not found)
+(output written to ../output/tables/prob1_amex_six.tex)
+
+. 
+. 
+. * ==========================================================
+. *  PART (i)  --  95% CI for LPM coefficient on majordrg
+. * ==========================================================
+. 
+. estimates restore lpm_full
+(results lpm_full are active now)
+
+. matrix Bf = e(b)
+
+. matrix Vf = e(V)
+
+. scalar b_major   = Bf[1,"majordrg"]
+
+. scalar se_major  = sqrt(Vf["majordrg","majordrg"])
+
+. scalar ci_lo_maj = b_major - 1.96*se_major
+
+. scalar ci_hi_maj = b_major + 1.96*se_major
+
+. 
+. display as text _newline "=== Part (i): 95% CI for LPM majordrg ==="
+
+=== Part (i): 95% CI for LPM majordrg ===
+
+. display as text "beta = " %7.4f b_major "  SE = " %7.4f se_major ///
+>                 "  95% CI = [" %7.4f ci_lo_maj ", " %7.4f ci_hi_maj "]"
+beta = -0.1175  SE =  0.0043  95% CI = [-0.1259, -0.1090]
+
+. 
+. 
+. * ==========================================================
+. *  PART (j)  --  Probit / logit marginal effect of majordrg
+. *                at median covariates
+. * ==========================================================
+. 
+. display as text _newline "=== Part (j): ME of majordrg at medians (probit, l
+> ogit) ==="
+
+=== Part (j): ME of majordrg at medians (probit, logit) ===
+
+. 
+. quietly summarize majordrg, detail
+
+. scalar med_major = r(p50)
+
+. quietly summarize minordrg, detail
+
+. scalar med_minor = r(p50)
+
+. 
+. * probit
+. estimates restore prob_full
+(results prob_full are active now)
+
+. margins, dydx(majordrg) ///
+>          at(inc=`=med_inc' age=`=med_age' selfempl=0 ownrent=0 ///
+>             acadmos=`=med_acadmos' majordrg=`=med_major' minordrg=`=med_mino
+> r')
+
+Conditional marginal effects                            Number of obs = 12,604
+Model VCE: Robust
+
+Expression: Pr(cardhldr), predict()
+dy/dx wrt:  majordrg
+At: inc      = 26.155
+    age      =   31.5
+    selfempl =      0
+    ownrent  =      0
+    acadmos  =     30
+    majordrg =      0
+    minordrg =      0
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    majordrg |  -.1715119   .0053975   -31.78   0.000    -.1820909   -.1609329
+------------------------------------------------------------------------------
+
+. matrix M = r(table)
+
+. scalar dy_prob  = M[1, 1]
+
+. scalar se_prob  = M[2, 1]
+
+. scalar lo_prob  = M[5, 1]
+
+. scalar hi_prob  = M[6, 1]
+
+. display as text "Probit dy/dmajordrg = " %7.4f dy_prob ///
+>                 "  SE = " %7.4f se_prob ///
+>                 "  95% CI = [" %7.4f lo_prob ", " %7.4f hi_prob "]"
+Probit dy/dmajordrg = -0.1715  SE =  0.0054  95% CI = [-0.1821, -0.1609]
+
+. 
+. * logit
+. estimates restore log_full
+(results log_full are active now)
+
+. margins, dydx(majordrg) ///
+>          at(inc=`=med_inc' age=`=med_age' selfempl=0 ownrent=0 ///
+>             acadmos=`=med_acadmos' majordrg=`=med_major' minordrg=`=med_mino
+> r')
+
+Conditional marginal effects                            Number of obs = 12,604
+Model VCE: Robust
+
+Expression: Pr(cardhldr), predict()
+dy/dx wrt:  majordrg
+At: inc      = 26.155
+    age      =   31.5
+    selfempl =      0
+    ownrent  =      0
+    acadmos  =     30
+    majordrg =      0
+    minordrg =      0
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    majordrg |  -.1618001   .0054153   -29.88   0.000    -.1724139   -.1511863
+------------------------------------------------------------------------------
+
+. matrix M = r(table)
+
+. scalar dy_log  = M[1, 1]
+
+. scalar se_log  = M[2, 1]
+
+. scalar lo_log  = M[5, 1]
+
+. scalar hi_log  = M[6, 1]
+
+. display as text "Logit  dy/dmajordrg = " %7.4f dy_log ///
+>                 "  SE = " %7.4f se_log ///
+>                 "  95% CI = [" %7.4f lo_log ", " %7.4f hi_log "]"
+Logit  dy/dmajordrg = -0.1618  SE =  0.0054  95% CI = [-0.1724, -0.1512]
+
+. 
+. 
+. file open fci using "../output/tables/prob1_amex_cis.tex", write replace
+(file ../output/tables/prob1_amex_cis.tex not found)
+
+. file write fci "% auto-generated CI macros (parts i and j)" _n
+
+. file write fci "\newcommand{\amexLPMbetamaj}{"  %7.4f (b_major)   "}" _n
+
+. file write fci "\newcommand{\amexLPMsemaj}{"    %7.4f (se_major)  "}" _n
+
+. file write fci "\newcommand{\amexLPMcilomaj}{"  %7.4f (ci_lo_maj) "}" _n
+
+. file write fci "\newcommand{\amexLPMcihimaj}{"  %7.4f (ci_hi_maj) "}" _n
+
+. file write fci "\newcommand{\amexPROBmedmaj}{"  %7.4f (dy_prob)   "}" _n
+
+. file write fci "\newcommand{\amexPROBsemaj}{"   %7.4f (se_prob)   "}" _n
+
+. file write fci "\newcommand{\amexPROBcilo}{"    %7.4f (lo_prob)   "}" _n
+
+. file write fci "\newcommand{\amexPROBcihi}{"    %7.4f (hi_prob)   "}" _n
+
+. file write fci "\newcommand{\amexLOGmedmaj}{"   %7.4f (dy_log)    "}" _n
+
+. file write fci "\newcommand{\amexLOGsemaj}{"    %7.4f (se_log)    "}" _n
+
+. file write fci "\newcommand{\amexLOGcilo}{"     %7.4f (lo_log)    "}" _n
+
+. file write fci "\newcommand{\amexLOGcihi}{"     %7.4f (hi_log)    "}" _n
+
+. file close fci
+
+. 
+. 
+. * ==========================================================
+. *  PART (k)  --  Histograms of fitted Y-values
+. *  PART (l)  --  Out-of-range diagnostics for LPM
+. * ==========================================================
+. 
+. display as text _newline "=== Part (k): fitted-value histograms ==="
+
+=== Part (k): fitted-value histograms ===
+
+. 
+. preserve
+
+.     quietly reg    cardhldr inc age selfempl ownrent acadmos majordrg minord
+> rg, robust
+
+.     predict yhat_lpm, xb
+
+.     quietly probit cardhldr inc age selfempl ownrent acadmos majordrg minord
+> rg, vce(robust)
+
+.     predict yhat_prob, pr
+
+.     quietly logit  cardhldr inc age selfempl ownrent acadmos majordrg minord
+> rg, vce(robust)
+
+.     predict yhat_log, pr
+
+. 
+.     twoway (histogram yhat_lpm, width(0.02) fcolor(gs12) lcolor(black)), ///
+>         xtitle("Fitted P(cardhldr=1)", size(medsmall)) ///
+>         ytitle("Density", size(medsmall)) ///
+>         title("LPM", size(medium)) ///
+>         xlabel(-0.25(0.25)1.25, nogrid) ///
+>         xline(0, lcolor(gs8) lpattern(dash)) ///
+>         xline(1, lcolor(gs8) lpattern(dash)) ///
+>         graphregion(color(white)) plotregion(color(white)) name(h_lpm, repla
+> ce) nodraw
+
+. 
+.     twoway (histogram yhat_prob, width(0.02) fcolor(gs12) lcolor(black)), //
+> /
+>         xtitle("Fitted P(cardhldr=1)", size(medsmall)) ///
+>         ytitle("", size(medsmall)) ///
+>         title("Probit", size(medium)) ///
+>         xlabel(0(0.25)1, nogrid) ///
+>         graphregion(color(white)) plotregion(color(white)) name(h_prob, repl
+> ace) nodraw
+
+. 
+.     twoway (histogram yhat_log, width(0.02) fcolor(gs12) lcolor(black)), ///
+>         xtitle("Fitted P(cardhldr=1)", size(medsmall)) ///
+>         ytitle("", size(medsmall)) ///
+>         title("Logit", size(medium)) ///
+>         xlabel(0(0.25)1, nogrid) ///
+>         graphregion(color(white)) plotregion(color(white)) name(h_log, repla
+> ce) nodraw
+
+. 
+.     graph combine h_lpm h_prob h_log, rows(1) ///
+>         graphregion(color(white)) ///
+>         title("Fitted-Value Histograms Across Models", size(medium)) ///
+>         note("Dashed lines at 0 and 1 bound the legitimate probability domai
+> n for the LPM.", size(vsmall))
+
+.     graph export "../output/figures/prob1_amex_fitted_hist.pdf", replace as(
+> pdf)
+file
+    /Users/tylersotomayor/homework_06/do_files/../output/figures/prob1_amex_
+    > fitted_hist.pdf saved as PDF format
+
+. 
+.     * ---- Part (l): LPM out-of-range diagnostics
+.     gen out_lo  = (yhat_lpm < 0)
+
+.     gen out_hi  = (yhat_lpm > 1)
+
+.     gen out_any = out_lo | out_hi
+
+. 
+.     summarize out_lo,  meanonly
+
+.     scalar lpm_below = r(mean)
+
+.     summarize out_hi,  meanonly
+
+.     scalar lpm_above = r(mean)
+
+.     summarize out_any, meanonly
+
+.     scalar lpm_outside = r(mean)
+
+.     quietly summarize yhat_lpm
+
+.     scalar lpm_min = r(min)
+
+.     scalar lpm_max = r(max)
+
+. 
+.     display as text "=== Part (l): LPM support diagnostics ==="
+=== Part (l): LPM support diagnostics ===
+
+.     display as text "  fitted-value min/max:        [" %6.4f lpm_min ", " %6
+> .4f lpm_max "]"
+  fitted-value min/max:        [-1.8271, 1.1861]
+
+.     display as text "  fraction below 0           = " %6.4f lpm_below
+  fraction below 0           = 0.0117
+
+.     display as text "  fraction above 1           = " %6.4f lpm_above
+  fraction above 1           = 0.0288
+
+.     display as text "  fraction outside [0,1]     = " %6.4f lpm_outside
+  fraction outside [0,1]     = 0.0405
+
+. restore
+
+. 
+. file open fll using "../output/tables/prob1_amex_lpm_oor.tex", write replace
+(file ../output/tables/prob1_amex_lpm_oor.tex not found)
+
+. file write fll "% LPM out-of-range diagnostics (part l)" _n
+
+. file write fll "\newcommand{\amexLPMmin}{"       %6.4f (lpm_min)     "}" _n
+
+. file write fll "\newcommand{\amexLPMmax}{"       %6.4f (lpm_max)     "}" _n
+
+. file write fll "\newcommand{\amexLPMpctbelow}{"  %6.4f (lpm_below)   "}" _n
+
+. file write fll "\newcommand{\amexLPMpctabove}{"  %6.4f (lpm_above)   "}" _n
+
+. file write fll "\newcommand{\amexLPMpctout}{"    %6.4f (lpm_outside) "}" _n
+
+. file close fll
+
+. 
+. 
+. * ==========================================================
+. *  PART (n)  --  Amemiya rule of thumb for majordrg
+. *  beta_LPM   ~=  0.4 * beta_probit
+. *  beta_LPM   ~=  0.25 * beta_logit
+. * ==========================================================
+. 
+. display as text _newline "=== Part (n): Amemiya rule for majordrg ==="
+
+=== Part (n): Amemiya rule for majordrg ===
+
+. 
+. estimates restore lpm_full
+(results lpm_full are active now)
+
+. scalar b_lpm_maj  = _b[majordrg]
+
+. estimates restore prob_full
+(results prob_full are active now)
+
+. scalar b_prob_maj = _b[majordrg]
+
+. estimates restore log_full
+(results log_full are active now)
+
+. scalar b_log_maj  = _b[majordrg]
+
+. 
+. scalar approx_prob = 0.4  * b_prob_maj
+
+. scalar approx_log  = 0.25 * b_log_maj
+
+. scalar ratio_prob  = b_lpm_maj / b_prob_maj
+
+. scalar ratio_log   = b_lpm_maj / b_log_maj
+
+. 
+. display as text "beta_LPM(majordrg)      = " %7.4f b_lpm_maj
+beta_LPM(majordrg)      = -0.1175
+
+. display as text "beta_probit(majordrg)   = " %7.4f b_prob_maj
+beta_probit(majordrg)   = -0.7059
+
+. display as text "beta_logit(majordrg)    = " %7.4f b_log_maj
+beta_logit(majordrg)    = -1.2344
+
+. display as text "0.4 * beta_probit       = " %7.4f approx_prob
+0.4 * beta_probit       = -0.2824
+
+. display as text "0.25 * beta_logit       = " %7.4f approx_log
+0.25 * beta_logit       = -0.3086
+
+. display as text "beta_LPM / beta_probit  = " %7.4f ratio_prob  "   (rule-of-
+> thumb 0.40)"
+beta_LPM / beta_probit  =  0.1664   (rule-of-thumb 0.40)
+
+. display as text "beta_LPM / beta_logit   = " %7.4f ratio_log   "   (rule-of-
+> thumb 0.25)"
+beta_LPM / beta_logit   =  0.0951   (rule-of-thumb 0.25)
+
+. 
+. file open fam using "../output/tables/prob1_amex_amemiya.tex", write replace
+(file ../output/tables/prob1_amex_amemiya.tex not found)
+
+. file write fam "% Amemiya rule check (part n)" _n
+
+. file write fam "\newcommand{\amexBLPMmaj}{"     %7.4f (b_lpm_maj)   "}" _n
+
+. file write fam "\newcommand{\amexBPROBmaj}{"    %7.4f (b_prob_maj)  "}" _n
+
+. file write fam "\newcommand{\amexBLOGmaj}{"     %7.4f (b_log_maj)   "}" _n
+
+. file write fam "\newcommand{\amexApproxPROB}{"  %7.4f (approx_prob) "}" _n
+
+. file write fam "\newcommand{\amexApproxLOG}{"   %7.4f (approx_log)  "}" _n
+
+. file write fam "\newcommand{\amexRatioPROB}{"   %7.4f (ratio_prob)  "}" _n
+
+. file write fam "\newcommand{\amexRatioLOG}{"    %7.4f (ratio_log)   "}" _n
+
+. file close fam
+
+. 
+. 
+. * ==========================================================
+. *  Macros we also need for the main text (part a and (b))
+. * ==========================================================
+. 
+. file open fa using "../output/tables/prob1_amex_parta.tex", write replace
+(file ../output/tables/prob1_amex_parta.tex not found)
+
+. file write fa "% auto-generated macros for part (a)" _n
+
+. file write fa "\newcommand{\amexPhat}{" %6.4f (phat_a) "}" _n
+
+. file write fa "\newcommand{\amexN}{"    %9.0fc (n_a)    "}" _n
+
+. file write fa "\newcommand{\amexIncMed}{"   %5.2f (med_inc)     "}" _n
+
+. file write fa "\newcommand{\amexIncP}{"     %5.2f (inc_p20)     "}" _n
+
+. file write fa "\newcommand{\amexIncQ}{"     %5.2f (inc_p80)     "}" _n
+
+. file write fa "\newcommand{\amexAgeMed}{"   %5.2f (med_age)     "}" _n
+
+. file write fa "\newcommand{\amexAcadMed}{"  %5.2f (med_acadmos) "}" _n
+
+. file close fa
+
+. 
+. 
+. * ==========================================================
+. *  Housekeeping
+. * ==========================================================
+. display as text _newline "=== All AMEX outputs written ==="
+
+=== All AMEX outputs written ===
+
+. log close
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/homework_06/do_files/ps6_amex.log
+  log type:  text
+ closed on:  15 Apr 2026, 07:55:02
+------------------------------------------------------------------------------

@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: homework_06.aux
 The style file: apalike.bst
 Database file #1: references.bib
-You've used 5 entries,
+You've used 6 entries,
             1935 wiz_defined-function locations,
-            509 strings with 4442 characters,
-and the built_in function-call counts, 1700 in all, are:
-= -- 164
-> -- 64
-< -- 5
-+ -- 20
-- -- 20
-* -- 135
-:= -- 311
-add.period$ -- 15
-call.type$ -- 5
-change.case$ -- 33
-chr.to.int$ -- 5
-cite$ -- 5
-duplicate$ -- 68
-empty$ -- 120
-format.name$ -- 31
-if$ -- 328
+            517 strings with 4646 characters,
+and the built_in function-call counts, 2104 in all, are:
+= -- 206
+> -- 77
+< -- 6
++ -- 24
+- -- 24
+* -- 172
+:= -- 379
+add.period$ -- 18
+call.type$ -- 6
+change.case$ -- 40
+chr.to.int$ -- 6
+cite$ -- 6
+duplicate$ -- 82
+empty$ -- 150
+format.name$ -- 38
+if$ -- 407
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 7
-newline$ -- 28
-num.names$ -- 15
-pop$ -- 33
+missing$ -- 8
+newline$ -- 33
+num.names$ -- 18
+pop$ -- 37
 preamble$ -- 1
-purify$ -- 35
+purify$ -- 42
 quote$ -- 0
-skip$ -- 50
+skip$ -- 61
 stack$ -- 0
-substring$ -- 91
-swap$ -- 5
+substring$ -- 128
+swap$ -- 6
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 24
+type$ -- 30
 warning$ -- 0
-while$ -- 12
+while$ -- 16
 width$ -- 0
-write$ -- 68
+write$ -- 81

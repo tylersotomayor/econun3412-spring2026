@@ -1,0 +1,46 @@
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Determinants of Being an AmEx Cardholder (Problem~1 Table)\label{tab:prob1-six}}
+\begin{tabular}{l*{6}{c}}
+\toprule
+                    &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}\\
+                    &\multicolumn{1}{c}{LPM}&\multicolumn{1}{c}{Probit}&\multicolumn{1}{c}{Logit}&\multicolumn{1}{c}{LPM+drg}&\multicolumn{1}{c}{Probit+drg}&\multicolumn{1}{c}{Logit+drg}\\
+\midrule
+main                &                     &                     &                     &                     &                     &                     \\
+Income (\$1,000s)    &     0.00390\sym{***}&      0.0159\sym{***}&      0.0298\sym{***}&     0.00393\sym{***}&      0.0222\sym{***}&      0.0452\sym{***}\\
+                    &  (0.000246)         &   (0.00121)         &   (0.00231)         &  (0.000227)         &   (0.00161)         &   (0.00316)         \\
+\addlinespace
+Age (years)         &    -0.00130\sym{***}&    -0.00441\sym{***}&    -0.00782\sym{***}&   -0.000236         &    0.000698         &     0.00107         \\
+                    &  (0.000435)         &   (0.00146)         &   (0.00249)         &  (0.000395)         &   (0.00171)         &   (0.00311)         \\
+\addlinespace
+Self-employed = 1   &      -0.102\sym{***}&      -0.348\sym{***}&      -0.585\sym{***}&      -0.100\sym{***}&      -0.445\sym{***}&      -0.770\sym{***}\\
+                    &    (0.0170)         &    (0.0536)         &    (0.0908)         &    (0.0157)         &    (0.0598)         &     (0.105)         \\
+\addlinespace
+Own residence = 1   &      0.0501\sym{***}&       0.174\sym{***}&       0.289\sym{***}&      0.0456\sym{***}&       0.191\sym{***}&       0.319\sym{***}\\
+                    &   (0.00827)         &    (0.0291)         &    (0.0510)         &   (0.00741)         &    (0.0322)         &    (0.0586)         \\
+\addlinespace
+Months at current address&   0.0000211         &   0.0000575         &    0.000139         &    0.000168\sym{***}&     0.00104\sym{***}&     0.00198\sym{***}\\
+                    & (0.0000613)         &  (0.000219)         &  (0.000377)         & (0.0000543)         &  (0.000263)         &  (0.000476)         \\
+\addlinespace
+Major derogatory events (12 mo)&                     &                     &                     &      -0.117\sym{***}&      -0.706\sym{***}&      -1.234\sym{***}\\
+                    &                     &                     &                     &   (0.00431)         &    (0.0211)         &    (0.0374)         \\
+\addlinespace
+Minor derogatory events (12 mo)&                     &                     &                     &     -0.0317\sym{***}&     -0.0356\sym{*}  &     -0.0695\sym{*}  \\
+                    &                     &                     &                     &   (0.00517)         &    (0.0198)         &    (0.0360)         \\
+\addlinespace
+Constant            &       0.691\sym{***}&       0.416\sym{***}&       0.603\sym{***}&       0.712\sym{***}&       0.361\sym{***}&       0.420\sym{***}\\
+                    &    (0.0134)         &    (0.0485)         &    (0.0852)         &    (0.0123)         &    (0.0580)         &     (0.107)         \\
+\midrule
+Observations        &      12,604         &      12,604         &      12,604         &      12,604         &      12,604         &      12,604         \\
+$R^2$               &      0.0269         &                     &                     &      0.2118         &                     &                     \\
+Adjusted $R^2$      &      0.0265         &                     &                     &      0.2114         &                     &                     \\
+Pseudo $R^2$        &                     &      0.0284         &      0.0290         &                     &      0.2296         &      0.2318         \\
+Log-likelihood      &    -6545.40         &    -6408.24         &    -6404.02         &    -5217.12         &    -5080.81         &    -5066.37         \\
+\bottomrule
+\multicolumn{7}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{7}{l}{\footnotesize Heteroskedasticity-robust standard errors in parentheses.}\\
+\multicolumn{7}{l}{\footnotesize Stars: *p<0.10, **p<0.05, ***p<0.01.}\\
+\multicolumn{7}{l}{\footnotesize Dependent variable: cardhldr = 1 if applicant approved as cardholder.}\\
+\multicolumn{7}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

@@ -20,6 +20,12 @@ Evans, W.~N., Farrelly, M.~C., and Montgomery, E. (1999).
 \newblock Do workplace smoking bans reduce smoking?
 \newblock Technical Report~4, American Economic Association.
 
+\bibitem[Horrace and Oaxaca, 2006]{HorracePresler2006}
+Horrace, W.~C. and Oaxaca, R.~L. (2006).
+\newblock Results on the bias and inconsistency of ordinary least squares for
+  the linear probability model.
+\newblock {\em Economics Letters}, 90(3):321--327.
+
 \bibitem[Stock and Watson, 2020]{StockWatson2020}
 Stock, J.~H. and Watson, M.~W. (2020).
 \newblock {\em Introduction to Econometrics}.

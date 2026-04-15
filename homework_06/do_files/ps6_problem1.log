@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /Users/tylersotomayor/homework_06/do_files/ps6_problem1.log
   log type:  text
- opened on:  13 Apr 2026, 12:23:35
+ opened on:  13 Apr 2026, 13:36:03
 
 . 
 . * ----------------------------------------------------------
@@ -342,7 +342,7 @@ Expression: Pr(employed), predict()
 >     se star(* 0.10 ** 0.05 *** 0.01) booktabs label ///
 >     mtitles("LPM" "Probit" "Logit") ///
 >     title("Effect of Age on the Probability of Employment in April 2009\labe
-> l{tab:prob1_bcd}") ///
+> l{tab:prob1-bcd}") ///
 >     stats(N r2 r2_p ll, ///
 >         labels("Observations" "\$R^2\$" "Pseudo \$R^2\$" "Log-likelihood") /
 > //
@@ -622,8 +622,8 @@ educ_somecol |  -.0542256   .1885609    -0.29   0.774    -.4237983     .315347
 >     using "../output/tables/prob1_fullmodel.tex", replace ///
 >     se star(* 0.10 ** 0.05 *** 0.01) booktabs label ///
 >     mtitles("LPM" "Probit" "Logit") ///
->     title("Determinants of Employment Retention, April 2008 -> April 2009\la
-> bel{tab:prob1_full}") ///
+>     title("Determinants of Employment Retention, April 2008 to April 2009\la
+> bel{tab:prob1-full}") ///
 >     stats(N r2 r2_p ll, ///
 >         labels("Observations" "\$R^2\$" "Pseudo \$R^2\$" "Log-likelihood") /
 > //
@@ -766,7 +766,7 @@ educ_somecol |   .4429006   .3365439     1.32   0.188    -.2167132    1.102514
 >     se star(* 0.10 ** 0.05 *** 0.01) booktabs label ///
 >     mtitles("LPM" "Probit" "Logit") ///
 >     title("Determinants of Becoming Unemployed by April 2009\label{tab:prob1
-> _unemp}") ///
+> -unemp}") ///
 >     stats(N r2 r2_p ll, ///
 >         labels("Observations" "\$R^2\$" "Pseudo \$R^2\$" "Log-likelihood") /
 > //
@@ -964,8 +964,8 @@ educ_somecol |   .0311629   .2299036     0.14   0.892    -.4194398    .4817656
 >     using "../output/tables/prob1_parth_models.tex", replace ///
 >     se star(* 0.10 ** 0.05 *** 0.01) booktabs label ///
 >     mtitles("LPM" "Probit" "Logit") ///
->     title("Determinants of Employment Retention, April 2006 -> April 2007 (N
-> ormal Times)\label{tab:prob1_parth}") ///
+>     title("Determinants of Employment Retention, April 2006 to April 2007 (N
+> ormal Times)\label{tab:prob1-parth}") ///
 >     stats(N r2 r2_p ll, ///
 >         labels("Observations" "\$R^2\$" "Pseudo \$R^2\$" "Log-likelihood") /
 > //
@@ -1002,7 +1002,7 @@ educ_somecol |   .0311629   .2299036     0.14   0.892    -.4194398    .4817656
 .     tempfile pred06
 
 .     save    `pred06'
-file /var/folders/bk/6srdc2qx62b56c7594wqt1yw0000gn/T//S_46911.000003 saved
+file /var/folders/bk/6srdc2qx62b56c7594wqt1yw0000gn/T//S_42414.000003 saved
     as .dta format
 
 . restore
@@ -1075,5 +1075,5 @@ file
       name:  <unnamed>
        log:  /Users/tylersotomayor/homework_06/do_files/ps6_problem1.log
   log type:  text
- closed on:  13 Apr 2026, 12:23:37
+ closed on:  13 Apr 2026, 13:36:05
 ------------------------------------------------------------------------------

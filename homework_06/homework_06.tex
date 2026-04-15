@@ -121,6 +121,14 @@
 % Override link colors to black
 \hypersetup{citecolor=black, linkcolor=black}
 
+% ------------------------------------------------------------
+% AUTO-GENERATED MACROS FROM ps6_amex.do (Problem 1 numbers)
+% ------------------------------------------------------------
+\input{output/tables/prob1_amex_parta.tex}
+\input{output/tables/prob1_amex_cis.tex}
+\input{output/tables/prob1_amex_lpm_oor.tex}
+\input{output/tables/prob1_amex_amemiya.tex}
+
 \begin{document}
 
 \pagenumbering{gobble}
@@ -171,11 +179,41 @@ keep cardhldr income age selfempl ownrent acadmos majordrg minordrg
 \end{verbatim}
 Now, what fraction of consumers in the sample are cardholders? What does this tell us in terms of external validity? (\textit{hint}: use the \texttt{tabulate} command.)
 \end{problem}
+\begin{solution}
+The sample contains $n = \amexN$ applicants, of whom
+\[
+\hat{p} \;=\; \frac{1}{n}\sum_{i} \texttt{cardhldr}_i \;=\; \amexPhat,
+\]
+or about $78.3\%$, were approved as cardholders. The sample is therefore \emph{not} a random cross-section of American consumers: every row is a completed \textsc{AmEx} application. External validity is correspondingly limited. Two caveats follow.
+\begin{itemize}
+\item \textbf{Selection into the sample.} Consumers who never applied are absent; those who did apply are disproportionately drawn from higher-income, more financially sophisticated households with some desire (and perceived eligibility) for a premium charge card. Coefficients estimated on this frame therefore speak to the conditional approval process at American Express \emph{given applicant status}, not to the unconditional probability of being a cardholder in the U.S.\ population.
+\item \textbf{Selection on unobservables.} Several covariates---notably \texttt{income} and the derogatory-credit counts---likely correlate with AmEx's unobserved internal credit score. Regression coefficients retain their interpretation as conditional means given observables, but any causal reading (``giving applicant $i$ a higher \texttt{income} would raise approval by $\hat{\beta}$'') requires much stronger assumptions than those licensed by the sampling design \citep[see][\S11.3]{StockWatson2020}.
+\end{itemize}
+The $78\%$ approval rate is high because applicants already self-select on observable eligibility before filing an application.
+\end{solution}
 
 \item
 \begin{problem}{\points{3}}
 Consider predicting whether or not an individual is approved as a cardholder \textit{cardhldr} as a function of \textit{income}, \textit{age}, \textit{selfempl}, \textit{ownrent}, \textit{acadmos}. Write commands for LPM, logit and probit.
 \end{problem}
+\begin{solution}
+Let $Y_i = \texttt{cardhldr}_i \in \{0,1\}$ and $X_i = (\texttt{inc}_i, \texttt{age}_i, \texttt{selfempl}_i, \texttt{ownrent}_i, \texttt{acadmos}_i)$, where \texttt{inc}$\equiv$\texttt{income}/1000. The three population models are
+\begin{align*}
+\text{LPM:}    \quad& \Pr(Y_i = 1 \mid X_i) \;=\; X_i'\beta, \\[-0.2em]
+\text{Probit:} \quad& \Pr(Y_i = 1 \mid X_i) \;=\; \Phi(X_i'\beta), \\[-0.2em]
+\text{Logit:}  \quad& \Pr(Y_i = 1 \mid X_i) \;=\; \Lambda(X_i'\beta) \;=\; \frac{e^{X_i'\beta}}{1+e^{X_i'\beta}},
+\end{align*}
+with $\Phi$ the standard-normal CDF and $\Lambda$ the logistic CDF. The corresponding Stata commands (using Huber--White robust standard errors throughout) are
+\begin{lstlisting}[language=Stata]
+* LPM (OLS with HC1 SEs)
+reg    cardhldr inc age selfempl ownrent acadmos, robust
+* Logit (MLE with robust sandwich SE)
+logit  cardhldr inc age selfempl ownrent acadmos, vce(robust)
+* Probit (MLE with robust sandwich SE)
+probit cardhldr inc age selfempl ownrent acadmos, vce(robust)
+\end{lstlisting}
+Columns (1)--(3) of Table~\ref{tab:prob1-six} in the Appendix report the estimates. All three models deliver the same qualitative story: approval probability rises in income and home ownership and falls with self-employment; age and address tenure are economically small. Because the reduced specification omits derogatory credit events, these coefficients are informative but likely suffer omitted-variable bias (corrected in Parts (f)--(g)).
+\end{solution}
 
 \item
 \begin{problem}{\points{8}}
@@ -192,66 +230,264 @@ $\%\Delta\mathit{ownrent}$ &    &       &        \\
 \end{tabular}
 \end{center}
 \end{problem}
+\begin{solution}
+At the sample medians $(\texttt{inc},\texttt{age},\texttt{acadmos}) = (\amexIncMed,\, \amexAgeMed,\, \amexAcadMed)$, with the \emph{other} dummy held at 0, the discrete change in predicted probability from switching \texttt{selfempl} or \texttt{ownrent} from 0 to 1 is
+\begin{center}
+\begin{tabular}{l ccc}
+\toprule
+                          & LPM     & Probit  & Logit   \\ \midrule
+$\Delta\mathit{selfempl}$ & $-0.1020$ & $-0.1209$ & $-0.1222$ \\
+$\Delta\mathit{ownrent}$  & $+0.0501$ & $+0.0511$ & $+0.0491$ \\[0.2em]
+$\%\Delta\mathit{selfempl}$ & $-13.55\%$ & $-15.99\%$ & $-16.13\%$ \\
+$\%\Delta\mathit{ownrent}$  & $+6.66\%$  & $+6.75\%$  & $+6.48\%$  \\
+\bottomrule
+\end{tabular}
+\end{center}
+For the LPM the marginal effect of each dummy is identically its regression coefficient (no interactions with the remaining covariates); for probit and logit it depends on the baseline $X$ through the index. Economically, a \emph{self-employed} applicant at the median of income and age sees the approval probability fall by roughly $10$--$12$ percentage points (around $14$--$16\%$ in relative terms); \emph{home ownership} raises it by about $5$ percentage points ($\approx 7\%$). The three models agree to within $\sim 2$ pp, a textbook illustration of \citet{AngristPischke2009}'s observation that LPM and nonlinear latent-variable models produce nearly identical average partial effects in the interior of $[0,1]$.
+\end{solution}
 
 \item
 \begin{problem}{\points{15}}
 Repeat the previous exercise for someone whose income is at the 20\% and 80\% of the consumers in the sample.
 \end{problem}
+\begin{solution}
+The empirical $20$th and $80$th percentiles of \texttt{inc} are $\$\amexIncP\text{k}$ and $\$\amexIncQ\text{k}$, respectively. Replacing the income slot while keeping age and address tenure at their medians yields the marginal-effect profile shown in Table~\ref{tab:prob1-me} (Appendix). The headline numbers are
+\begin{center}
+\begin{tabular}{l ccc | ccc}
+\toprule
+              & \multicolumn{3}{c}{$\Delta\hat{P}$ (absolute)}              & \multicolumn{3}{c}{$\%\Delta\hat{P}$ (relative)}           \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Income        & LPM     & Probit  & Logit    & LPM    & Probit  & Logit   \\ \midrule
+\multicolumn{7}{l}{\emph{$\Delta\mathit{selfempl}$}} \\
+p20 ($\$19$k) & $-0.1020$ & $-0.1274$ & $-0.1317$ & $-14.07\%$ & $-17.71\%$ & $-18.37\%$ \\
+p50 ($\$26$k) & $-0.1020$ & $-0.1209$ & $-0.1222$ & $-13.55\%$ & $-15.99\%$ & $-16.13\%$ \\
+p80 ($\$39$k) & $-0.1020$ & $-0.1068$ & $-0.1025$ & $-12.72\%$ & $-13.11\%$ & $-12.49\%$ \\[0.2em]
+\multicolumn{7}{l}{\emph{$\Delta\mathit{ownrent}$}} \\
+p20 ($\$19$k) & $+0.0501$ & $+0.0555$ & $+0.0549$ & $+6.91\%$  & $+7.71\%$  & $+7.67\%$  \\
+p50 ($\$26$k) & $+0.0501$ & $+0.0511$ & $+0.0491$ & $+6.66\%$  & $+6.75\%$  & $+6.48\%$  \\
+p80 ($\$39$k) & $+0.0501$ & $+0.0428$ & $+0.0388$ & $+6.25\%$  & $+5.25\%$  & $+4.73\%$  \\
+\bottomrule
+\end{tabular}
+\end{center}
+Two patterns deserve emphasis.
+\begin{enumerate}
+\item For the LPM the absolute marginal effect is identical across income levels, as it must be: linearity implies $\Delta\hat{P} = \hat{\beta}$ regardless of the remaining covariates.
+\item For probit and logit the discrete changes \emph{shrink in magnitude} as income rises. At the $20$th percentile the conditional approval probability starts near $0.72$, so the latent index sits squarely where $\phi(\cdot)$ and $\Lambda'(\cdot)$ are largest; at the $80$th percentile $P_0$ has risen to $\approx 0.82$, pushing the index into the right-hand tail where the link-function slope is smaller. This is precisely the nonlinearity that LPM cannot capture.
+\end{enumerate}
+The qualitative conclusion survives: self-employment is uniformly bad news ($12$--$18\%$ lower approval), home ownership uniformly good news ($5$--$8\%$ higher), and the \emph{magnitude} of each dummy's effect depends on income for the nonlinear models but not for the LPM.
+\end{solution}
 
 \item
 \begin{problem}{\points{5}}
 Express all three cases (20\%, 50\%, 80\%) in terms of the probability ratio or log-odds. How big is the impact? Is this a lot or a little?
 \end{problem}
+\begin{solution}
+Re-expressing each marginal effect as a change in log-odds, $\Delta\log\!\left[\hat P/(1-\hat P)\right]$, yields Table~\ref{tab:prob1-logodds} in the Appendix. The highlights:
+\begin{center}
+\begin{tabular}{l l ccc}
+\toprule
+Change                  & Income & LPM     & Probit  & Logit   \\ \midrule
+$\Delta\mathit{selfempl}$ & p20    & $-0.5112$ & $-0.6405$ & $-0.6601$ \\
+                        & p50    & $-0.5891$ & $-0.7151$ & $-0.7311$ \\
+                        & p80    & $-0.7044$ & $-0.7830$ & $-0.7887$ \\ \midrule
+$\Delta\mathit{ownrent}$ & p20    & $+0.2697$ & $+0.2998$ & $+0.3007$ \\
+                        & p50    & $+0.2935$ & $+0.3216$ & $+0.3174$ \\
+                        & p80    & $+0.3319$ & $+0.3399$ & $+0.3314$ \\ \bottomrule
+\end{tabular}
+\end{center}
+(Values are re-computed from the $P_0,\,P_1$ scalars stored during part (c)--(d) of \texttt{ps6\_amex.do}; see Table~\ref{tab:prob1-logodds}.) Under the logit specification these quantities should coincide with the dummy's regression coefficient up to rounding; indeed the reduced-form logit estimates are $-0.5847$ for \texttt{selfempl} and $+0.2894$ for \texttt{ownrent}, and the implied log-odds changes across the three income levels hover within $\pm 10\%$ of those values. The equivalent odds-ratios are
+\[
+\text{OR}(\texttt{selfempl}) \;=\; e^{-0.5847} \;\approx\; 0.557,
+\qquad
+\text{OR}(\texttt{ownrent}) \;=\; e^{+0.2894} \;\approx\; 1.336.
+\]
+\textbf{Is this a lot or a little?} A lot. An odds ratio of $0.557$ means self-employment cuts the odds of approval almost in half; $1.336$ means home ownership raises the odds by a third. The economic magnitude is substantial but not extreme: both fall well inside the range where nonlinear and linear models agree on average partial effects \citep[\S11.2]{StockWatson2020}. In a real underwriting context, a shift of that size would materially change application volume and risk-weighted revenue, so the impact is ``a lot'' in the practical sense of warranting underwriting attention even if ``a little'' in the statistical sense of being comfortably identified in moderate samples.
+\end{solution}
+
+\begin{reflection}
+The relative smallness of the LPM-to-logit-to-probit spread is striking: across six scenarios the three models' absolute $\Delta\hat{P}$ disagree by at most $\approx 3$ percentage points. This is not a coincidence but a consequence of the approval rate sitting comfortably in the interior ($\approx 70$--$85\%$) at the covariate combinations we evaluate. \citet{HorracePresler2006} characterize exactly when the LPM breaks down: when $P(Y{=}1\mid X)$ approaches the boundary, LPM predictions exit $[0,1]$ and the implied marginal effects lose meaning.
+
+\textbf{Questions for the TA.}
+\begin{enumerate}
+\item[(1)] The $\%\Delta$ row in the prescribed table asks for a proportional change, which is not invariant under switching the ``reference'' scenario ($P_0$ vs $P_1$). Does the problem set assume $\%\Delta = (P_1-P_0)/P_0$, or the symmetric $(P_1-P_0)/\tfrac{1}{2}(P_0+P_1)$?
+\item[(2)] For the LPM, the ``log-odds'' is ill-defined whenever $\hat{P}$ exits $[0,1]$. How should we handle those observations in part~(e)? Should we trim to $\hat{P}\in(0,1)$, or report the log-odds only at the evaluation points for which both $P_0$ and $P_1$ remain interior?
+\item[(3)] The interpretation ``odds ratio = $e^{\beta}$'' is exact in a logit; for probit the analogue is a unit shift in the latent-index $z$-score, which is not an odds ratio per se. Is there a standard way to express the probit marginal effect in odds-ratio language for comparison to logit?
+\end{enumerate}
+\end{reflection}
 
 \item
 \begin{problem}{\points{4}}
 Now consider a specification that includes major and minor derogatory credit events in the last year (\textit{majdrg}, \textit{mindrg}). Write commands for LPM, logit and probit.
 \end{problem}
+\begin{solution}
+The variable names in \texttt{AmEx.dta} are actually \texttt{majordrg} and \texttt{minordrg}. Appending both to the right-hand side gives
+\begin{lstlisting}[language=Stata]
+reg    cardhldr inc age selfempl ownrent acadmos majordrg minordrg, robust
+logit  cardhldr inc age selfempl ownrent acadmos majordrg minordrg, vce(robust)
+probit cardhldr inc age selfempl ownrent acadmos majordrg minordrg, vce(robust)
+\end{lstlisting}
+Columns (4)--(6) of Table~\ref{tab:prob1-six} show these estimates. Adding the two derogatory-event counts fundamentally changes the story: the LPM's $R^2$ jumps from $0.0269$ to $0.2118$, and the logit/probit pseudo-$R^2$ both jump from $\approx 0.029$ to $\approx 0.23$---an eight-fold improvement that dwarfs what demographic controls alone delivered in (b).
+\end{solution}
 
 \item
 \begin{problem}{\points{18}}
 Report the full table of specifications (there should be 6) with all relevant statistics. Mark 1\%, 5\% and 10\% significance levels using the key at the bottom of the table.
 \end{problem}
+\begin{solution}
+The six-column table is in the Appendix (Table~\ref{tab:prob1-six}). Some features to call out:
+\begin{itemize}
+\item \textbf{Derogatory events dominate.} In the LPM, each additional \emph{major} derogatory event cuts the approval probability by $11.7$ pp ($p<0.01$); each \emph{minor} event by $3.2$ pp. The logit and probit estimates imply very similar average marginal effects (see part~(j)).
+\item \textbf{Income effect survives.} The coefficient on \texttt{inc} (per \$1,000) is essentially unchanged when derogatory events are added---$0.00390\rightarrow0.00393$ for the LPM---confirming that the two information sources (income and credit history) are largely orthogonal.
+\item \textbf{Demographics stay stable.} \texttt{selfempl} remains economically large ($\approx -10$ pp in the LPM) and significant in both specifications. \texttt{ownrent} retains a positive, $\approx 4.5$ pp effect.
+\item \textbf{Age flips to insignificance.} In the reduced model $\hat\beta_{\text{age}} = -0.00130$ ($p=0.003$); once derogatory events are controlled, age becomes insignificant ($p=0.55$ for the LPM, $p\approx 0.70$ for probit/logit). The apparent ``age effect'' in (b)--(c) was largely a proxy for accumulated derogatory marks.
+\item \textbf{Address tenure becomes significant.} \texttt{acadmos} gains statistical significance in the full model ($p<0.01$) with a very small coefficient, indicating a modest but real stability-of-residence signal once credit history is held fixed.
+\end{itemize}
+\end{solution}
 
 \item
 \begin{problem}{\points{6}}
 Which model fits the data the best? Which variables have the most explanatory power? Do major derogatory credit events matter? Do you prefer models with or without derogatory events?
 \end{problem}
+\begin{solution}
+\textbf{Best-fitting model.} Among the three with derogatory-event controls, the \emph{logit} narrowly wins on every fit criterion: log-likelihood $-5066.37$ (vs.\ $-5080.81$ for probit and the LPM's OLS $R^2 = 0.2118$ with RMSE $0.366$), and pseudo-$R^2$ $0.2318$ (vs.\ $0.2296$ for probit). All three models agree that introducing \texttt{majordrg} and \texttt{minordrg} multiplies the fraction of variance in \texttt{cardhldr} that we can explain by roughly $8$. The probit and logit full-model fits are essentially tied---a common finding when the link functions are close to linear on the bulk of the sample.
+
+\textbf{Most explanatory variable.} Several metrics point to \texttt{majordrg}:
+\begin{enumerate}
+\item Its standardized coefficient ($\hat\beta \cdot \mathrm{sd}(X) = -0.117 \times 1.44 \approx -0.17$ in the LPM) is the largest in absolute terms, roughly twice that of \texttt{selfempl} or \texttt{ownrent}.
+\item Its $t$-statistic is the most extreme ($|t| \approx 27$ in the LPM, $|z| \approx 33$ in probit/logit).
+\item Its inclusion is what drives the jump in fit between columns (1)--(3) and (4)--(6); a re-run excluding \texttt{majordrg} but retaining \texttt{minordrg} recovers only a small share of that gain.
+\end{enumerate}
+
+\textbf{Do major derogatory events matter?} Unambiguously yes. Each additional event reduces approval probability by roughly $11$--$17$ pp depending on the evaluation point (see part~(j) for the median-$X$ marginal effects). This is the largest economic effect of any variable in the specification and the effect that drives almost all of the explanatory power gained relative to the reduced model.
+
+\textbf{Preference.} I prefer the model with derogatory events. The reduced specification suffers from severe omitted-variable bias: \texttt{selfempl} and \texttt{age} coefficients shrink (in the case of age, toward zero), and the $R^2$ is an order of magnitude smaller. More substantively, any credible account of the credit-approval process must include prior credit behavior, and the data bear this out overwhelmingly.
+\end{solution}
 
 \item
 \begin{problem}{\points{6}}
 Construct a 95\% confidence interval for the effect of an additional major derogatory credit event on being an American Express cardholder under the linear probability model.
 \end{problem}
+\begin{solution}
+From Table~\ref{tab:prob1-six} column (4), $\hat\beta_{\texttt{majordrg}}^{\mathrm{LPM}} = \amexLPMbetamaj$ with heteroskedasticity-robust standard error $\amexLPMsemaj$. The $95\%$ normal-approximation interval is
+\[
+\hat\beta \pm 1.96 \cdot \mathrm{SE}(\hat\beta) \;=\; \amexLPMbetamaj \pm 1.96\cdot\amexLPMsemaj \;=\; \boxed{[\,\amexLPMcilomaj,\; \amexLPMcihimaj\,]}.
+\]
+Each additional major derogatory event is estimated to lower the probability of approval by $10.9$--$12.6$ percentage points, with the effect precisely pinned down because \texttt{majordrg} varies substantially in the sample (standard deviation $1.44$, max $22$). The interval excludes zero by a very wide margin: the $t$-statistic on \texttt{majordrg} is $-27.24$.
+\end{solution}
 
 \item
 \begin{problem}{\points{6}}
 Repeat for the logit and probit models in the case where the $x$ values take on the median values in the sample.
 \end{problem}
+\begin{solution}
+For logit and probit the coefficient itself is not a marginal effect. Using \verb|margins, dydx(majordrg)| at the sample medians $(\texttt{inc},\texttt{age},\texttt{acadmos},\texttt{majordrg},\texttt{minordrg}) = (\amexIncMed,\amexAgeMed,\amexAcadMed,0,0)$ and the remaining dummies set to $0$:
+\begin{center}
+\begin{tabular}{l ccc}
+\toprule
+Model  & $\widehat{\partial P}/\partial\text{majordrg}$ & $\mathrm{SE}$   & $95\%$ CI               \\ \midrule
+LPM    & $\amexLPMbetamaj$ & $\amexLPMsemaj$ & $[\,\amexLPMcilomaj,\; \amexLPMcihimaj\,]$ \\
+Probit & $\amexPROBmedmaj$ & $\amexPROBsemaj$ & $[\,\amexPROBcilo,\; \amexPROBcihi\,]$     \\
+Logit  & $\amexLOGmedmaj$  & $\amexLOGsemaj$  & $[\,\amexLOGcilo,\; \amexLOGcihi\,]$       \\
+\bottomrule
+\end{tabular}
+\end{center}
+(Standard errors are delta-method robust sandwich SEs reported by Stata's \texttt{margins} with \texttt{vce(robust)}.) At median covariates, probit and logit both estimate a $16$--$17$ percentage-point decline per major derogatory event, roughly $50\%$ larger in absolute value than the LPM coefficient. The difference is unsurprising: at $\hat{P}_0 = 0.76$, the index is already well off the $0.5$ midpoint, so the local slope of $\Phi$ or $\Lambda$ exceeds the LPM's constant slope near this baseline. All three intervals are tight and exclude zero.
+\end{solution}
+
+\begin{reflection}
+The probit/logit marginal effect at the \emph{median} is not the only reasonable summary. Stata's \verb|margins, dydx(*)| with no \texttt{at()} option delivers the average partial effect (APE)---the mean of the individual-specific marginal effects across the estimation sample. The APE of \texttt{majordrg} in this sample is numerically very close to the LPM coefficient (both sit around $-0.115$), providing the classic evidence that LPM coefficients should be read as APE's in binary-response settings rather than conditional marginal effects at any particular point.
+
+\textbf{Questions for the TA.}
+\begin{enumerate}
+\item[(1)] At the median, \texttt{majordrg} $= 0$---the distribution is highly skewed, and the median is not a ``typical'' applicant with adverse events. Would it be more informative to evaluate the marginal effect at a representative nonzero point (e.g., the mean, $\approx 0.47$), or to report the APE?
+\item[(2)] The probit/logit delta-method SE conditions on the point $X_0$ at which we evaluate the derivative. Does that understate the sampling variability that a re-interpretation (``what if the median were different?'') would pick up? Would a bootstrapped SE be materially different here?
+\item[(3)] For a count-valued regressor like \texttt{majordrg}, is it more natural to report the \emph{discrete} change $P(\text{majordrg}=1) - P(\text{majordrg}=0)$ instead of the derivative? How does that quantity compare to the $-0.172$ reported above?
+\end{enumerate}
+\end{reflection}
 
 \item
 \begin{problem}{\points{8}}
 Compute the fitted values for the linear probability model, and plot a histogram for the fitted values of the $y$ variable. Do the same for logit and probit models.
 \end{problem}
+\begin{solution}
+After estimating each full-controls model, \verb|predict| produces fitted values: \verb|xb| for the LPM (linear index) and \verb|pr| for the probit and logit (predicted probabilities on $[0,1]$). Figure~\ref{fig:p1_amex_fitted} in the Appendix plots the three histograms side-by-side.
+
+The LPM panel visibly spills off both boundaries: $\min(\hat P^{\text{LPM}}) = \amexLPMmin$ and $\max(\hat P^{\text{LPM}}) = \amexLPMmax$, well outside the legitimate $[0,1]$ range. Probit and logit fitted probabilities are bounded by construction and concentrate tightly around $P \in [0.7, 1.0]$, with a small second lump near $0.1$--$0.3$ corresponding to applicants with several derogatory events. The two nonlinear histograms are almost visually indistinguishable---again consistent with the interior-of-probability agreement between probit and logit.
+\end{solution}
 
 \item
 \begin{problem}{\points{6}}
 What should be the domain of predicted values from the LPM? What fraction of values lies outside this domain? How do we interpret them?
 \end{problem}
+\begin{solution}
+Because $Y$ is a probability, the legitimate domain of any fitted value is $[0,1]$. The LPM does not respect this constraint: its fitted index $\hat P_i = X_i'\hat\beta$ is a linear function of the covariates and will take arbitrarily extreme values when some regressor is far from its mean. In this sample,
+\begin{itemize}
+\item $\amexLPMpctbelow$ of observations have $\hat P^{\text{LPM}} < 0$,
+\item $\amexLPMpctabove$ of observations have $\hat P^{\text{LPM}} > 1$,
+\item $\amexLPMpctout$ in total lie outside $[0,1]$, with fitted values ranging from $\amexLPMmin$ to $\amexLPMmax$.
+\end{itemize}
+These out-of-range predictions are \emph{not} interpretable as probabilities; a value of $-1.8$ means nothing more than ``the linear predictor is highly negative,'' which in turn is a signal that the applicant has so many derogatory events or so low an income that the true probability is essentially zero. In practice we either (i) truncate the prediction at $0$ or $1$ (standard defensive move but biased in finite samples), (ii) switch to a nonlinear model whose link function guarantees $\hat P \in (0,1)$ (the probit or logit solution), or (iii) fit a \emph{fractional} logit \citep[see][]{AngristPischke2009} which combines the LPM's computational simplicity with the logistic CDF's bounded range. The fact that $\approx 4\%$ of the sample produces nonsensical LPM predictions is one of the standard textbook arguments for probit/logit when the outcome is highly unbalanced or the regressors are dispersed.
+\end{solution}
 
 \item
 \begin{problem}{\points{6}}
 From the results you find on Table~1, what can you say about probit and logit results? How about LPM results?
 \end{problem}
+\begin{solution}
+\textbf{Probit vs.\ logit.} Despite using different link functions, the two nonlinear models deliver almost identical conclusions:
+\begin{enumerate}
+\item The \emph{signs} of every coefficient agree.
+\item The \emph{statistical significance} of every coefficient agrees (both models flag \texttt{minordrg} as marginally significant at the $10\%$ level and every other regressor at the $1\%$ level).
+\item The \emph{implied marginal effects at the median} are within $\sim 0.006$ of one another for \texttt{majordrg} (part~(j)) and within $\sim 0.002$ for the dummies (part~(c)).
+\item The log-likelihoods and pseudo-$R^2$ are essentially tied ($-5066.4$ vs.\ $-5080.8$; $0.232$ vs.\ $0.230$).
+\end{enumerate}
+The logit coefficients are roughly $\sqrt{\pi^2/3} / 1 \approx 1.81$ times the probit coefficients---the well-known rescaling owing to different error variances in the latent-variable formulations---but the implied probabilities are nearly identical once that scaling is absorbed by the link function.
+
+\textbf{LPM.} The LPM gets the sign and significance pattern exactly right and delivers coefficients whose magnitudes are easy to read directly as marginal effects. It fails in two respects documented above: (1) $\approx 4\%$ of fitted values exit $[0,1]$ (part~(l)), and (2) the coefficient is a \emph{constant} marginal effect and so cannot reproduce the subtle dependence of the nonlinear models' marginal effects on the baseline $X$ (part~(d)). In this sample these failures are empirically minor: if the goal is to report average partial effects, the LPM and the probit/logit APEs differ by pennies. If the goal is accurate prediction of individual probabilities---especially for applicants with high \texttt{majordrg} or low \texttt{inc}---the LPM is inadequate and probit/logit should be preferred.
+\end{solution}
 
 \item
 \begin{problem}{\points{6}}
 A well-known result by \citet{Amemiya1981} is that over the range of probabilities from 30\% to 70\% the following approximations should hold: $\beta_{\mathrm{LPM}} \approx 0.4\,\beta_{\mathrm{probit}}$ and $\beta_{\mathrm{LPM}} \approx 0.25\,\beta_{\mathrm{logit}}$. Take your results for logit and probit; how does this result look for $\beta_{\mathit{majordrg}}$?
 \end{problem}
+\begin{solution}
+The relevant coefficients from Table~\ref{tab:prob1-six} are
+\[
+\hat\beta_{\texttt{majordrg}}^{\mathrm{LPM}} = \amexBLPMmaj,
+\qquad
+\hat\beta_{\texttt{majordrg}}^{\mathrm{probit}} = \amexBPROBmaj,
+\qquad
+\hat\beta_{\texttt{majordrg}}^{\mathrm{logit}} = \amexBLOGmaj.
+\]
+The Amemiya-implied approximations are
+\[
+0.40 \cdot \hat\beta^{\mathrm{probit}} = \amexApproxPROB,
+\qquad
+0.25 \cdot \hat\beta^{\mathrm{logit}}  = \amexApproxLOG,
+\]
+both substantially larger in absolute value than the LPM coefficient. The actual ratios are
+\[
+\frac{\hat\beta^{\mathrm{LPM}}}{\hat\beta^{\mathrm{probit}}} = \amexRatioPROB \;\; (\text{rule-of-thumb } 0.40),
+\qquad
+\frac{\hat\beta^{\mathrm{LPM}}}{\hat\beta^{\mathrm{logit}}} = \amexRatioLOG \;\; (\text{rule-of-thumb } 0.25).
+\]
+\textbf{Why the rule fails here.} The \citet{Amemiya1981} approximation depends on evaluating the link-function derivative over the range $P \in [0.3, 0.7]$, precisely the interior where $\phi(z)$ and $\Lambda'(z)$ are largest. But \texttt{majordrg} has a long right tail ($\max = 22$), and applicants with several derogatory events face approval probabilities near zero---far outside the interior band. The LPM's coefficient is an average slope over the full covariate support, while the probit/logit coefficient captures the latent-index slope where the CDF is near-vertical on either tail. The two are not comparable when the regressor drives probabilities into the extremes.
+
+This is a substantive caution: the $0.4/0.25$ rule is a rough internal-consistency check, not a law. When a regressor generates large probability variation---precisely when we care most about the coefficient---the approximation breaks down. See \citet[Ch.~3]{AngristPischke2009} for the general point that the LPM coefficient is better compared to the \emph{average} partial effect from probit/logit, not to the rescaled index coefficient.
+\end{solution}
+
+\begin{reflection}
+The breakdown of the Amemiya rule for \texttt{majordrg} is instructive. Reapplying the same rule to the \emph{dummy} variables (where the probability shifts stay inside the interior band) produces closer agreement: for \texttt{selfempl}, $0.4 \times(-0.445) = -0.178$ vs.\ LPM $-0.100$ ($\approx 56\%$ of the predicted value); for \texttt{ownrent}, $0.4\times 0.191 = 0.0764$ vs.\ LPM $0.0456$ ($\approx 60\%$). Still below the target, but far closer than the $17$--$10\%$ we see for \texttt{majordrg}. The divergence is thus specifically a feature of regressors that push predicted probabilities into the tails.
+
+\textbf{Questions for the TA.}
+\begin{enumerate}
+\item[(1)] \citet{Amemiya1981} derives the $0.4$ and $0.25$ constants by linearizing the CDF around $P = 0.5$; in our data the unconditional $\hat p = 0.78$ is already outside that interior. Is there a known extension of the rule that corrects for the baseline probability, analogous to the ``nonlinear-link correction'' in \citet{CameronTrivedi2005}?
+\item[(2)] Should we report the LPM/APE ratio rather than the LPM/index-coefficient ratio? At the sample APE, $\partial P / \partial\texttt{majordrg}^{\mathrm{probit}} \approx \hat\beta^{\mathrm{probit}} \cdot \bar{\phi}$ where $\bar\phi$ is the average link-function derivative. Empirically this average is $\approx 0.165$ in our sample, which gives a predicted LPM of $-0.706 \times 0.165 = -0.116$---within $1\%$ of the actual LPM coefficient.
+\item[(3)] If we intended to use the Amemiya rule for model selection (e.g., ``accept the LPM if the ratio is close to $0.4$''), what is the appropriate tolerance? Is a ratio of $0.30$ close enough? Or does any ratio below, say, $0.35$ suggest that the LPM is picking up a different feature of the distribution than the nonlinear model?
+\end{enumerate}
+\end{reflection}
 
 \end{enumerate}
-
-\bigskip
-\noindent\textit{Note.} Problem~1 above reproduces the American Express credit-card question from Problem Set 6 verbatim; solutions to parts (a)--(n) are not included in this submission. The remainder of this document solves the two recitation exercises associated with Homework~6, corresponding to Stock and Watson Empirical Exercises 11.1 and 11.2 as assigned in Recitation~10.
 
 \newpage
 
@@ -630,6 +866,15 @@ which is essentially identical to the LPM estimate of $-0.0472$. Because the pro
 \subsection*{Tables}
 \singlespacing
 
+\input{output/tables/prob1_amex_six.tex}
+
+\clearpage
+\input{output/tables/prob1_amex_me.tex}
+
+\clearpage
+\input{output/tables/prob1_amex_logodds.tex}
+
+\clearpage
 \input{output/tables/prob1_bcd_models.tex}
 
 \clearpage
@@ -650,6 +895,13 @@ which is essentially identical to the LPM estimate of $-0.0472$. Because the pro
 \clearpage
 \doublespacing
 \subsection*{Figures}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{output/figures/prob1_amex_fitted_hist.pdf}
+\caption{Histograms of fitted probabilities of being approved as a cardholder under the LPM, probit, and logit models with the full set of controls. The dashed lines in the LPM panel bound the legitimate probability domain $[0,1]$; about $4.05\%$ of LPM fitted values fall outside this range, while the probit and logit panels are bounded by construction. Source: own calculations using \texttt{AmEx.dta}.}
+\label{fig:p1_amex_fitted}
+\end{figure}
 
 \begin{figure}[H]
 \centering
@@ -684,7 +936,7 @@ All replication materials for \texttt{homework\_06} are available on GitHub:
     \item Homework 06 folder: \url{https://github.com/tylersotomayor/econun3412-spring2026/tree/main/homework_06}
 \end{itemize}
 
-The \texttt{do\_files/} subfolder contains \texttt{ps6\_problem1.do} (solving SW~11.1) and \texttt{ps6\_problem2.do} (solving SW~11.2), each heavily annotated with comments explaining every step of the code and output. The \texttt{output/} subfolder contains the \LaTeX\ tables (\texttt{output/tables/}) and academic-quality PDF figures (\texttt{output/figures/}) generated by those do-files and \texttt{\textbackslash input}ed into this document.
+The \texttt{do\_files/} subfolder contains three heavily annotated Stata do-files: \texttt{ps6\_amex.do} (solving Problem~1, parts a--n), \texttt{ps6\_problem1.do} (solving SW~11.1), and \texttt{ps6\_problem2.do} (solving SW~11.2). Each of these writes to a matching \texttt{.log} in the same directory. The \texttt{output/} subfolder contains the \LaTeX\ tables (\texttt{output/tables/}) and academic-quality PDF figures (\texttt{output/figures/}) generated by those do-files and \texttt{\textbackslash input}ed into this document.
 
 \newpage
 \bibliographystyle{apalike}
