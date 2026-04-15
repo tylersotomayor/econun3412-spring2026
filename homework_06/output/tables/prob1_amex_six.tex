@@ -1,6 +1,7 @@
 \begin{table}[htbp]\centering
 \def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
 \caption{Determinants of Being an AmEx Cardholder (Problem~1 Table)\label{tab:prob1-six}}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{l*{6}{c}}
 \toprule
                     &\multicolumn{1}{c}{(1)}&\multicolumn{1}{c}{(2)}&\multicolumn{1}{c}{(3)}&\multicolumn{1}{c}{(4)}&\multicolumn{1}{c}{(5)}&\multicolumn{1}{c}{(6)}\\
@@ -42,5 +43,6 @@ Log-likelihood      &    -6545.40         &    -6408.24         &    -6404.02   
 \multicolumn{7}{l}{\footnotesize Stars: *p<0.10, **p<0.05, ***p<0.01.}\\
 \multicolumn{7}{l}{\footnotesize Dependent variable: cardhldr = 1 if applicant approved as cardholder.}\\
 \multicolumn{7}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
-\end{tabular}
+\end{tabular}%
+}
 \end{table}

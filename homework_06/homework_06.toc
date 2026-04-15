@@ -1,5 +1,5 @@
 \contentsline {section}{Problem 1: American Express Credit Card Applicants}{1}{section*.2}%
-\contentsline {section}{Recitation Exercise 1: Employment and the Great Recession (SW 11.1)}{20}{section*.3}%
-\contentsline {section}{Recitation Exercise 2: Workplace Smoking Bans (SW 11.2)}{33}{section*.4}%
-\contentsline {section}{Appendix: Tables and Figures}{40}{section*.5}%
-\contentsline {section}{Replication Files}{54}{section*.21}%
+\contentsline {section}{Recitation Exercise 1: Employment and the Great Recession (SW 11.1)}{19}{section*.3}%
+\contentsline {section}{Recitation Exercise 2: Workplace Smoking Bans (SW 11.2)}{30}{section*.4}%
+\contentsline {section}{Appendix: Tables and Figures}{37}{section*.5}%
+\contentsline {section}{Replication Files}{50}{section*.21}%
