@@ -184,12 +184,7 @@ The sample contains $n = \amexN$ applicants, of whom
 \[
 \hat{p} \;=\; \frac{1}{n}\sum_{i} \texttt{cardhldr}_i \;=\; \boxed{\amexPhat}
 \]
-or about $78.3\%$ were approved as cardholders. The sample is therefore \emph{not} a random cross-section of American consumers: every row is a completed \textsc{AmEx} application. External validity is correspondingly limited. Two caveats follow.
-\begin{itemize}
-\item \textbf{Selection into the sample.} Consumers who never applied are absent; those who did apply are disproportionately drawn from higher-income, more financially sophisticated households with some desire (and perceived eligibility) for a premium charge card. Coefficients estimated on this frame therefore speak to the conditional approval process at American Express \emph{given applicant status}, not to the unconditional probability of being a cardholder in the U.S.\ population.
-\item \textbf{Selection on unobservables.} Several covariates---notably \texttt{income} and the derogatory-credit counts---likely correlate with AmEx's unobserved internal credit score. Regression coefficients retain their interpretation as conditional means given observables, but any causal reading (``giving applicant $i$ a higher \texttt{income} would raise approval by $\hat{\beta}$'') requires much stronger assumptions than those licensed by the sampling design \citep[see][\S11.3]{StockWatson2020}.
-\end{itemize}
-The $78\%$ approval rate is high because applicants already self-select on observable eligibility before filing an application.
+or about $78.3\%$ were approved as cardholders. The sample is therefore not a random cross-section of American consumers; every row is a completed AmEx application, which constrains what the coefficients we estimate can be read to say about the population. Consumers who never applied are absent, and those who did apply skew toward higher-income, more financially sophisticated households that perceived themselves as eligible for a premium charge card, so regression coefficients speak to the conditional approval process given applicant status rather than to the unconditional probability of being a cardholder in the U.S.\ population. Several of the covariates---especially \texttt{income} and the derogatory-credit counts---likely correlate with AmEx's unobserved internal credit score, which means that reading the coefficients causally (``giving applicant $i$ a higher \texttt{income} would raise approval by $\hat{\beta}$'') requires assumptions much stronger than those licensed by the sampling design \citep[see][\S11.3]{StockWatson2020}. The resulting $78\%$ approval rate is high precisely because applicants have already self-selected on observable eligibility before filing.
 \end{solution}
 
 \item
@@ -273,12 +268,7 @@ p80 (\$39k) & $+0.0501$ & $+0.0428$ & $+0.0388$ & $+6.25\%$  & $+5.25\%$  & $+4.
 \end{tabular}%
 }
 \end{center}
-Two patterns deserve emphasis.
-\begin{enumerate}
-\item For the LPM the absolute marginal effect is identical across income levels, as it must be: linearity implies $\Delta\hat{P} = \hat{\beta}$ regardless of the remaining covariates.
-\item For probit and logit the discrete changes \emph{shrink in magnitude} as income rises. At the $20$th percentile the conditional approval probability starts near $0.72$, so the latent index sits squarely where $\phi(\cdot)$ and $\Lambda'(\cdot)$ are largest; at the $80$th percentile $P_0$ has risen to $\approx 0.82$, pushing the index into the right-hand tail where the link-function slope is smaller. This is precisely the nonlinearity that LPM cannot capture.
-\end{enumerate}
-The qualitative conclusion survives: self-employment is uniformly bad news ($12$--$18\%$ lower approval), home ownership uniformly good news ($5$--$8\%$ higher), and the \emph{magnitude} of each dummy's effect depends on income for the nonlinear models but not for the LPM.
+The absolute LPM marginal effect is identical across income levels, as it must be: linearity implies $\Delta\hat{P} = \hat{\beta}$ regardless of the remaining covariates. For probit and logit the discrete changes shrink in magnitude as income rises: at the 20th percentile the conditional approval probability starts near $0.72$, so the latent index sits squarely where $\phi(\cdot)$ and $\Lambda'(\cdot)$ are largest, while at the 80th percentile $P_0$ has risen to roughly $0.82$, pushing the index into the right-hand tail where the link-function slope is smaller. That is precisely the nonlinearity the LPM cannot capture. The qualitative conclusion, however, survives across all three: self-employment is uniformly bad news ($12$--$18\%$ lower approval), home ownership uniformly good news ($5$--$8\%$ higher), and only the magnitude of each dummy's effect depends on income for the nonlinear models.
 \end{solution}
 
 \item
@@ -332,13 +322,7 @@ Report the full table of specifications (there should be 6) with all relevant st
 \end{problem}
 \begin{solution}
 The six-column table is in the Appendix (Table~\ref{tab:prob1-six}). Some features to call out:
-\begin{itemize}
-\item \textbf{Derogatory events dominate.} In the LPM, each additional \emph{major} derogatory event cuts the approval probability by $11.7$ pp ($p<0.01$); each \emph{minor} event by $3.2$ pp. The logit and probit estimates imply very similar average marginal effects (see part~(j)).
-\item \textbf{Income effect survives.} The coefficient on \texttt{inc} (per \$1,000) is essentially unchanged when derogatory events are added---$0.00390\rightarrow0.00393$ for the LPM---confirming that the two information sources (income and credit history) are largely orthogonal.
-\item \textbf{Demographics stay stable.} \texttt{selfempl} remains economically large ($\approx -10$ pp in the LPM) and significant in both specifications. \texttt{ownrent} retains a positive, $\approx 4.5$ pp effect.
-\item \textbf{Age flips to insignificance.} In the reduced model $\hat\beta_{\text{age}} = -0.00130$ ($p=0.003$); once derogatory events are controlled, age becomes insignificant ($p=0.55$ for the LPM, $p\approx 0.70$ for probit/logit). The apparent ``age effect'' in (b)--(c) was largely a proxy for accumulated derogatory marks.
-\item \textbf{Address tenure becomes significant.} \texttt{acadmos} gains statistical significance in the full model ($p<0.01$) with a very small coefficient, indicating a modest but real stability-of-residence signal once credit history is held fixed.
-\end{itemize}
+The derogatory-event controls dominate the expanded specification. In the LPM, each additional major derogatory event cuts the approval probability by $11.7$ pp ($p<0.01$); each minor event by $3.2$ pp; and the logit and probit estimates imply very similar average marginal effects, which part (j) takes up directly. The income effect survives intact---the coefficient on \texttt{inc} (per \$1,000) moves only from $0.00390$ to $0.00393$ in the LPM---confirming that income and credit-history are largely orthogonal as sources of underwriting information. The two dummies are similarly stable: \texttt{selfempl} stays at roughly $-10$ pp and \texttt{ownrent} at roughly $+4.5$ pp in the LPM. The change that does occur is in the age coefficient, which collapses from $-0.00130$ ($p=0.003$) in the reduced model to statistically insignificant once derogatory events are present ($p=0.55$ for the LPM, $p\approx 0.70$ for probit and logit), indicating that the ``age effect'' in parts (b)--(c) was largely proxying for accumulated derogatory marks on older applicants' records. The one coefficient that gains significance is \texttt{acadmos}: address tenure reaches the $1\%$ level in the full model, picking up a modest but real stability-of-residence signal once credit history is held fixed.
 \end{solution}
 
 \item
@@ -346,18 +330,11 @@ The six-column table is in the Appendix (Table~\ref{tab:prob1-six}). Some featur
 Which model fits the data the best? Which variables have the most explanatory power? Do major derogatory credit events matter? Do you prefer models with or without derogatory events?
 \end{problem}
 \begin{solution}
-\textbf{Best-fitting model.} Among the three with derogatory-event controls, the \emph{logit} narrowly wins on every fit criterion: log-likelihood $-5066.37$ (vs.\ $-5080.81$ for probit and the LPM's OLS $R^2 = 0.2118$ with RMSE $0.366$), and pseudo-$R^2$ $0.2318$ (vs.\ $0.2296$ for probit). All three models agree that introducing \texttt{majordrg} and \texttt{minordrg} multiplies the fraction of variance in \texttt{cardhldr} that we can explain by roughly $8$. The probit and logit full-model fits are essentially tied---a common finding when the link functions are close to linear on the bulk of the sample.
+Among the three full-specification models, the logit narrowly wins on every fit criterion: a log-likelihood of $-5066.37$ versus $-5080.81$ for the probit, and a pseudo-$R^2$ of $0.2318$ versus $0.2296$. The LPM, whose $R^2 = 0.2118$ and RMSE $0.366$ are not directly comparable, trails but agrees qualitatively. The probit and logit full-model fits are essentially tied, which is the expected pattern when the link functions are close to linear on the bulk of the sample; what all three models agree on is that introducing \texttt{majordrg} and \texttt{minordrg} multiplies the fraction of variance in \texttt{cardhldr} that can be explained by roughly eight.
 
-\textbf{Most explanatory variable.} Several metrics point to \texttt{majordrg}:
-\begin{enumerate}
-\item Its standardized coefficient ($\hat\beta \cdot \mathrm{sd}(X) = -0.117 \times 1.44 \approx -0.17$ in the LPM) is the largest in absolute terms, roughly twice that of \texttt{selfempl} or \texttt{ownrent}.
-\item Its $t$-statistic is the most extreme ($|t| \approx 27$ in the LPM, $|z| \approx 33$ in probit/logit).
-\item Its inclusion is what drives the jump in fit between columns (1)--(3) and (4)--(6); a re-run excluding \texttt{majordrg} but retaining \texttt{minordrg} recovers only a small share of that gain.
-\end{enumerate}
+The variable carrying the most explanatory power is unambiguously \texttt{majordrg}. Its standardized coefficient in the LPM is $-0.117 \times 1.44 \approx -0.17$, roughly twice that of \texttt{selfempl} or \texttt{ownrent}; its $t$-statistic is the most extreme in the table ($|t|\approx 27$ in the LPM, $|z|\approx 33$ in probit and logit); and it is the inclusion of this single variable that drives almost all of the jump in fit between columns (1)--(3) and (4)--(6), with a specification that drops \texttt{majordrg} and keeps only \texttt{minordrg} recovering a small share of that gain. Major derogatory events unambiguously matter, reducing approval probability by roughly $11$--$17$ pp per event depending on the evaluation point, as part (j) quantifies at median covariates.
 
-\textbf{Do major derogatory events matter?} Unambiguously yes. Each additional event reduces approval probability by roughly $11$--$17$ pp depending on the evaluation point (see part~(j) for the median-$X$ marginal effects). This is the largest economic effect of any variable in the specification and the effect that drives almost all of the explanatory power gained relative to the reduced model.
-
-\textbf{Preference.} I prefer the model with derogatory events. The reduced specification suffers from severe omitted-variable bias: \texttt{selfempl} and \texttt{age} coefficients shrink (in the case of age, toward zero), and the $R^2$ is an order of magnitude smaller. More substantively, any credible account of the credit-approval process must include prior credit behavior, and the data bear this out overwhelmingly.
+I prefer the model that includes the derogatory-event counts. The reduced specification suffers from severe omitted-variable bias---the \texttt{selfempl} and \texttt{age} coefficients shrink (\texttt{age} collapses to zero), and the $R^2$ is an order of magnitude smaller---and, substantively, any credible account of credit-card approval has to include prior credit behavior. The data back up that substantive prior overwhelmingly.
 \end{solution}
 
 \item
@@ -413,17 +390,11 @@ The LPM panel visibly spills off both boundaries: $\min(\hat P^{\text{LPM}}) = \
 What should be the domain of predicted values from the LPM? What fraction of values lies outside this domain? How do we interpret them?
 \end{problem}
 \begin{solution}
-Because $Y$ is a probability, the legitimate domain of any fitted value is $[0,1]$. The LPM does not respect this constraint: its fitted index $\hat P_i = X_i'\hat\beta$ is a linear function of the covariates and will take arbitrarily extreme values when some regressor is far from its mean. In this sample,
-\begin{itemize}
-\item $\amexLPMpctbelow$ of observations have $\hat P^{\text{LPM}} < 0$,
-\item $\amexLPMpctabove$ of observations have $\hat P^{\text{LPM}} > 1$,
-\item with fitted values ranging from $\amexLPMmin$ to $\amexLPMmax$.
-\end{itemize}
-In total,
+Because $Y$ is a probability, the legitimate domain of any fitted value is $[0,1]$. The LPM does not respect that constraint: the fitted index $\hat P_i = X_i'\hat\beta$ is a linear function of the covariates and will take arbitrarily extreme values when some regressor is far from its mean. In this sample $\amexLPMpctbelow$ of observations have $\hat P^{\text{LPM}} < 0$ and $\amexLPMpctabove$ have $\hat P^{\text{LPM}} > 1$, with fitted values spanning $\amexLPMmin$ to $\amexLPMmax$. In total,
 \[
 \boxed{\;\text{fraction of LPM fitted values outside } [0,1] \;=\; \amexLPMpctout\;}.
 \]
-These out-of-range predictions are \emph{not} interpretable as probabilities; a value of $-1.8$ means nothing more than ``the linear predictor is highly negative,'' which in turn is a signal that the applicant has so many derogatory events or so low an income that the true probability is essentially zero. In practice we either (i) truncate the prediction at $0$ or $1$ (standard defensive move but biased in finite samples), (ii) switch to a nonlinear model whose link function guarantees $\hat P \in (0,1)$ (the probit or logit solution), or (iii) fit a \emph{fractional} logit \citep[see][]{AngristPischke2009} which combines the LPM's computational simplicity with the logistic CDF's bounded range. The fact that $\approx 4\%$ of the sample produces nonsensical LPM predictions is one of the standard textbook arguments for probit/logit when the outcome is highly unbalanced or the regressors are dispersed.
+These out-of-range predictions cannot be interpreted as probabilities. A value of $-1.8$ simply means that the linear predictor is highly negative, which is itself a signal that the applicant has so many derogatory events (or so little income) that the true approval probability is essentially zero. Standard practical responses are to truncate the prediction at $0$ or $1$ (simple but biased in finite samples), to switch to a nonlinear model whose link function guarantees $\hat P \in (0,1)$ (the probit or logit approach), or to fit a fractional logit \citep[see][]{AngristPischke2009} which marries the LPM's computational simplicity to the logistic CDF's bounded range. The fact that roughly $4\%$ of this sample produces nonsensical LPM predictions is one of the standard textbook arguments for probit or logit whenever the outcome is highly unbalanced or the regressors are dispersed.
 \end{solution}
 
 \item
@@ -431,16 +402,9 @@ These out-of-range predictions are \emph{not} interpretable as probabilities; a 
 From the results you find on Table~1, what can you say about probit and logit results? How about LPM results?
 \end{problem}
 \begin{solution}
-\textbf{Probit vs.\ logit.} Despite using different link functions, the two nonlinear models deliver almost identical conclusions:
-\begin{enumerate}
-\item The \emph{signs} of every coefficient agree.
-\item The \emph{statistical significance} of every coefficient agrees (both models flag \texttt{minordrg} as marginally significant at the $10\%$ level and every other regressor at the $1\%$ level).
-\item The \emph{implied marginal effects at the median} are within $\sim 0.006$ of one another for \texttt{majordrg} (part~(j)) and within $\sim 0.002$ for the dummies (part~(c)).
-\item The log-likelihoods and pseudo-$R^2$ are essentially tied ($-5066.4$ vs.\ $-5080.8$; $0.232$ vs.\ $0.230$).
-\end{enumerate}
-The logit coefficients are roughly $\sqrt{\pi^2/3} / 1 \approx 1.81$ times the probit coefficients---the well-known rescaling owing to different error variances in the latent-variable formulations---but the implied probabilities are nearly identical once that scaling is absorbed by the link function.
+Despite using different link functions, probit and logit deliver almost identical conclusions: the signs of every coefficient agree, every regressor gets the same significance verdict (both models flag \texttt{minordrg} as marginally significant at the $10\%$ level and every other regressor at the $1\%$ level), the implied marginal effects at the median are within about $0.006$ of one another for \texttt{majordrg} and within roughly $0.002$ for the dummies, and the log-likelihoods and pseudo-$R^2$ are essentially tied at $-5066.4$ versus $-5080.8$ and $0.232$ versus $0.230$. The logit coefficients are roughly $\sqrt{\pi^2/3}\approx 1.81$ times the probit coefficients---the familiar rescaling owing to different error variances in the two latent-variable formulations---but the implied probabilities are nearly identical once that scaling is absorbed by the link function.
 
-\textbf{LPM.} The LPM gets the sign and significance pattern exactly right and delivers coefficients whose magnitudes are easy to read directly as marginal effects. It fails in two respects documented above: (1) $\approx 4\%$ of fitted values exit $[0,1]$ (part~(l)), and (2) the coefficient is a \emph{constant} marginal effect and so cannot reproduce the subtle dependence of the nonlinear models' marginal effects on the baseline $X$ (part~(d)). In this sample these failures are empirically minor: if the goal is to report average partial effects, the LPM and the probit/logit APEs differ by pennies. If the goal is accurate prediction of individual probabilities---especially for applicants with high \texttt{majordrg} or low \texttt{inc}---the LPM is inadequate and probit/logit should be preferred.
+The LPM gets the sign and significance pattern exactly right, and its coefficients are easy to read directly as marginal effects. Its two shortcomings are documented elsewhere in the solution set: roughly $4\%$ of its fitted values escape $[0,1]$ (part~(l)), and its constant slope cannot reproduce the subtle dependence of the nonlinear models' marginal effects on the baseline $X$ (part~(d)). In this sample those failures are empirically minor; if the goal is to report average partial effects, the LPM and the probit/logit APEs differ only by pennies. If the goal is accurate prediction of individual probabilities---especially for applicants with high \texttt{majordrg} or low \texttt{inc}---the LPM is inadequate and probit or logit should be preferred.
 \end{solution}
 
 \item
@@ -469,9 +433,7 @@ both substantially larger in absolute value than the LPM coefficient. The actual
 \frac{\hat\beta^{\mathrm{LPM}}}{\hat\beta^{\mathrm{logit}}} = \amexRatioLOG\;\;(\text{rule } 0.25)
 \;}.
 \]
-\textbf{Why the rule fails here.} The \citet{Amemiya1981} approximation depends on evaluating the link-function derivative over the range $P \in [0.3, 0.7]$, precisely the interior where $\phi(z)$ and $\Lambda'(z)$ are largest. But \texttt{majordrg} has a long right tail ($\max = 22$), and applicants with several derogatory events face approval probabilities near zero---far outside the interior band. The LPM's coefficient is an average slope over the full covariate support, while the probit/logit coefficient captures the latent-index slope where the CDF is near-vertical on either tail. The two are not comparable when the regressor drives probabilities into the extremes.
-
-This is a substantive caution: the $0.4/0.25$ rule is a rough internal-consistency check, not a law. When a regressor generates large probability variation---precisely when we care most about the coefficient---the approximation breaks down. See \citet[Ch.~3]{AngristPischke2009} for the general point that the LPM coefficient is better compared to the \emph{average} partial effect from probit/logit, not to the rescaled index coefficient.
+The rule fails badly here because the \citet{Amemiya1981} approximation is built on the link-function derivative in the range $P \in [0.3, 0.7]$---the interior where $\phi(z)$ and $\Lambda'(z)$ are largest---and \texttt{majordrg} has a long right tail ($\max = 22$) that pushes many applicants' approval probabilities to essentially zero, far outside that band. The LPM's coefficient averages over the full covariate support, whereas the probit and logit coefficients capture the latent-index slope even in regions where the CDF is near-vertical; the two are not directly comparable when a regressor drives fitted probabilities into the extremes. The $0.4/0.25$ rule is best read as a rough internal-consistency check rather than a law: it tends to break down precisely when a regressor generates large probability variation, which is exactly when we care most about the coefficient. As \citet[Ch.~3]{AngristPischke2009} note, the LPM coefficient is better compared to the average partial effect from probit/logit than to the rescaled index coefficient---which is the quantity the Amemiya rule targets.
 \end{solution}
 
 \begin{reflection}
@@ -545,7 +507,7 @@ The estimated equation is
 \]
 with $n = 5{,}412$ and $R^2 = 0.0197$. Individually, $t_{\beta_1} = 8.62$ and $t_{\beta_2} = -8.42$, each with $p < 0.001$. Jointly, the robust $F$-statistic for $H_0\!:\, \beta_1 = \beta_2 = 0$ is $F(2,5409) = 37.50$ with $p < 0.001$.
 
-\textbf{Conclusion.} Age is a statistically significant determinant of April 2009 employment at any conventional level. Because $\hat{\beta}_2$ is statistically different from zero, the relationship is \emph{nonlinear}: the quadratic specification fits better than the linear-only one. Setting $\partial \hat{E}_i/\partial \text{age} = 0$ gives a peak at age $-\hat{\beta}_1/(2\hat{\beta}_2) = 0.0283/(2 \times 0.000327) \approx 43.3$ years---the probability of still being employed in April 2009 rises from the teens to the early 40s and then declines into the 60s.
+Age is therefore a statistically significant determinant of April 2009 employment at any conventional level, and because $\hat{\beta}_2$ is itself significantly different from zero the relationship is nonlinear: the quadratic specification fits strictly better than the linear-only one. Setting $\partial \hat{E}_i/\partial \text{age} = 0$ locates the implied peak at $-\hat{\beta}_1/(2\hat{\beta}_2) = 0.0283/(2 \times 0.000327) \approx 43.3$ years, with retention rising from the teens to the early 40s and then declining into the 60s.
 \end{solution}
 
 % ----- (b.iii) -----
@@ -635,19 +597,9 @@ A useful rule of thumb from \citet{CameronTrivedi2005} and \citet{Amemiya1981} i
 \textbf{(f.i \& ii)} The data set includes variables measuring the workers' educational attainment, sex, race, marital status, region of the country, and weekly earnings in April 2008. Construct a table like Table~11.2 to investigate whether the conclusions on the effect of age on employment from (b)--(d) are affected by omitted variable bias. Use the regressions in your table to discuss the characteristics of workers who were hurt most by the Great Recession.
 \end{problem}
 \begin{solution}
-Table~\ref{tab:prob1-full} reports LPM, probit, and logit estimates for the same sample with the expanded controls. Several features stand out.
+Table~\ref{tab:prob1-full} reports LPM, probit, and logit estimates for the same sample with the expanded controls. The LPM age coefficient falls only slightly when the additional covariates are added, from $\hat{\beta}_{\text{age}} = 0.0283$ to $0.0253$, and $\hat{\beta}_{\text{age}^2}$ moves correspondingly from $-0.000327$ to $-0.000293$. The qualitative conclusion---that retention is an inverted-U in age, peaking in the early 40s---is therefore robust to including the full set of demographic and earnings controls, which suggests that the age profile identified in (b)--(d) was not merely reflecting composition effects along education, race, or earnings. Analogous stability holds for probit and logit.
 
-\textbf{Age and age squared.} The LPM age coefficient falls only slightly when the controls are added, from $\hat{\beta}_{\text{age}} = 0.0283$ to $0.0253$, and $\hat{\beta}_{\text{age}^2}$ from $-0.000327$ to $-0.000293$. The qualitative conclusion---that retention is an inverted-U in age, peaking in the early 40s---is therefore robust to including the full set of demographic and earnings controls. This is informative: the age profile identified in (b)--(d) was not merely reflecting composition effects along education, race, or earnings. Analogous stability holds for probit and logit.
-
-\textbf{Workers hurt most.} Consider the LPM column, where marginal effects are directly interpretable as probability changes:
-\begin{itemize}
-\item \emph{Low-education workers.} Relative to advanced-degree holders, high-school dropouts had a probability of remaining employed that was $8.8$ pp lower ($p < 0.01$). Other education categories were also associated with lower retention, though not always significantly. Education is the single strongest predictor in the full model.
-\item \emph{Union members.} $-5.77$ pp ($p < 0.01$). During the Great Recession, union-intensive sectors (manufacturing, construction, autos) were hardest hit; the union dummy captures this sectoral exposure even after demographics are held fixed.
-\item \emph{Low earners.} Each additional \$100/week in April 2008 earnings raised retention by $0.35$ pp ($p < 0.01$). Workers at the bottom of the earnings distribution were correspondingly more vulnerable.
-\item \emph{Very young and very old workers.} Predicted retention is lowest for 18--20-year-olds and falls again past age 55 (Figure~\ref{fig:p1_age}).
-\item \emph{Geography.} Workers in central states were \emph{more} likely to retain employment ($+4.1$ pp, $p < 0.01$), consistent with the 2008--09 recession being concentrated in coastal finance and housing hubs.
-\end{itemize}
-Sex, race, and marital status have quantitatively small and mostly insignificant coefficients after controlling for the other factors, which is one piece of evidence that the Great Recession did not systematically discriminate along those lines conditional on industry/occupation composition (captured here through union status and earnings).
+Reading the LPM column, whose coefficients translate directly into probability changes, education emerges as the single strongest predictor of recession-era retention: relative to advanced-degree holders, high-school dropouts had a retention probability $8.8$ pp lower ($p<0.01$), with the other education categories also pointing downward if not always significantly so. Union members also had a substantially lower retention probability ($-5.77$ pp, $p<0.01$), an effect that is most naturally read as sectoral exposure---union-intensive sectors like manufacturing, construction, and autos were hardest hit in 2008--09, and the union dummy captures that exposure even after demographics are held fixed. Earnings work in the expected direction, with each additional \$100/week in April 2008 earnings raising retention by $0.35$ pp ($p<0.01$), so workers at the bottom of the earnings distribution were correspondingly more vulnerable. The quadratic age profile (Figure~\ref{fig:p1_age}) traces out the familiar pattern: retention is lowest for $18$--$20$-year-olds and falls again past age $55$. Geographically, workers in central states were \emph{more} likely to retain employment ($+4.1$ pp, $p<0.01$), consistent with the 2008--09 recession being concentrated in the coastal finance and housing hubs rather than in the interior. Sex, race, and marital status have quantitatively small and mostly insignificant coefficients once the other factors are held fixed, which is one piece of evidence that the Great Recession did not systematically discriminate along those lines conditional on industry and occupation composition (captured here through union status and earnings).
 \end{solution}
 
 % ----- (g) Unemployed -----
@@ -656,17 +608,9 @@ Sex, race, and marital status have quantitatively small and mostly insignificant
 \textbf{(g)} The results in (a)--(f) were based on the probability of employment. Workers who are not employed can either be (i) unemployed or (ii) out the labor force. Do the conclusions you reached in (a)--(f) also hold for workers who became unemployed? (Hint: Use the binary variable \textit{Unemployed} instead of \textit{Employed}.)
 \end{problem}
 \begin{solution}
-Switching the dependent variable to \texttt{unemployed} (which equals 1 for the 239 workers who were actively unemployed in April 2009 and 0 for both the employed and the out-of-labor-force groups) changes the sign pattern in the expected ways; see Table~\ref{tab:prob1-unemp}.
+Switching the dependent variable to \texttt{unemployed}, which equals 1 for the $239$ workers who were actively unemployed in April 2009 and 0 for both the employed and the out-of-labor-force groups, flips the sign pattern in the expected ways; Table~\ref{tab:prob1-unemp} reports the results. The age coefficient reverses from positive to negative ($\hat{\beta}_{\text{age}} = -0.00506$ in the LPM), and \texttt{age}$^2$ reverses from negative to positive, so the age profile becomes a U: young workers are most likely to \emph{become unemployed}, middle-aged workers least so, with a modest uptick toward the 60s. That mirror image of the employment profile is exactly what a labor-market flow interpretation would predict. Education delivers a particularly sharp gradient on this margin: high-school dropouts are a remarkable $6.99$ pp \emph{more} likely to be unemployed in April 2009 than advanced-degree holders ($p<0.01$), and high-school graduates are $3.39$ pp more likely---the monotone education gradient from part (f) becomes even steeper for unemployment than for retention, which confirms education as the first-order determinant of recession vulnerability.
 
-\textbf{Age.} The sign on \texttt{age} flips from positive to negative ($\hat{\beta}_{\text{age}} = -0.00506$ in the LPM) and \texttt{age}$^2$ flips from negative to positive, indicating a U-shape: young workers are most likely to \emph{become unemployed}, middle-aged workers least so, with a modest uptick toward the 60s. This mirror image of the employment profile is exactly what the labor-market flow interpretation predicts.
-
-\textbf{Education.} High-school dropouts are a remarkable $6.99$ pp \emph{more} likely to be unemployed in April 2009 than advanced-degree holders ($p < 0.01$); high-school graduates are $3.39$ pp more likely. The monotone education gradient in employment retention from (f) becomes a sharp gradient in unemployment probability, confirming that education is the first-order determinant of recession vulnerability.
-
-\textbf{Sex, marital status.} Women were actually \emph{less} likely to be classified as unemployed ($-2.02$ pp, $p < 0.01$)---but this is largely a labor-force attachment story, not a retention story: women who lost jobs more often exited the labor force entirely rather than actively searching. Married workers are also less likely to be unemployed conditional on losing their job.
-
-\textbf{Union.} Curiously, the union coefficient is statistically indistinguishable from zero in the unemployment equation even though it was $-5.77$ pp in the employment equation. This is consistent with unemployed union members being more likely to eventually drop out of the labor force (or transition to early retirement) than to be captured in the April 2009 ``actively unemployed'' snapshot.
-
-So the recession conclusions from (a)--(f) survive qualitatively---low education, young age, low earnings predict worse outcomes---but the specific demographic patterns (esp.\ women) depend crucially on which margin we study: separation vs.\ active unemployment vs.\ labor-force exit.
+The demographic margins do not translate as cleanly. Women are in fact \emph{less} likely to be classified as unemployed ($-2.02$ pp, $p<0.01$), but that is largely a labor-force attachment story rather than a retention story: women who lost jobs more often exited the labor force entirely rather than actively searching, and the ``unemployed'' dummy only captures the latter. Married workers are similarly less likely to be actively unemployed, conditional on having lost their job. The union coefficient is statistically indistinguishable from zero in the unemployment equation even though it was $-5.77$ pp in the employment equation---consistent with unemployed union members tending to drop out of the labor force (or transition to early retirement) rather than be caught in the April 2009 active-unemployment snapshot. The recession conclusions from parts (a)--(f) therefore survive qualitatively, with low education, young age, and low earnings all predicting worse outcomes; the specific demographic patterns, however (women in particular), depend crucially on which margin we study---separation, active unemployment, or labor-force exit.
 \end{solution}
 
 % ----- (h) Normal times -----
@@ -677,15 +621,9 @@ So the recession conclusions from (a)--(f) survive qualitatively---low education
 \begin{solution}
 In \texttt{employment\_06\_07.dta} ($n = 5{,}220$), the sample proportion of workers still employed one year later is $\hat{p}_{06} = 0.8977$ with 95\% CI $[\,0.8895, 0.9059\,]$, or approximately $2.2$ percentage points higher than the recession-era retention rate of $0.8755$. Unemployment, in turn, is only $1.65\%$ in the normal sample versus $4.42\%$ in the recession sample---a nearly three-fold increase.
 
-Estimating the same full-controls specification on the 2006--2007 sample (Table~\ref{tab:prob1-parth}) delivers three instructive contrasts, visible in Figure~\ref{fig:p1_normal}:
+Estimating the same full-controls specification on the 2006--2007 sample (Table~\ref{tab:prob1-parth}, visualized in Figure~\ref{fig:p1_normal}) delivers three instructive contrasts with the recession period. The age profile is flatter in normal times: predicted retention ranges from about $0.73$ at age $18$ to a peak of $0.93$ near age $45$ and falls to $0.83$ at age $63$, a total swing of roughly $20$ pp, whereas the 2008--2009 profile starts lower ($0.68$ at age $18$), peaks lower (around $0.915$ near age $43$), and falls further (to roughly $0.79$ at age $63$) for a swing of about $24$ pp. The recession therefore both lowered the entire retention profile and steepened it, hurting the young and the old disproportionately. The education gradient is also smaller in normal times: high-school dropouts' retention penalty is $-5.07$ pp before the downturn versus $-8.82$ pp during it, a $75\%$ amplification that makes education a stronger ``moat'' against layoff in a recession. The female effect operates in the opposite direction: women carry a larger retention penalty in normal times ($-3.35$ pp, $p<0.01$) than in the recession ($-0.66$ pp, not significant), consistent with the ``he-cession'' observation that the 2008--09 downturn disproportionately struck male-dominated industries---construction, manufacturing, finance---and temporarily narrowed the male--female separation gap.
 
-\begin{enumerate}
-\item \textbf{The age profile is flatter.} In normal times, predicted retention ranges from about $0.73$ at age 18 to a peak of $0.93$ near age 45 and falls to $0.83$ at age 63---a total swing of roughly $20$ pp. The 2008--2009 profile starts lower (0.68 at age 18), peaks lower ($\approx 0.915$ near age 43), and falls further ($\approx 0.79$ at age 63)---a swing of $\approx 24$ pp. The Great Recession both lowered the profile \emph{and} steepened it, hurting the young and old disproportionately.
-\item \textbf{Education gradient is smaller in normal times.} High-school dropouts' retention penalty is $-5.07$ pp in normal times vs.\ $-8.82$ pp in the recession---a $75$\% amplification of the schooling gradient during the downturn. Education becomes a stronger ``moat'' during a recession.
-\item \textbf{Sex effects operate differently.} Women have a larger \emph{retention} penalty in normal times ($-3.35$ pp, $p<0.01$) than in the recession ($-0.66$ pp, not significant). This is consistent with the ``he-cession'' observation that the 2008--09 downturn disproportionately struck male-dominated industries (construction, manufacturing, finance), temporarily narrowing the male--female separation gap.
-\end{enumerate}
-
-The earnings coefficient is almost identical across the two periods ($0.00357$ vs.\ $0.00348$ per \$100/week), suggesting that the earnings-to-retention pipeline is a stable feature of the labor market rather than a recession-specific phenomenon. Overall, the recession did not change \emph{who} faced higher job-loss risk; it amplified the gap between the vulnerable and the protected, particularly along the education axis.
+The earnings coefficient is almost identical across the two periods ($0.00357$ vs.\ $0.00348$ per \$100/week), suggesting that the earnings-to-retention pipeline is a stable feature of the labor market rather than a recession-specific phenomenon. Overall the recession did not change \emph{who} faced higher job-loss risk; it amplified the gap between the vulnerable and the protected, and the gap widened most along the education axis.
 \end{solution}
 
 \begin{reflection}
@@ -744,7 +682,7 @@ Regressing \texttt{smoker} on \texttt{smkban} alone yields
 \]
 $n = 10{,}000$, $R^2 = 0.0078$. Because \texttt{smkban} is the only regressor, the slope coefficient coincides with the raw difference in means from part (a): $\hat{\beta}_{\texttt{smkban}} = -0.0776$, and the intercept equals the cell mean for non-ban workers ($0.2896$). The robust $t$-statistic is $t = -0.0776/0.00895 = -8.67$ (equivalently, $F(1, 9998) = 75.06$, $p < 0.0001$), which rejects $H_0\!:\,\beta_{\texttt{smkban}} = 0$ at any conventional significance level. The $95\%$ CI is $[\,-0.095, -0.060\,]$.
 
-\textbf{Interpretation (cautionary).} The unconditional $7.8$-pp gap cannot be read as the causal effect of a ban. Workplaces that adopted bans in the early 1990s were more likely to be in office sectors with higher-education workforces, where smoking was already less prevalent. Part (c) repeats the exercise with controls to assess how much of the raw gap is attributable to such composition effects.
+The unconditional $7.8$-pp gap should not be read as the causal effect of a ban. Workplaces that adopted bans in the early 1990s were disproportionately in office sectors with higher-education workforces, where smoking was already less prevalent, and part (c) repeats the exercise with controls to quantify how much of the raw gap is attributable to such composition effects.
 \end{solution}
 
 % ----- (c) -----
@@ -757,14 +695,9 @@ Table~\ref{tab:prob2-lpm} reports both the simple LPM from (b) and the full-cont
 \[
 \hat{\beta}_{\texttt{smkban}}^{\mathrm{full}} = -0.0472 \qquad (\mathrm{SE} = 0.0090),
 \]
-a reduction of approximately $40\%$. The included controls absorb a large share of the raw gap through two substantive channels:
+a reduction of approximately $40\%$. The included controls absorb a large share of the raw gap through two substantive channels. Education comes first: the education coefficients are large and monotone, with smoking probability rising by $4.5$ pp for college grads, $16.4$ pp for some-college, $23.3$ pp for high-school grads, and $32.3$ pp for high-school dropouts relative to advanced-degree holders (all $p<0.01$). Because the sample correlation between \texttt{smkban} and education is positive---bans were most common in high-education workplaces---failing to condition on education in part (b) biased $\hat{\beta}_{\texttt{smkban}}$ downward (that is, more negative). Demographics do similar work: smoking probability is $3.3$ pp lower for women, $2.8$ pp lower for Black workers, and $10.5$ pp lower for Hispanic workers, and is modestly hump-shaped in age. These demographics are themselves correlated with ban coverage, contributing further to the attenuation.
 
-\begin{enumerate}
-\item \textbf{Education.} The education coefficients are large and monotone: relative to advanced-degree workers, smoking probability rises by $4.5$ pp for college grads, $16.4$ pp for some-college, $23.3$ pp for high-school grads, and $32.3$ pp for high-school dropouts (all $p < 0.01$). The sample correlation between \texttt{smkban} and education is positive---bans were most common in high-education workplaces---so failing to condition on education in part (b) biased $\hat{\beta}_{\texttt{smkban}}$ downward (more negative).
-\item \textbf{Demographics.} Smoking probability is $3.3$ pp lower for women, $2.8$ pp lower for Black workers, and $10.5$ pp lower for Hispanic workers; it is modestly hump-shaped in age. These factors are also correlated with \texttt{smkban} coverage, contributing to the attenuation.
-\end{enumerate}
-
-\textbf{Conclusion.} Of the raw $7.8$-pp gap in part (b), about $3.0$ pp was composition (selection into ban-covered workplaces), leaving a conditional ban effect of $4.7$ pp. Under a conditional-independence assumption (the ban is ``as good as random'' given observed covariates), this $-4.7$ pp estimate is a credible causal effect.
+Putting these two pieces together, of the raw $7.8$-pp gap in part (b), roughly $3.0$ pp reflects composition (selection into ban-covered workplaces), leaving a conditional ban effect of $4.7$ pp. Under a conditional-independence assumption---the ban is ``as good as random'' given observed covariates---this $-4.7$ pp estimate is a credible causal effect.
 \end{solution}
 
 % ----- (d) -----
@@ -805,19 +738,13 @@ Although the point of SW 11.2 is to illustrate hypothesis testing in binary-resp
 Repeat (c)--(e) using a probit model.
 \end{problem}
 \begin{solution}
-Table~\ref{tab:prob2-vs} presents the probit estimates alongside the LPM. All coefficients retain their signs and their relative magnitudes follow the LPM ordering, but the probit coefficients are on the latent-index (z-score) scale and not directly interpretable as probability changes.
-
-\textbf{(c)-analogue: magnitude of the ban effect.} The probit index coefficient on \texttt{smkban} is $-0.159$ (robust SE $0.0291$). Converting to an average partial effect (APE) via \texttt{margins, dydx(smkban)}:
+Table~\ref{tab:prob2-vs} presents the probit estimates alongside the LPM. All coefficients retain their signs and their relative magnitudes follow the LPM ordering, but the probit coefficients are on the latent-index (z-score) scale and not directly interpretable as probability changes. On the ban-effect magnitude from (c), the probit index coefficient on \texttt{smkban} is $-0.159$ (robust SE $0.0291$); converting to an average partial effect via \verb|margins, dydx(smkban)| gives
 \[
 \overline{\widehat{\partial \Pr(\text{smoker})/\partial \texttt{smkban}}} = -0.0468 \;(\mathrm{SE}=0.0086),
 \]
-which is essentially identical to the LPM estimate of $-0.0472$. Because the probability of smoking in this sample is in the $0.10$--$0.43$ range---well inside the ``interior'' where probit and LPM agree (\citealt{AngristPischke2009}, Ch.~3)---the two models produce indistinguishable average partial effects.
+essentially identical to the LPM estimate of $-0.0472$. Because the probability of smoking in this sample sits in the $0.10$--$0.43$ range---well inside the interior where probit and LPM agree \citep[Ch.~3]{AngristPischke2009}---the two models produce indistinguishable average partial effects. The significance verdicts mirror the LPM's: the Wald $\chi^2(1) = 29.70$ ($p<0.0001$) rejects $H_0:\beta_{\texttt{smkban}}=0$ at any conventional level, and the joint Wald $\chi^2(4)=447.34$ ($p<0.0001$) rejects the null that the four education dummies are jointly zero, with the monotone gradient in education identical to the LPM's.
 
-\textbf{(d)-analogue: significance of \texttt{smkban}.} The Wald $\chi^2(1) = 29.70$ ($p < 0.0001$) rejects $H_0\!:\,\beta_{\texttt{smkban}} = 0$ at any conventional significance level, mirroring the LPM conclusion.
-
-\textbf{(e)-analogue: joint significance of education.} The joint Wald $\chi^2(4) = 447.34$ ($p < 0.0001$) again rejects the null that the four education dummies are jointly zero. The monotone pattern is identical to the LPM: smoking probability falls sharply as education rises.
-
-\textbf{Summary.} The probit does not overturn a single substantive conclusion from (c)--(e). The qualitative takeaways (ban reduces smoking by $\approx 5$ pp; education is the strongest predictor; smoking falls monotonically with education) are identical across models. This is a useful illustration of \citet{Amemiya1981}'s result that LPM and nonlinear latent-variable models typically deliver very similar average partial effects in the interior of the probability distribution---which is why many applied economists (e.g., \citealt{AngristPischke2009}) prefer the LPM's computational simplicity and robust-SE interpretation unless the outcome is very rare or very common.
+The probit therefore does not overturn a single substantive conclusion from (c)--(e): the ban reduces smoking by roughly $5$ pp, education is the strongest predictor, and smoking falls monotonically with education. This is the pattern \citet{Amemiya1981} predicts---LPM and nonlinear latent-variable models typically deliver very similar average partial effects in the interior of the probability distribution---and it is the reason many applied economists \citep[e.g.][]{AngristPischke2009} default to the LPM's computational simplicity and robust-SE interpretation unless the outcome is very rare or very common.
 \end{solution}
 
 \end{enumerate}
