@@ -1,0 +1,178 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      StataNow 19.5
+___/   /   /___/   /   /___/       BE—Basic Edition
+
+ Statistics and Data Science       Copyright 1985-2025 StataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texas 77845 USA
+                                   800-782-8272        https://www.stata.com
+                                   979-696-4600        service@stata.com
+
+Stata license: Single-user , expiring 29 Aug 2026
+Serial number: 301909360991
+  Licensed to: Tyler Sotomayor
+               Columbia University
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help unicode_advice.
+
+. do ape_check.do 
+
+. * Quick APE check: average partial effect of majordrg in probit and logit
+. clear all
+
+. set more off
+
+. use "../data/AmEx.dta", clear
+
+. keep cardhldr income age selfempl ownrent acadmos majordrg minordrg
+
+. replace income = income/1000
+variable income was long now double
+(12,604 real changes made)
+
+. rename income inc
+
+. 
+. * LPM coefficient for comparison
+. reg cardhldr inc age selfempl ownrent acadmos majordrg minordrg, robust
+
+Linear regression                               Number of obs     =     12,604
+                                                F(7, 12596)       =     227.09
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.2118
+                                                Root MSE          =     .36616
+
+------------------------------------------------------------------------------
+             |               Robust
+    cardhldr | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         inc |   .0039274   .0002271    17.30   0.000     .0034824    .0043725
+         age |  -.0002363    .000395    -0.60   0.550    -.0010105    .0005378
+    selfempl |  -.1004614    .015695    -6.40   0.000    -.1312259   -.0696969
+     ownrent |   .0455522   .0074121     6.15   0.000     .0310234     .060081
+     acadmos |   .0001679   .0000543     3.09   0.002     .0000615    .0002743
+    majordrg |  -.1174511   .0043113   -27.24   0.000     -.125902   -.1090003
+    minordrg |  -.0317082   .0051734    -6.13   0.000    -.0418489   -.0215675
+       _cons |   .7120459   .0122897    57.94   0.000     .6879563    .7361356
+------------------------------------------------------------------------------
+
+. scalar b_lpm = _b[majordrg]
+
+. 
+. probit cardhldr inc age selfempl ownrent acadmos majordrg minordrg, vce(robu
+> st)
+
+Iteration 0:  Log pseudolikelihood = -6595.4373  
+Iteration 1:  Log pseudolikelihood = -5171.6945  
+Iteration 2:  Log pseudolikelihood = -5081.6686  
+Iteration 3:  Log pseudolikelihood = -5080.8124  
+Iteration 4:  Log pseudolikelihood = -5080.8122  
+
+Probit regression                                      Number of obs =  12,604
+                                                       Wald chi2(7)  = 1391.08
+                                                       Prob > chi2   =  0.0000
+Log pseudolikelihood = -5080.8122                      Pseudo R2     =  0.2296
+
+------------------------------------------------------------------------------
+             |               Robust
+    cardhldr | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         inc |   .0222316   .0016063    13.84   0.000     .0190833      .02538
+         age |   .0006981   .0017148     0.41   0.684    -.0026629     .004059
+    selfempl |  -.4445728   .0597599    -7.44   0.000       -.5617   -.3274456
+     ownrent |   .1910995   .0321634     5.94   0.000     .1280603    .2541387
+     acadmos |    .001039   .0002628     3.95   0.000     .0005239    .0015542
+    majordrg |  -.7058988   .0210948   -33.46   0.000    -.7472439   -.6645536
+    minordrg |  -.0356392   .0198276    -1.80   0.072    -.0745006    .0032223
+       _cons |    .361243   .0579932     6.23   0.000     .2475785    .4749075
+------------------------------------------------------------------------------
+Note: 55 failures and 0 successes completely determined.
+
+. margins, dydx(majordrg)
+
+Average marginal effects                                Number of obs = 12,604
+Model VCE: Robust
+
+Expression: Pr(cardhldr), predict()
+dy/dx wrt:  majordrg
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    majordrg |  -.1584126   .0041026   -38.61   0.000    -.1664535   -.1503717
+------------------------------------------------------------------------------
+
+. matrix M = r(table)
+
+. scalar ape_prob = M[1,1]
+
+. 
+. logit cardhldr inc age selfempl ownrent acadmos majordrg minordrg, vce(robus
+> t)
+
+Iteration 0:  Log pseudolikelihood = -6595.4373  
+Iteration 1:  Log pseudolikelihood = -5133.6519  
+Iteration 2:  Log pseudolikelihood = -5066.6909  
+Iteration 3:  Log pseudolikelihood = -5066.3688  
+Iteration 4:  Log pseudolikelihood = -5066.3687  
+
+Logistic regression                                    Number of obs =  12,604
+                                                       Wald chi2(7)  = 1329.85
+                                                       Prob > chi2   =  0.0000
+Log pseudolikelihood = -5066.3687                      Pseudo R2     =  0.2318
+
+------------------------------------------------------------------------------
+             |               Robust
+    cardhldr | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         inc |   .0451923   .0031562    14.32   0.000     .0390062    .0513784
+         age |   .0010693   .0031053     0.34   0.731    -.0050169    .0071556
+    selfempl |  -.7695201   .1052807    -7.31   0.000    -.9758664   -.5631737
+     ownrent |   .3190327   .0585612     5.45   0.000     .2042548    .4338106
+     acadmos |   .0019826   .0004757     4.17   0.000     .0010503    .0029149
+    majordrg |  -1.234444   .0373602   -33.04   0.000    -1.307668   -1.161219
+    minordrg |  -.0695153   .0359552    -1.93   0.053    -.1399861    .0009556
+       _cons |   .4196797   .1066585     3.93   0.000     .2106328    .6287266
+------------------------------------------------------------------------------
+Note: 8 failures and 0 successes completely determined.
+
+. margins, dydx(majordrg)
+
+Average marginal effects                                Number of obs = 12,604
+Model VCE: Robust
+
+Expression: Pr(cardhldr), predict()
+dy/dx wrt:  majordrg
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    majordrg |  -.1535632   .0039703   -38.68   0.000    -.1613448   -.1457817
+------------------------------------------------------------------------------
+
+. matrix M = r(table)
+
+. scalar ape_log = M[1,1]
+
+. 
+. display as text _newline "=== APE comparison ==="
+
+=== APE comparison ===
+
+. display as text "LPM beta      = " %7.4f b_lpm
+LPM beta      = -0.1175
+
+. display as text "Probit APE    = " %7.4f ape_prob
+Probit APE    = -0.1584
+
+. display as text "Logit  APE    = " %7.4f ape_log
+Logit  APE    = -0.1536
+
+. 
+end of do-file

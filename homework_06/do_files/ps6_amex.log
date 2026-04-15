@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  /Users/tylersotomayor/homework_06/do_files/ps6_amex.log
   log type:  text
- opened on:  15 Apr 2026, 07:54:59
+ opened on:  15 Apr 2026, 09:38:09
 
 . 
 . set scheme s2mono
@@ -28,7 +28,7 @@ variable income was long now double
 
 . rename income inc
 
-. label var inc       "Income (\$1,000s)"
+. label var inc       "Income (\\\$1,000s)"
 
 . label var age       "Age (years)"
 
@@ -304,7 +304,6 @@ Income percentiles ($1,000s):  p20= 19.00  p50= 26.16  p80= 38.80
 . * ==========================================================
 . 
 . file open fme using "../output/tables/prob1_amex_me.tex", write replace
-(file ../output/tables/prob1_amex_me.tex not found)
 
 . file write fme "\begin{table}[H]" _n
 
@@ -331,19 +330,19 @@ Income percentiles ($1,000s):  p20= 19.00  p50= 26.16  p80= 38.80
 . file write fme "\multicolumn{7}{l}{\emph{$\Delta$\texttt{selfempl} (switch f
 > rom 0 to 1; \texttt{ownrent}=0, rest at medians)}} \\" _n
 
-. file write fme "20\% income (\$"  %5.2f (inc_p20) "k) " ///
+. file write fme "20\% income (\\$"  %5.2f (inc_p20) "k) " ///
 >     " & " %7.4f (c20s_lpm_red_D)  " & " %7.4f (c20s_prob_red_D) " & " %7.4f 
 > (c20s_log_red_D)  ///
 >     " & " %7.4f (c20s_lpm_red_PCT)  " & " %7.4f (c20s_prob_red_PCT) " & " %7
 > .4f (c20s_log_red_PCT) " \\" _n
 
-. file write fme "50\% income (\$"  %5.2f (med_inc) "k) " ///
+. file write fme "50\% income (\\$"  %5.2f (med_inc) "k) " ///
 >     " & " %7.4f (c50s_lpm_red_D)  " & " %7.4f (c50s_prob_red_D) " & " %7.4f 
 > (c50s_log_red_D)   ///
 >     " & " %7.4f (c50s_lpm_red_PCT)  " & " %7.4f (c50s_prob_red_PCT) " & " %7
 > .4f (c50s_log_red_PCT)  " \\" _n
 
-. file write fme "80\% income (\$"  %5.2f (inc_p80) "k) " ///
+. file write fme "80\% income (\\$"  %5.2f (inc_p80) "k) " ///
 >     " & " %7.4f (c80s_lpm_red_D)  " & " %7.4f (c80s_prob_red_D) " & " %7.4f 
 > (c80s_log_red_D)  ///
 >     " & " %7.4f (c80s_lpm_red_PCT)  " & " %7.4f (c80s_prob_red_PCT) " & " %7
@@ -354,19 +353,19 @@ Income percentiles ($1,000s):  p20= 19.00  p50= 26.16  p80= 38.80
 . file write fme "\multicolumn{7}{l}{\emph{$\Delta$\texttt{ownrent} (switch fr
 > om 0 to 1; \texttt{selfempl}=0, rest at medians)}} \\" _n
 
-. file write fme "20\% income (\$"  %5.2f (inc_p20) "k) " ///
+. file write fme "20\% income (\\$"  %5.2f (inc_p20) "k) " ///
 >     " & " %7.4f (c20o_lpm_red_D)  " & " %7.4f (c20o_prob_red_D) " & " %7.4f 
 > (c20o_log_red_D)  ///
 >     " & " %7.4f (c20o_lpm_red_PCT)  " & " %7.4f (c20o_prob_red_PCT) " & " %7
 > .4f (c20o_log_red_PCT) " \\" _n
 
-. file write fme "50\% income (\$"  %5.2f (med_inc) "k) " ///
+. file write fme "50\% income (\\$"  %5.2f (med_inc) "k) " ///
 >     " & " %7.4f (c50o_lpm_red_D)  " & " %7.4f (c50o_prob_red_D) " & " %7.4f 
 > (c50o_log_red_D)   ///
 >     " & " %7.4f (c50o_lpm_red_PCT)  " & " %7.4f (c50o_prob_red_PCT) " & " %7
 > .4f (c50o_log_red_PCT)  " \\" _n
 
-. file write fme "80\% income (\$"  %5.2f (inc_p80) "k) " ///
+. file write fme "80\% income (\\$"  %5.2f (inc_p80) "k) " ///
 >     " & " %7.4f (c80o_lpm_red_D)  " & " %7.4f (c80o_prob_red_D) " & " %7.4f 
 > (c80o_log_red_D)  ///
 >     " & " %7.4f (c80o_lpm_red_PCT)  " & " %7.4f (c80o_prob_red_PCT) " & " %7
@@ -411,7 +410,6 @@ Income percentiles ($1,000s):  p20= 19.00  p50= 26.16  p80= 38.80
 . * using the scalars saved in parts (c) and (d).
 . 
 . file open flo using "../output/tables/prob1_amex_logodds.tex", write replace
-(file ../output/tables/prob1_amex_logodds.tex not found)
 
 . file write flo "\begin{table}[H]" _n
 
@@ -585,7 +583,6 @@ Note: 55 failures and 0 successes completely determined.
 >              "Stars: *p<0.10, **p<0.05, ***p<0.01." ///
 >              "Dependent variable: cardhldr = 1 if applicant approved as card
 > holder.")
-(file ../output/tables/prob1_amex_six.tex not found)
 (output written to ../output/tables/prob1_amex_six.tex)
 
 . 
@@ -732,7 +729,6 @@ Logit  dy/dmajordrg = -0.1618  SE =  0.0054  95% CI = [-0.1724, -0.1512]
 . 
 . 
 . file open fci using "../output/tables/prob1_amex_cis.tex", write replace
-(file ../output/tables/prob1_amex_cis.tex not found)
 
 . file write fci "% auto-generated CI macros (parts i and j)" _n
 
@@ -882,7 +878,6 @@ file
 
 . 
 . file open fll using "../output/tables/prob1_amex_lpm_oor.tex", write replace
-(file ../output/tables/prob1_amex_lpm_oor.tex not found)
 
 . file write fll "% LPM out-of-range diagnostics (part l)" _n
 
@@ -897,6 +892,98 @@ file
 . file write fll "\newcommand{\amexLPMpctout}{"    %6.4f (lpm_outside) "}" _n
 
 . file close fll
+
+. 
+. 
+. * ==========================================================
+. *  Average partial effects (APE) of majordrg, probit & logit.
+. *  These are referenced in the reflection for part (j) and in
+. *  the comparison prose in part (m).  The LPM coefficient is
+. *  already stored above in b_major (scalar).
+. * ==========================================================
+. 
+. display as text _newline "=== APE of majordrg (probit, logit) ==="
+
+=== APE of majordrg (probit, logit) ===
+
+. 
+. estimates restore prob_full
+(results prob_full are active now)
+
+. margins, dydx(majordrg)
+
+Average marginal effects                                Number of obs = 12,604
+Model VCE: Robust
+
+Expression: Pr(cardhldr), predict()
+dy/dx wrt:  majordrg
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    majordrg |  -.1584126   .0041026   -38.61   0.000    -.1664535   -.1503717
+------------------------------------------------------------------------------
+
+. matrix M = r(table)
+
+. scalar ape_prob_maj = M[1, 1]
+
+. scalar ape_prob_se  = M[2, 1]
+
+. 
+. estimates restore log_full
+(results log_full are active now)
+
+. margins, dydx(majordrg)
+
+Average marginal effects                                Number of obs = 12,604
+Model VCE: Robust
+
+Expression: Pr(cardhldr), predict()
+dy/dx wrt:  majordrg
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |      dy/dx   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    majordrg |  -.1535632   .0039703   -38.68   0.000    -.1613448   -.1457817
+------------------------------------------------------------------------------
+
+. matrix M = r(table)
+
+. scalar ape_log_maj = M[1, 1]
+
+. scalar ape_log_se  = M[2, 1]
+
+. 
+. display as text "LPM beta        = " %7.4f b_major
+LPM beta        = -0.1175
+
+. display as text "Probit APE      = " %7.4f ape_prob_maj " (SE " %6.4f ape_pr
+> ob_se ")"
+Probit APE      = -0.1584 (SE 0.0041)
+
+. display as text "Logit  APE      = " %7.4f ape_log_maj  " (SE " %6.4f ape_lo
+> g_se  ")"
+Logit  APE      = -0.1536 (SE 0.0040)
+
+. 
+. file open fap using "../output/tables/prob1_amex_apes.tex", write replace
+(file ../output/tables/prob1_amex_apes.tex not found)
+
+. file write fap "% APEs for majordrg (reflection after part j, prose in part 
+> m)" _n
+
+. file write fap "\newcommand{\amexAPEprob}{"    %7.4f (ape_prob_maj) "}" _n
+
+. file write fap "\newcommand{\amexAPEprobSE}{"  %7.4f (ape_prob_se)  "}" _n
+
+. file write fap "\newcommand{\amexAPElog}{"     %7.4f (ape_log_maj)  "}" _n
+
+. file write fap "\newcommand{\amexAPElogSE}{"   %7.4f (ape_log_se)   "}" _n
+
+. file close fap
 
 . 
 . 
@@ -961,7 +1048,6 @@ beta_LPM / beta_logit   =  0.0951   (rule-of-thumb 0.25)
 
 . 
 . file open fam using "../output/tables/prob1_amex_amemiya.tex", write replace
-(file ../output/tables/prob1_amex_amemiya.tex not found)
 
 . file write fam "% Amemiya rule check (part n)" _n
 
@@ -988,7 +1074,6 @@ beta_LPM / beta_logit   =  0.0951   (rule-of-thumb 0.25)
 . * ==========================================================
 . 
 . file open fa using "../output/tables/prob1_amex_parta.tex", write replace
-(file ../output/tables/prob1_amex_parta.tex not found)
 
 . file write fa "% auto-generated macros for part (a)" _n
 
@@ -1021,5 +1106,5 @@ beta_LPM / beta_logit   =  0.0951   (rule-of-thumb 0.25)
       name:  <unnamed>
        log:  /Users/tylersotomayor/homework_06/do_files/ps6_amex.log
   log type:  text
- closed on:  15 Apr 2026, 07:55:02
+ closed on:  15 Apr 2026, 09:38:13
 ------------------------------------------------------------------------------

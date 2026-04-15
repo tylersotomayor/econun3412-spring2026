@@ -448,6 +448,40 @@ file close fll
 
 
 * ==========================================================
+*  Average partial effects (APE) of majordrg, probit & logit.
+*  These are referenced in the reflection for part (j) and in
+*  the comparison prose in part (m).  The LPM coefficient is
+*  already stored above in b_major (scalar).
+* ==========================================================
+
+display as text _newline "=== APE of majordrg (probit, logit) ==="
+
+estimates restore prob_full
+margins, dydx(majordrg)
+matrix M = r(table)
+scalar ape_prob_maj = M[1, 1]
+scalar ape_prob_se  = M[2, 1]
+
+estimates restore log_full
+margins, dydx(majordrg)
+matrix M = r(table)
+scalar ape_log_maj = M[1, 1]
+scalar ape_log_se  = M[2, 1]
+
+display as text "LPM beta        = " %7.4f b_major
+display as text "Probit APE      = " %7.4f ape_prob_maj " (SE " %6.4f ape_prob_se ")"
+display as text "Logit  APE      = " %7.4f ape_log_maj  " (SE " %6.4f ape_log_se  ")"
+
+file open fap using "../output/tables/prob1_amex_apes.tex", write replace
+file write fap "% APEs for majordrg (reflection after part j, prose in part m)" _n
+file write fap "\newcommand{\amexAPEprob}{"    %7.4f (ape_prob_maj) "}" _n
+file write fap "\newcommand{\amexAPEprobSE}{"  %7.4f (ape_prob_se)  "}" _n
+file write fap "\newcommand{\amexAPElog}{"     %7.4f (ape_log_maj)  "}" _n
+file write fap "\newcommand{\amexAPElogSE}{"   %7.4f (ape_log_se)   "}" _n
+file close fap
+
+
+* ==========================================================
 *  PART (n)  --  Amemiya rule of thumb for majordrg
 *  beta_LPM   ~=  0.4 * beta_probit
 *  beta_LPM   ~=  0.25 * beta_logit
