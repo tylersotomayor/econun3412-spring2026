@@ -1,0 +1,7 @@
+\contentsline {section}{Problem 1: Acemoglu--Johnson--Robinson (2001) IV/TSLS Replication}{1}{section*.2}%
+\contentsline {section}{Problem 2: Card--Krueger Minimum-Wage Difference-in-Differences}{17}{section*.3}%
+\contentsline {section}{Recitation Exercise 1: Fertility and Labor Supply (SW EE 12.1)}{24}{section*.4}%
+\contentsline {section}{Recitation Exercise 2: Violent Movies and Assaults (SW EE 12.2)}{29}{section*.5}%
+\contentsline {section}{Recitation Exercise 3: Race in Callback Rates (SW EE 13.1)}{36}{section*.6}%
+\contentsline {section}{Appendix: Tables and Figures}{41}{section*.7}%
+\contentsline {section}{Replication Files}{43}{section*.12}%

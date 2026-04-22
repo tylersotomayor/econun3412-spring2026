@@ -1,0 +1,266 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      StataNow 19.5
+___/   /   /___/   /   /___/       BE—Basic Edition
+
+ Statistics and Data Science       Copyright 1985-2025 S
+> tataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texa
+> s 77845 USA
+                                   800-782-8272        h
+> ttps://www.stata.com
+                                   979-696-4600        s
+> ervice@stata.com
+
+Stata license: Single-user , expiring 29 Aug 2026
+Serial number: 301909360991
+  Licensed to: Tyler Sotomayor
+               Columbia University
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help
+          unicode_advice.
+
+. do _explore_names.do 
+
+. clear all
+
+. cd "/Users/tylersotomayor/columbia_university/2025-202
+> 6/spring_2026/econ_3412_spring_2026/homework/homework_
+> 07"
+/Users/tylersotomayor/columbia_university/2025-2026/spri
+> ng_2026/econ_3412_spring_2026/homework/homework_07
+
+. use "data/names.dta", clear
+
+. describe
+
+Contains data from data/names.dta
+ Observations:         4,870                  
+    Variables:            38                  16 Jan 200
+> 6 11:05
+--------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable l
+> abel
+--------------------------------------------------------
+ofjobs          byte    %8.0g                 number of
+                                    jobs listed on
+                                    resume
+yearsexp        byte    %8.0g                 number of
+                                    years of work
+                                    experience on the
+                                    resume
+honors          byte    %8.0g                 1=resume
+                                    mentions some honors
+volunteer       byte    %8.0g                 1=resume
+                                    mentions some
+                                    volunteering
+                                    experience
+military        byte    %8.0g                 1=applican
+                                    > t has some
+                                    military experience
+empholes        byte    %8.0g                 1=resume
+                                    has some employment
+                                    holes
+workinschool    byte    %8.0g                 1=resume
+                                    mentions some work
+                                    experience while at
+                                    school
+email           byte    %8.0g                 1=email
+                                    address on
+                                    applicant's resume
+computerskills  byte    %8.0g                 1=resume
+                                    mentions some
+                                    computer skills
+specialskills   byte    %8.0g                 1=resume
+                                    mentions some
+                                    special skills
+firstname       str8    %9s                   applicant'
+                                    > s first name
+expminreq       str4    %9s                   min
+                                    experience required,
+                                    if any
+eoe             float   %8.0g                 1=ad
+                                    mentions employer is
+                                    EOE
+manager         float   %9.0g                 manager
+                                    wanted
+supervisor      float   %9.0g                 supervisor
+                                    wanted
+secretary       float   %9.0g                 secretary
+                                    wanted
+offsupport      float   %9.0g                 
+salesrep        float   %9.0g                 sales
+                                    representative
+                                    wanted
+retailsales     float   %9.0g                 retail
+                                    sales worker wanted
+req             float   %9.0g                 1=ad
+                                    mentions any
+                                    requirement for job
+expreq          float   %9.0g                 1=ad
+                                    mentions some
+                                    experience
+                                    requirement
+comreq          float   %9.0g                 1=ad
+                                    mentions some
+                                    communication skills
+                                    requirement
+educreq         float   %9.0g                 1=ad
+                                    mentions some
+                                    educational
+                                    requirement
+compreq         float   %9.0g                 1=ad
+                                    mentions some
+                                    computer skill
+                                    requirement
+orgreq          float   %9.0g                 1=ad
+                                    mentions some
+                                    organizational
+                                    skills requirement
+manuf           float   %9.0g                 employer
+                                    industry is
+                                    manufacturing
+transcom        float   %9.0g                 employer
+                                    industry is
+                                    transport/communicat
+                                    > ion
+bankreal        float   %9.0g                 employer
+                                    industry is finance,
+                                    insurance, real
+                                    estate
+trade           float   %9.0g                 employer
+                                    industry is
+                                    wholesale or retail
+                                    trade
+busservice      float   %9.0g                 employer
+                                    industry is business
+                                    and personal
+                                    services
+othservice      float   %9.0g                 employer
+                                    industry is health,
+                                    educ. and social
+                                    services
+missind         float   %9.0g                 employer
+                                    industry is
+                                    other/unknown
+black           float   %9.0g                 
+chicago         float   %9.0g                 
+high            float   %9.0g                 
+female          float   %9.0g                 
+college         float   %9.0g                 
+call_back       float   %9.0g                 
+--------------------------------------------------------
+Sorted by: 
+
+. sum
+
+    Variable |        Obs        Mean    Std. dev.      
+>  Min        Max
+-------------+------------------------------------------
+> ---------------
+      ofjobs |      4,870    3.661396    1.219126       
+>    1          7
+    yearsexp |      4,870    7.842916    5.044612       
+>    1         44
+      honors |      4,870    .0527721    .2236011       
+>    0          1
+   volunteer |      4,870     .411499    .4921558       
+>    0          1
+    military |      4,870    .0971253    .2961587       
+>    0          1
+-------------+------------------------------------------
+> ---------------
+    empholes |      4,870    .4480493    .4973449       
+>    0          1
+workinschool |      4,870    .5595483    .4964923       
+>    0          1
+       email |      4,870    .4792608     .499621       
+>    0          1
+computersk~s |      4,870    .8205339    .3837815       
+>    0          1
+specialski~s |      4,870    .3287474    .4698062       
+>    0          1
+-------------+------------------------------------------
+> ---------------
+   firstname |          0
+   expminreq |          0
+         eoe |      4,870    .2911704    .4543485       
+>    0          1
+     manager |      4,870    .1521561     .359209       
+>    0          1
+  supervisor |      4,870    .0772074    .2669476       
+>    0          1
+-------------+------------------------------------------
+> ---------------
+   secretary |      4,870    .3328542    .4712832       
+>    0          1
+  offsupport |      4,870    .1186858    .3234517       
+>    0          1
+    salesrep |      4,870    .1511294    .3582117       
+>    0          1
+ retailsales |      4,870    .1679671    .3738755       
+>    0          1
+         req |      4,870     .787269     .409281       
+>    0          1
+-------------+------------------------------------------
+> ---------------
+      expreq |      4,870    .4353183    .4958495       
+>    0          1
+      comreq |      4,870     .124846    .3305781       
+>    0          1
+     educreq |      4,870    .1067762    .3088602       
+>    0          1
+     compreq |      4,870    .4371663    .4960872       
+>    0          1
+      orgreq |      4,870    .0726899    .2596535       
+>    0          1
+-------------+------------------------------------------
+> ---------------
+       manuf |      4,870    .0829569    .2758454       
+>    0          1
+    transcom |      4,870    .0303901     .171676       
+>    0          1
+    bankreal |      4,870    .0850103    .2789256       
+>    0          1
+       trade |      4,870     .213963    .4101431       
+>    0          1
+  busservice |      4,870    .2677618    .4428382       
+>    0          1
+-------------+------------------------------------------
+> ---------------
+  othservice |      4,870    .1548255    .3617754       
+>    0          1
+     missind |      4,870    .1650924     .371302       
+>    0          1
+       black |      4,870          .5    .5000513       
+>    0          1
+     chicago |      4,870    .5552361    .4969906       
+>    0          1
+        high |      4,870    .5022587    .5000462       
+>    0          1
+-------------+------------------------------------------
+> ---------------
+      female |      4,870    .7691992    .4213885       
+>    0          1
+     college |      4,870    .7195072    .4492861       
+>    0          1
+   call_back |      4,870    .0804928    .2720826       
+>    0          1
+
+. tab black call_back
+
+           |       call_back
+     black |         0          1 |     Total
+-----------+----------------------+----------
+         0 |     2,200        235 |     2,435 
+         1 |     2,278        157 |     2,435 
+-----------+----------------------+----------
+     Total |     4,478        392 |     4,870 
+
+. 
+end of do-file

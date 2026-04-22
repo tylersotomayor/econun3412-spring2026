@@ -1,0 +1,49 @@
+\begin{table}[H]
+\centering
+\caption{Replication of Acemoglu, Johnson, and Robinson (2001), Table~4, using heteroskedasticity-robust standard errors. Panel~A reports the second-stage 2SLS coefficient on the endogenous regressor \texttt{avexpr} (average protection against expropriation risk, 1985--1995) and on any included exogenous controls. Panel~B reports the corresponding first stage in which \texttt{avexpr} is regressed on the instrument \texttt{logem4} (log European settler mortality) together with the same exogenous controls. The dependent variable is $\log\text{GDP per capita, 1995}$ (PPP) in columns (1)--(8) and $\log\text{GDP per worker}$ from Hall and Jones (1999) in column (9). Columns (3)--(4) drop the four Neo-Europes (\texttt{rich4}); columns (5)--(6) drop Sub-Saharan Africa. ``Other'' continent is Australia, New Zealand, and Malta; Americas is the base group.}
+\label{tab:ajr-table4}
+\scriptsize
+\setlength{\tabcolsep}{3.6pt}
+\begin{tabular}{l*{9}{c}}
+\toprule
+                 & (1)   & (2)   & (3)   & (4)   & (5)   & (6)   & (7)   & (8)   & (9)   \\
+                 & Base  & Base  & \shortstack{Base\\no NE} & \shortstack{Base\\no NE} & \shortstack{Base\\no Afr}& \shortstack{Base\\no Afr}& \shortstack{Base +\\cont.\,dum.} & \shortstack{Base +\\cont.\,dum.} & \shortstack{Base,\\ $\log y/L$} \\
+\midrule
+\multicolumn{10}{l}{\textit{Panel A. Two-stage least squares}}\\ \addlinespace
+Average protection          & \ajrcabsecond & \ajrcbbsecond & \ajrccbsecond & \ajrcdbsecond & \ajrcebsecond & \ajrcfbsecond & \ajrcgbsecond & \ajrchbsecond & \ajrcibsecond \\
+against expropriation risk  & (\ajrcasesecond) & (\ajrcbsesecond) & (\ajrccsesecond) & (\ajrcdsesecond) & (\ajrcesesecond) & (\ajrcfsesecond) & (\ajrcgsesecond) & (\ajrchsesecond) & (\ajrcisesecond) \\
+\addlinespace
+Latitude                    & --- & \ajrcbbsecondlat   & --- & \ajrcdbsecondlat & --- & \ajrcfbsecondlat & --- & \ajrchbsecondlat & --- \\
+                            &     & (\ajrcbsesecondlat)&     & (\ajrcdsesecondlat)&   & (\ajrcfsesecondlat)&   & (\ajrchsesecondlat)& \\
+\addlinespace
+Asia dummy                  & --- & --- & --- & --- & --- & --- & \ajrcgbsecondasia  & \ajrchbsecondasia  & --- \\
+                            &     &     &     &     &     &     & (\ajrcgsesecondasia)& (\ajrchsesecondasia)& \\
+\addlinespace
+Africa dummy                & --- & --- & --- & --- & --- & --- & \ajrcgbsecondafr   & \ajrchbsecondafr   & --- \\
+                            &     &     &     &     &     &     & (\ajrcgsesecondafr)& (\ajrchsesecondafr)& \\
+\addlinespace
+``Other'' continent dummy   & --- & --- & --- & --- & --- & --- & \ajrcgbsecondoth   & \ajrchbsecondoth   & --- \\
+                            &     &     &     &     &     &     & (\ajrcgsesecondoth)& (\ajrchsesecondoth)& \\
+\midrule
+\multicolumn{10}{l}{\textit{Panel B. First stage for average protection against expropriation risk}}\\ \addlinespace
+Log European settler        & \ajrcabfirst & \ajrcbbfirst & \ajrccbfirst & \ajrcdbfirst & \ajrcebfirst & \ajrcfbfirst & \ajrcgbfirst & \ajrchbfirst & \ajrcibfirst \\
+mortality                   & (\ajrcasefirst) & (\ajrcbsefirst) & (\ajrccsefirst) & (\ajrcdsefirst) & (\ajrcesefirst) & (\ajrcfsefirst) & (\ajrcgsefirst) & (\ajrchsefirst) & (\ajrcisefirst) \\
+\addlinespace
+Latitude                    & --- & \ajrcbbfirstlat  & --- & \ajrcdbfirstlat & --- & \ajrcfbfirstlat & --- & \ajrchbfirstlat & --- \\
+                            &     & (\ajrcbsefirstlat)&   & (\ajrcdsefirstlat)&   & (\ajrcfsefirstlat)&   & (\ajrchsefirstlat)& \\
+\addlinespace
+Asia dummy                  & --- & --- & --- & --- & --- & --- & \ajrcgbfirstasia  & \ajrchbfirstasia  & --- \\
+                            &     &     &     &     &     &     & (\ajrcgsefirstasia)& (\ajrchsefirstasia)& \\
+\addlinespace
+Africa dummy                & --- & --- & --- & --- & --- & --- & \ajrcgbfirstafr   & \ajrchbfirstafr   & --- \\
+                            &     &     &     &     &     &     & (\ajrcgsefirstafr)& (\ajrchsefirstafr)& \\
+\addlinespace
+``Other'' continent dummy   & --- & --- & --- & --- & --- & --- & \ajrcgbfirstoth   & \ajrchbfirstoth   & --- \\
+                            &     &     &     &     &     &     & (\ajrcgsefirstoth)& (\ajrchsefirstoth)& \\
+\addlinespace
+$R^2$                       & \ajrcaRsq & \ajrcbRsq & \ajrccRsq & \ajrcdRsq & \ajrceRsq & \ajrcfRsq & \ajrcgRsq & \ajrchRsq & \ajrciRsq \\
+\midrule
+$N$                         & \ajrcaN & \ajrcbN & \ajrccN & \ajrcdN & \ajrceN & \ajrcfN & \ajrcgN & \ajrchN & \ajrciN \\
+\bottomrule
+\end{tabular}
+\end{table}

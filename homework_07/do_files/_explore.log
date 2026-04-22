@@ -1,0 +1,188 @@
+
+  ___  ____  ____  ____  ____ ®
+ /__    /   ____/   /   ____/      StataNow 19.5
+___/   /   /___/   /   /___/       BE—Basic Edition
+
+ Statistics and Data Science       Copyright 1985-2025 S
+> tataCorp LLC
+                                   StataCorp
+                                   4905 Lakeway Drive
+                                   College Station, Texa
+> s 77845 USA
+                                   800-782-8272        h
+> ttps://www.stata.com
+                                   979-696-4600        s
+> ervice@stata.com
+
+Stata license: Single-user , expiring 29 Aug 2026
+Serial number: 301909360991
+  Licensed to: Tyler Sotomayor
+               Columbia University
+
+Notes:
+      1. Stata is running in batch mode.
+      2. Unicode is supported; see help
+          unicode_advice.
+
+. do _explore.do 
+
+. * Quick exploratory run to understand maketable4.dta
+. clear all
+
+. set more off
+
+. cd "/Users/tylersotomayor/columbia_university/2025-202
+> 6/spring_2026/econ_3412_spring_2026/homework/homework_
+> 07"
+/Users/tylersotomayor/columbia_university/2025-2026/spri
+> ng_2026/econ_3412_spring_2026/homework/homework_07
+
+. use "data/maketable4.dta", clear
+
+. describe
+
+Contains data from data/maketable4.dta
+ Observations:           163                  
+    Variables:            10                  28 Dec 200
+> 9 09:35
+                                              (_dta has 
+> notes)
+--------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable l
+> abel
+--------------------------------------------------------
+shortnam        str22   %22s                  3 letter
+                                    country name
+africa          float   %9.0g                 dummy=1
+                                    for Africa
+lat_abst        float   %9.0g                 Abs(latitu
+                                    > de of capital)/90
+rich4           float   %9.0g                 dummy=1
+                                    for neo-europes
+avexpr          float   %9.0g                 average
+                                    protection against
+                                    expropriation risk
+logpgp95        float   %9.0g                 log PPP
+                                    GDP pc in 1995,
+                                    World Bank
+logem4          float   %9.0g                 log
+                                    settler mortality
+asia            float   %9.0g                 =1 for all
+                                    of asia
+loghjypl        float   %9.0g                  log GDP
+                                    per work, Hall&Jones
+baseco          float   %9.0g                 base
+                                    sample Colonial
+                                    Origins paper
+--------------------------------------------------------
+Sorted by: shortnam
+
+. sum
+
+    Variable |        Obs        Mean    Std. dev.      
+>  Min        Max
+-------------+------------------------------------------
+> ---------------
+    shortnam |          0
+      africa |        163    .3067485    .4625652       
+>    0          1
+    lat_abst |        162    .2955502    .1903789       
+>    0   .7222222
+       rich4 |        163    .0245399    .1551948       
+>    0          1
+      avexpr |        121    7.066491    1.804287   1.63
+> 6364         10
+-------------+------------------------------------------
+> ---------------
+    logpgp95 |        148    8.302509    1.105342   6.10
+> 9248   10.28875
+      logem4 |         87    4.595984    1.303333   .936
+> 0933   7.986165
+        asia |        163    .2576687    .4386984       
+>    0          1
+    loghjypl |        123   -1.731106    1.083726  -3.54
+> 0459          0
+      baseco |         64           1           0       
+>    1          1
+
+. tab baseco, m
+
+base sample |
+   Colonial |
+    Origins |
+      paper |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         64       39.26       39.26
+          . |         99       60.74      100.00
+------------+-----------------------------------
+      Total |        163      100.00
+
+. tab rich4, m
+
+dummy=1 for |
+neo-europes |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        159       97.55       97.55
+          1 |          4        2.45      100.00
+------------+-----------------------------------
+      Total |        163      100.00
+
+. tab africa, m
+
+dummy=1 for |
+     Africa |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        113       69.33       69.33
+          1 |         50       30.67      100.00
+------------+-----------------------------------
+      Total |        163      100.00
+
+. tab asia, m
+
+ =1 for all |
+    of asia |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        121       74.23       74.23
+          1 |         42       25.77      100.00
+------------+-----------------------------------
+      Total |        163      100.00
+
+. list shortnam if baseco==1 & asia==0 & africa==0 & ric
+> h4==0 & !missing(logpgp95)
+
+     +----------+
+     | shortnam |
+     |----------|
+  4. |      ARG |
+ 16. |      BHS |
+ 20. |      BOL |
+ 21. |      BRA |
+ 28. |      CHL |
+     |----------|
+ 33. |      COL |
+ 36. |      CRI |
+ 41. |      DOM |
+ 43. |      ECU |
+ 60. |      GTM |
+     |----------|
+ 61. |      GUY |
+ 63. |      HND |
+ 65. |      HTI |
+ 75. |      JAM |
+ 94. |      MEX |
+     |----------|
+ 97. |      MLT |
+108. |      NIC |
+115. |      PAN |
+116. |      PER |
+122. |      PRY |
+     |----------|
+132. |      SLV |
+146. |      TTO |
+153. |      URY |
+156. |      VEN |
+     +----------+
+
+. 
+end of do-file
