@@ -1,0 +1,58 @@
+# ============================================================
+# macOS / editor noise
+# ============================================================
+.DS_Store
+.claude/
+.vscode/
+.idea/
+*.swp
+*~
+
+# ============================================================
+# Course materials not tracked in git
+# (reference PDFs, lecture notes, handbooks, study guides, exams)
+# ============================================================
+exams/
+handbook/
+lectures/
+study_guide/
+texts/
+
+# Reference course problem set PDFs live inside homework/ but are
+# not part of our solution set.
+homework/Problem Set*/
+homework/Submitting Assignments*.pdf
+
+# Recitation TA materials and raw data dumps.
+recitation/TA_folder/
+recitation/recitation_data/
+
+# Stray top-level log files from crashed interactive sessions.
+/11.log
+/stata.log
+
+# ============================================================
+# LaTeX intermediates (PDFs and .bbl are tracked; everything
+# else regenerates from the .tex source)
+# ============================================================
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+
+# ============================================================
+# Stata / Python / R scratch
+# ============================================================
+*.pyc
+__pycache__/
+.ipynb_checkpoints/
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+stdin.log
+
