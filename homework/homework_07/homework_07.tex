@@ -236,11 +236,16 @@ Run in Stata:
 * (i) TSLS
 ivregress 2sls logpgp95 (avexpr = logem4), vce(robust)
 * (ii) covariance ratio
-sum logpgp95 avexpr logem4 if !missing(avexpr,logem4)
-gen zy = (logem4 - r(mean_logem4)) * (logpgp95 - r(mean_logpgp95))  // illustrative
-gen zx = (logem4 - r(mean_logem4)) * (avexpr   - r(mean_avexpr))
-sum zy; scalar s_zy = r(mean)*(r(N)/(r(N)-1))
-sum zx; scalar s_zx = r(mean)*(r(N)/(r(N)-1))
+sum logpgp95 if !missing(avexpr,logem4)
+scalar ybar = r(mean)
+sum avexpr if !missing(logpgp95,logem4)
+scalar xbar = r(mean)
+sum logem4 if !missing(logpgp95,avexpr)
+scalar zbar = r(mean)
+gen zy = (logem4 - zbar) * (logpgp95 - ybar)
+gen zx = (logem4 - zbar) * (avexpr   - xbar)
+sum zy if !missing(avexpr,logem4); scalar s_zy = r(mean)*(r(N)/(r(N)-1))
+sum zx if !missing(avexpr,logem4); scalar s_zx = r(mean)*(r(N)/(r(N)-1))
 display s_zy/s_zx
 * (iii) reduced-form ratio
 reg logpgp95 logem4 if !missing(avexpr)
@@ -248,6 +253,7 @@ scalar piY = _b[logem4]
 reg avexpr   logem4 if !missing(logpgp95)
 scalar piX = _b[logem4]
 display piY/piX
+drop zy zx
 \end{lstlisting}
 The three computations give
 \[
@@ -335,7 +341,7 @@ ivregress 2sls logpgp95 asia africa othercont lat_abst (avexpr = logem4), ///
 * Regression 9
 ivregress 2sls loghjypl (avexpr = logem4), vce(robust) first
 \end{lstlisting}
-The three avexpr coefficients are $\ajrcgbsecond$, $\ajrchbsecond$, and $\ajrcibsecond$, which round to the authors' $0.98$, $1.10$, and $0.98$. Column 7's continent dummies are $\ajrcgbsecondasia$ (Asia), $\ajrcgbsecondafr$ (Africa), $\ajrcgbsecondoth$ (other) vs.\ the authors' $-0.92$, $-0.46$, $-0.94$; column 8's are $\ajrchbsecondasia$, $\ajrchbsecondafr$, $\ajrchbsecondoth$ vs.\ $-1.10$, $-0.44$, $-0.99$; all match to two decimal places. The SE comparison is
+The three avexpr coefficients are $\ajrcgbsecond$, $\ajrchbsecond$, and $\ajrcibsecond$, so columns~(7)--(9) give approximately $0.98$, $1.11$, and $0.98$. Column~(7)'s continent-dummy coefficients are $\ajrcgbsecondasia$ (Asia), $\ajrcgbsecondafr$ (Africa), and $\ajrcgbsecondoth$ (other); column~(8)'s are $\ajrchbsecondasia$, $\ajrchbsecondafr$, and $\ajrchbsecondoth$. These all have the expected signs and are numerically close to the published table, with the only visibly larger rounding difference in column~(8) on the Asia dummy, which prints as $\ajrchbsecondasia \approx -1.05$. The SE comparison is
 \begin{center}
 \footnotesize
 \setlength{\tabcolsep}{4.5pt}
@@ -357,7 +363,7 @@ The three avexpr coefficients are $\ajrcgbsecond$, $\ajrchbsecond$, and $\ajrcib
 \bottomrule
 \end{tabular}
 \end{center}
-\textbf{SE deviations $\boldsymbol{>}$ 0.2 for regressions 7--9.} None. In column~(7) the \texttt{avexpr} SE moves from $0.30$ to $\ajrcgsesecond$ and in column~(8) from $0.46$ to $\ajrchsesecond$---gaps of at most $\approx 0.04$. The largest move anywhere in cols.~(7)--(9) is on the column~(8) ``other'' continent dummy (paper $1.00$ vs.\ robust $\ajrchsesecondoth$, $\approx 0.06$), still well inside the $0.2$ threshold. In column~(9) the \texttt{avexpr} SE moves from $0.17$ to $\ajrcisesecond$ ($\approx 0.03$). The complete nine-column picture of the Table~4 replication is therefore: \textbf{no standard error deviated by more than $0.2$ for the variable of interest \texttt{avexpr} in any column, and among the auxiliary controls only the second-stage \texttt{lat\_abst} SEs in columns~(4) and~(6) crossed the threshold---by about $0.07$ and $0.13$ respectively}. The paper's inference on the institutions coefficient survives the switch to heteroskedasticity-robust SEs in every specification.
+\textbf{SE deviations $\boldsymbol{>}$ 0.2 for regressions 7--9.} None. In column~(7) the \texttt{avexpr} SE moves from $0.30$ to $\ajrcgsesecond$ and in column~(8) from $0.46$ to $\ajrchsesecond$---gaps of at most $\approx 0.04$. The largest move anywhere in cols.~(7)--(9) is on the column~(8) ``other'' continent dummy (paper $1.00$ vs.\ robust $\ajrchsesecondoth$, $\approx 0.06$), still well inside the $0.2$ threshold. In column~(9) the \texttt{avexpr} SE moves from $0.17$ to $\ajrcisesecond$ ($\approx 0.03$). The complete nine-column picture of the Table~4 replication is therefore: \textbf{no standard error deviated by more than $0.2$ for the variable of interest \texttt{avexpr} in any column, and among the auxiliary controls only the second-stage \texttt{lat\_abst} SEs in columns~(4) and~(6) crossed the threshold---by about $0.27$ and $0.33$ respectively}. The paper's inference on the institutions coefficient survives the switch to heteroskedasticity-robust SEs in every specification.
 \end{solution}
 
 % =================== PART (e) ===================
@@ -837,7 +843,7 @@ All replication materials for \texttt{homework\_07} are available on GitHub:
     \item Homework 07 folder: \url{https://github.com/tylersotomayor/econun3412-spring2026/tree/main/homework_07}
 \end{itemize}
 
-The \texttt{do\_files/} subfolder contains two Stata do-files: \texttt{ps7\_ajr.do} (Problem~1, parts a--g: Acemoglu--Johnson--Robinson 2001 Table~4 replication) and \texttt{ps7\_diff\_fig.do} (Problem~2, part d: the Card--Krueger DiD figure). Each writes to a matching \texttt{.log} file in the same directory. The \texttt{output/} subfolder contains the \LaTeX\ tables (\texttt{output/tables/}) and PDF figures (\texttt{output/figures/}) generated by those do-files and \verb|\input|ed into this document.
+The \texttt{do\_files/} subfolder contains \texttt{ps7\_ajr.do}, \texttt{ps7\_sw\_ee.do}, and \texttt{ps7\_diff\_fig.do}. Each script writes a matching \texttt{.log} file. The \texttt{output/} subfolder stores the generated tables and figures used in this document.
 
 \newpage
 \bibliographystyle{apalike}

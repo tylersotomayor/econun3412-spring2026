@@ -7,7 +7,20 @@
 *==============================================================
 clear all
 set more off
-cd "/Users/tylersotomayor/columbia_university/2025-2026/spring_2026/econ_3412_spring_2026/homework/homework_07"
+capture log close
+* Resolve the project root portably: allow launch from homework_07/ or do_files/.
+capture confirm file "homework_07.tex"
+if _rc {
+    capture confirm file "../homework_07.tex"
+    if _rc {
+        di as err "Could not find homework_07.tex. Run from homework_07 or homework_07/do_files."
+        exit 601
+    }
+    cd ..
+}
+capture mkdir "output"
+capture mkdir "output/figures"
+log using "do_files/ps7_diff_fig.log", replace text
 
 input state    time    y       label_str
 1        1       23.33   1
@@ -22,6 +35,8 @@ label values state st
 scalar delta_pa = 21.17 - 23.33
 scalar nj_cf    = 20.44 + delta_pa
 scalar did_hat  = 21.03 - nj_cf
+local did_label : display %4.2f did_hat
+local nj_cf_label : display %4.2f nj_cf
 
 twoway ///
     (line y time if state==1, sort lcolor(gs5) lwidth(medthick) lpattern(solid)) ///
@@ -40,13 +55,13 @@ twoway ///
     title("Card--Krueger (1994) diff-in-diff", size(medium)) ///
     note("{stSerif:{it:Y-bar-control,before}} = 23.33, {stSerif:{it:Y-bar-control,after}} = 21.17;" ///
          "{stSerif:{it:Y-bar-treatment,before}} = 20.44, {stSerif:{it:Y-bar-treatment,after}} = 21.03." ///
-         "{&beta}{sub:1}{sup:DID} = (21.03 {&minus} 20.44) {&minus} (21.17 {&minus} 23.33) = 2.76.", ///
+         "{&beta}{sub:1}{sup:DID} = (21.03 {&minus} 20.44) {&minus} (21.17 {&minus} 23.33) = `did_label'.", ///
          size(vsmall)) ///
     text(20.44 1.03 "Y-bar{sub:treatment,before} = 20.44", place(e) size(vsmall)) ///
     text(21.03 1.97 "Y-bar{sub:treatment,after} = 21.03", place(w) size(vsmall)) ///
     text(23.33 1.03 "Y-bar{sub:control,before} = 23.33", place(e) size(vsmall)) ///
     text(21.17 1.97 "Y-bar{sub:control,after} = 21.17", place(w) size(vsmall)) ///
-    text(`=nj_cf+0.3' 1.97 "NJ counterfactual = 18.28", place(w) size(vsmall) color(red)) ///
+    text(`=nj_cf+0.3' 1.97 "NJ counterfactual = `nj_cf_label'", place(w) size(vsmall) color(red)) ///
     graphregion(color(white)) plotregion(color(white)) bgcolor(white)
 
 graph export "output/figures/prob2_did_fig.pdf", replace
@@ -54,3 +69,4 @@ graph export "output/figures/prob2_did_fig.pdf", replace
 display "delta_pa = "   %6.3f delta_pa
 display "NJ counterfactual = " %6.3f nj_cf
 display "beta_1^{DID}  = "  %6.3f did_hat
+log close

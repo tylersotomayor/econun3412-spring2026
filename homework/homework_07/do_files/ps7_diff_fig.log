@@ -1,52 +1,9 @@
-
-  ___  ____  ____  ____  ____ ®
- /__    /   ____/   /   ____/      StataNow 19.5
-___/   /   /___/   /   /___/       BE—Basic Edition
-
- Statistics and Data Science       Copyright 1985-2025 S
-> tataCorp LLC
-                                   StataCorp
-                                   4905 Lakeway Drive
-                                   College Station, Texa
-> s 77845 USA
-                                   800-782-8272        h
-> ttps://www.stata.com
-                                   979-696-4600        s
-> ervice@stata.com
-
-Stata license: Single-user , expiring 29 Aug 2026
-Serial number: 301909360991
-  Licensed to: Tyler Sotomayor
-               Columbia University
-
-Notes:
-      1. Stata is running in batch mode.
-      2. Unicode is supported; see help
-          unicode_advice.
-
-. do ps7_diff_fig.do 
-
-. *=====================================================
-> =========
-. * ps7_diff_fig.do -- Card-Krueger DiD figure for Probl
-> em 2(d)
-. * Plots mean FTE employment for NJ (treatment) and
-. * Eastern PA (control) at t=1 (before) and t=2 (after)
-> ,
-. * with the counterfactual extrapolation used to read o
-> ff
-. * beta_1^{DID}.
-. *=====================================================
-> =========
-. clear all
-
-. set more off
-
-. cd "/Users/tylersotomayor/columbia_university/2025-202
-> 6/spring_2026/econ_3412_spring_2026/homework/homework_
-> 07"
-/Users/tylersotomayor/columbia_university/2025-2026/spri
-> ng_2026/econ_3412_spring_2026/homework/homework_07
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/columbia_university/2025-2026/spring_2026/ec
+> on_3412_spring_2026/homework/homework_07/do_files/ps7_diff_fig.log
+  log type:  text
+ opened on:  22 Apr 2026, 04:10:32
 
 . 
 . input state    time    y       label_str
@@ -70,61 +27,54 @@ Notes:
 
 . scalar did_hat  = 21.03 - nj_cf
 
-. 
-. twoway ///
->     (line y time if state==1, sort lcolor(gs5) lwidth(
-> medthick) lpattern(solid)) ///
->     (line y time if state==2, sort lcolor(navy) lwidth
-> (medthick) lpattern(solid)) ///
->     (scatter y time if state==1, mcolor(gs5) msymbol(O
-> ) msize(medlarge)) ///
->     (scatter y time if state==2, mcolor(navy) msymbol(
-> D) msize(medlarge)) ///
->     (pcarrowi 20.44 2 `=nj_cf' 2 , lcolor(red) lpatter
-> n(dash) msymbol(none)) ///
->     (scatteri `=nj_cf' 2, mcolor(red) msymbol(X) msize
-> (medlarge)), ///
->     legend(order(1 "PA (control)" 2 "NJ (treatment)" 6
->  "NJ counterfactual") ///
->            position(6) cols(3) size(small)) ///
->     xlabel(1 "t=1 (Feb 1992, pre-MW)" 2 "t=2 (Nov 1992
-> , post-MW)", labsize(small)) ///
->     ylabel(18(1)24, labsize(small) angle(0)) ///
->     xtitle("Time period (minimum-wage hike = 1992-04-0
-> 1 in NJ)", size(small)) ///
->     xscale(range(0.8 2.2)) ///
->     ytitle("Average FTE employment per restaurant", si
-> ze(small)) ///
->     title("Card--Krueger (1994) diff-in-diff", size(me
-> dium)) ///
->     note("{stSerif:{it:Y-bar-control,before}} = 23.33,
->  {stSerif:{it:Y-bar-control,after}} = 21.17;" ///
->          "{stSerif:{it:Y-bar-treatment,before}} = 20.4
-> 4, {stSerif:{it:Y-bar-treatment,after}} = 21.03." ///
->          "{&beta}{sub:1}{sup:DID} = (21.03 {&minus} 20
-> .44) {&minus} (21.17 {&minus} 23.33) = 2.76.", ///
->          size(vsmall)) ///
->     text(20.44 1.03 "Y-bar{sub:treatment,before} = 20.
-> 44", place(e) size(vsmall)) ///
->     text(21.03 1.97 "Y-bar{sub:treatment,after} = 21.0
-> 3", place(w) size(vsmall)) ///
->     text(23.33 1.03 "Y-bar{sub:control,before} = 23.33
-> ", place(e) size(vsmall)) ///
->     text(21.17 1.97 "Y-bar{sub:control,after} = 21.17"
-> , place(w) size(vsmall)) ///
->     text(`=nj_cf+0.3' 1.97 "NJ counterfactual = 18.28"
-> , place(w) size(vsmall) color(red)) ///
->     graphregion(color(white)) plotregion(color(white))
->  bgcolor(white)
+. local did_label : display %4.2f did_hat
+
+. local nj_cf_label : display %4.2f nj_cf
 
 . 
-. graph export "output/figures/prob2_did_fig.pdf", repla
-> ce
-file
-    /Users/tylersotomayor/columbia_university/2025-202
-    > 6/spring_2026/econ_3412_spring_2026/homework/hom
-    > ework_07/output/figures/prob2_did_fig.pdf saved
-    as PDF format
+. twoway ///
+>     (line y time if state==1, sort lcolor(gs5) lwidth(medthick) lpattern(soli
+> d)) ///
+>     (line y time if state==2, sort lcolor(navy) lwidth(medthick) lpattern(sol
+> id)) ///
+>     (scatter y time if state==1, mcolor(gs5) msymbol(O) msize(medlarge)) ///
+>     (scatter y time if state==2, mcolor(navy) msymbol(D) msize(medlarge)) ///
+>     (pcarrowi 20.44 2 `=nj_cf' 2 , lcolor(red) lpattern(dash) msymbol(none)) 
+> ///
+>     (scatteri `=nj_cf' 2, mcolor(red) msymbol(X) msize(medlarge)), ///
+>     legend(order(1 "PA (control)" 2 "NJ (treatment)" 6 "NJ counterfactual") /
+> //
+>            position(6) cols(3) size(small)) ///
+>     xlabel(1 "t=1 (Feb 1992, pre-MW)" 2 "t=2 (Nov 1992, post-MW)", labsize(sm
+> all)) ///
+>     ylabel(18(1)24, labsize(small) angle(0)) ///
+>     xtitle("Time period (minimum-wage hike = 1992-04-01 in NJ)", size(small))
+>  ///
+>     xscale(range(0.8 2.2)) ///
+>     ytitle("Average FTE employment per restaurant", size(small)) ///
+>     title("Card--Krueger (1994) diff-in-diff", size(medium)) ///
+>     note("{stSerif:{it:Y-bar-control,before}} = 23.33, {stSerif:{it:Y-bar-con
+> trol,after}} = 21.17;" ///
+>          "{stSerif:{it:Y-bar-treatment,before}} = 20.44, {stSerif:{it:Y-bar-t
+> reatment,after}} = 21.03." ///
+>          "{&beta}{sub:1}{sup:DID} = (21.03 {&minus} 20.44) {&minus} (21.17 {&
+> minus} 23.33) = `did_label'.", ///
+>          size(vsmall)) ///
+>     text(20.44 1.03 "Y-bar{sub:treatment,before} = 20.44", place(e) size(vsma
+> ll)) ///
+>     text(21.03 1.97 "Y-bar{sub:treatment,after} = 21.03", place(w) size(vsmal
+> l)) ///
+>     text(23.33 1.03 "Y-bar{sub:control,before} = 23.33", place(e) size(vsmall
+> )) ///
+>     text(21.17 1.97 "Y-bar{sub:control,after} = 21.17", place(w) size(vsmall)
+> ) ///
+>     text(`=nj_cf+0.3' 1.97 "NJ counterfactual = `nj_cf_label'", place(w) size
+> (vsmall) color(red)) ///
+>     graphregion(color(white)) plotregion(color(white)) bgcolor(white)
+
+. 
+. graph export "output/figures/prob2_did_fig.pdf", replace
+file output/figures/prob2_did_fig.pdf saved as PDF format
 
 . 
 . display "delta_pa = "   %6.3f delta_pa
@@ -136,7 +86,10 @@ NJ counterfactual = 18.280
 . display "beta_1^{DID}  = "  %6.3f did_hat
 beta_1^{DID}  =  2.750
 
-. 
-end of do-file
-. 
-end of do-file
+. log close
+      name:  <unnamed>
+       log:  /Users/tylersotomayor/columbia_university/2025-2026/spring_2026/ec
+> on_3412_spring_2026/homework/homework_07/do_files/ps7_diff_fig.log
+  log type:  text
+ closed on:  22 Apr 2026, 04:10:33
+-------------------------------------------------------------------------------

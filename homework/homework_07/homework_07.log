@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.10)  22 APR 2026 03:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.10)  22 APR 2026 04:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1508,7 +1508,7 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [7]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 285.
+(Font)              using `OT1/cmr/m/sc' instead on input line 291.
 
 
 
@@ -1517,7 +1517,7 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [9]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 325.
+(Font)              using `OT1/cmr/m/sc' instead on input line 331.
 
 
 
@@ -1526,23 +1526,23 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [11]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 368.
+(Font)              using `OT1/cmr/m/sc' instead on input line 374.
 
 
 
 [12]
 
-LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 377.
-
-
-
 [13]
+
+LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
+(Font)              using `OT1/cmr/m/sc' instead on input line 383.
+
+
 
 [14]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 398.
+(Font)              using `OT1/cmr/m/sc' instead on input line 404.
 
 
 
@@ -1551,14 +1551,14 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [16]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 434.
+(Font)              using `OT1/cmr/m/sc' instead on input line 440.
 
 
 
 [17]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 443.
+(Font)              using `OT1/cmr/m/sc' instead on input line 449.
 
 
 
@@ -1566,7 +1566,7 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 c}]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 468.
+(Font)              using `OT1/cmr/m/sc' instead on input line 474.
 
 
 
@@ -1575,7 +1575,7 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [20]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 496.
+(Font)              using `OT1/cmr/m/sc' instead on input line 502.
 
 
 
@@ -1586,10 +1586,10 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [23]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 535.
+(Font)              using `OT1/cmr/m/sc' instead on input line 541.
 
 
-Underfull \hbox (badness 1675) in paragraph at lines 535--537
+Underfull \hbox (badness 1675) in paragraph at lines 541--543
  \OT1/cmr/m/n/12 Us-ing \OT1/pcr/m/n/12 fertility.dta \OT1/cmr/m/n/12 ($\OML/cm
 m/m/it/12 n \OT1/cmr/m/n/12 = 254\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 654$ mar-ri
 ed women) and run-ning
@@ -1597,24 +1597,24 @@ ed women) and run-ning
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 548.
+(Font)              using `OT1/cmr/m/sc' instead on input line 554.
 
 
 
 [24]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 557.
+(Font)              using `OT1/cmr/m/sc' instead on input line 563.
 
 
 
 [25]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 570.
+(Font)              using `OT1/cmr/m/sc' instead on input line 576.
 
 
-Overfull \hbox (3.89925pt too wide) in paragraph at lines 567--572
+Overfull \hbox (3.89925pt too wide) in paragraph at lines 573--578
 []\OT1/cmr/m/n/12 [0 points] Ex-plain why \OT1/cmr/m/it/12 same-sex \OT1/cmr/m/
 n/12 is a valid in-stru-ment for the IV re-gres-sion of \OT1/cmr/m/it/12 weeksw
 orked
@@ -1622,24 +1622,24 @@ orked
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 579.
+(Font)              using `OT1/cmr/m/sc' instead on input line 585.
 
 
 
 [26]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 588.
+(Font)              using `OT1/cmr/m/sc' instead on input line 594.
 
 
-Overfull \hbox (14.4364pt too wide) in paragraph at lines 588--590
+Overfull \hbox (14.4364pt too wide) in paragraph at lines 594--596
  \OT1/cmr/m/n/12 Run-ning [][]\OT1/pcr/m/n/12 ivregress 2sls weeksm1 (morekids 
 = samesex), small r
  []
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 601.
+(Font)              using `OT1/cmr/m/sc' instead on input line 607.
 
 
 
@@ -1648,10 +1648,10 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [28]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 632.
+(Font)              using `OT1/cmr/m/sc' instead on input line 638.
 
 
-Overfull \hbox (8.77164pt too wide) in paragraph at lines 628--634
+Overfull \hbox (8.77164pt too wide) in paragraph at lines 634--640
 []\OT1/cmr/m/n/12 [0 points] \OT1/cmr/bx/n/12 (i) \OT1/cmr/m/n/12 Regress the l
 og-a-rithm of the num-ber of as-saults [$\OML/cmm/m/it/12 ln[]assaults \OT1/cmr
 /m/n/12 = [][][]$]
@@ -1662,10 +1662,10 @@ og-a-rithm of the num-ber of as-saults [$\OML/cmm/m/it/12 ln[]assaults \OT1/cmr
 [29]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 644.
+(Font)              using `OT1/cmr/m/sc' instead on input line 650.
 
 
-Overfull \hbox (16.15002pt too wide) detected at line 654
+Overfull \hbox (16.15002pt too wide) detected at line 660
 []  \OT1/cmr/m/n/12 =  \OMS/cmsy/m/n/12 ^^@\OT1/cmr/m/n/12 0\OML/cmm/m/it/12 :\
 OT1/cmr/m/n/12 0106 ([] = 0\OML/cmm/m/it/12 :\OT1/cmr/m/n/12 0050)\OML/cmm/m/it
 /12 ;  \OT1/cmr/m/n/12 95%[]  =  [ \OMS/cmsy/m/n/12 ^^@\OT1/cmr/m/n/12 0\OML/cm
@@ -1678,24 +1678,24 @@ m/m/it/12 :\OT1/cmr/m/n/12 0205\OML/cmm/m/it/12 ;  \OMS/cmsy/m/n/12 ^^@\OT1/cmr
 [30]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 663.
+(Font)              using `OT1/cmr/m/sc' instead on input line 669.
 
 
 
 [31]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 678.
+(Font)              using `OT1/cmr/m/sc' instead on input line 684.
 
 
 
 [32]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 693.
+(Font)              using `OT1/cmr/m/sc' instead on input line 699.
 
 
-Overfull \hbox (15.59302pt too wide) in paragraph at lines 693--695
+Overfull \hbox (15.59302pt too wide) in paragraph at lines 699--701
  \OT1/cmr/m/n/12 Stack-ing all nine in-stru-ments $(\OML/cmm/m/it/12 pr[]attend
 [][];  attend[][][]f;  attend[][][]b\OT1/cmr/m/n/12 )$
  []
@@ -1705,7 +1705,7 @@ Overfull \hbox (15.59302pt too wide) in paragraph at lines 693--695
 [33]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 706.
+(Font)              using `OT1/cmr/m/sc' instead on input line 712.
 
 
 
@@ -1714,22 +1714,22 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [35]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 728.
+(Font)              using `OT1/cmr/m/sc' instead on input line 734.
 
 
 
 [36]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 753.
+(Font)              using `OT1/cmr/m/sc' instead on input line 759.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 753--755
+Underfull \hbox (badness 10000) in paragraph at lines 759--761
  \OT1/cmr/m/n/12 Fol-low-ing rec11, I fit a sin-gle in-ter-ac-tion LPM
  []
 
 
-Overfull \hbox (46.56955pt too wide) detected at line 757
+Overfull \hbox (46.56955pt too wide) detected at line 763
 [][]  \OT1/cmr/m/n/12 =  []  +  [] [][]  +  [] [][]  +  [] ([] \OMS/cmsy/m/n/12
  ^^B []\OT1/cmr/m/n/12 )[]\OML/cmm/m/it/12 :
  []
@@ -1739,22 +1739,22 @@ Overfull \hbox (46.56955pt too wide) detected at line 757
 [37]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 766.
+(Font)              using `OT1/cmr/m/sc' instead on input line 772.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 766--768
+Underfull \hbox (badness 10000) in paragraph at lines 772--774
 
  []
 
 
-Underfull \hbox (badness 1917) in paragraph at lines 776--777
+Underfull \hbox (badness 1917) in paragraph at lines 782--783
 \OT1/cmr/m/n/12 so whites gain $0\OML/cmm/m/it/12 :\OT1/cmr/m/n/12 0229$ ($\OMS
 /cmsy/m/n/12 ^^Y \OT1/cmr/m/n/12 2\OML/cmm/m/it/12 :\OT1/cmr/m/n/12 3$ pp) from
  hav-ing a high-quality re-sume
  []
 
 
-Overfull \hbox (17.76956pt too wide) detected at line 779
+Overfull \hbox (17.76956pt too wide) detected at line 785
 [][]  \OT1/cmr/m/n/12 =  []  +  [] [][]  +  [] [][]  +  [] ([] \OMS/cmsy/m/n/12
  ^^B []\OT1/cmr/m/n/12 )[]\OML/cmm/m/it/12 ;
  []
@@ -1764,7 +1764,7 @@ Overfull \hbox (17.76956pt too wide) detected at line 779
 [38]
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
-(Font)              using `OT1/cmr/m/sc' instead on input line 788.
+(Font)              using `OT1/cmr/m/sc' instead on input line 794.
 
 
 
@@ -1773,17 +1773,24 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/scit' undefined
 [40] (./output/tables/prob1_table4.tex)
 
 [41]
-<output/figures/prob2_did_fig.pdf, id=398, 397.485pt x 289.08pt>
+<output/figures/prob2_did_fig.pdf, id=404, 542.025pt x 325.215pt>
 File: output/figures/prob2_did_fig.pdf Graphic file (type pdf)
 <use output/figures/prob2_did_fig.pdf>
 Package pdftex.def Info: output/figures/prob2_did_fig.pdf  used on input line 8
-23.
-(pdftex.def)             Requested size: 446.26582pt x 324.56577pt.
+29.
+(pdftex.def)             Requested size: 446.26582pt x 267.76974pt.
 
 
 [42
 
  <./output/figures/prob2_did_fig.pdf>]
+Overfull \hbox (0.82994pt too wide) in paragraph at lines 846--847
+[]\OT1/cmr/m/n/12 The \OT1/pcr/m/n/12 do[]files/ \OT1/cmr/m/n/12 sub-folder con
+-tains \OT1/pcr/m/n/12 ps7[]ajr.do\OT1/cmr/m/n/12 , \OT1/pcr/m/n/12 ps7[]sw[]ee
+.do\OT1/cmr/m/n/12 , and \OT1/pcr/m/n/12 ps7[]diff[]fig.do\OT1/cmr/m/n/12 .
+ []
+
+
 
 [43] (./homework_07.bbl
 
@@ -1798,10 +1805,10 @@ Package rerunfilecheck Info: File `homework_07.out' has not changed.
 (rerunfilecheck)             Checksum: 515899487B04A9D70896DD788189CAB0;2227.
  ) 
 Here is how much of TeX's memory you used:
- 48006 strings out of 473201
- 1104482 string characters out of 5716120
- 1887404 words of memory out of 5000000
- 70252 multiletter control sequences out of 15000+600000
+ 48016 strings out of 473201
+ 1104629 string characters out of 5716120
+ 1909404 words of memory out of 5000000
+ 70256 multiletter control sequences out of 15000+600000
  583985 words of font info for 102 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  89i,14n,94p,2411b,1739s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1828,10 +1835,10 @@ f-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2024/
 texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2024/te
 xmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/2024/texmf-dist
 /fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on homework_07.pdf (48 pages, 715342 bytes).
+Output written on homework_07.pdf (48 pages, 610685 bytes).
 PDF statistics:
- 573 PDF objects out of 1000 (max. 8388607)
+ 568 PDF objects out of 1000 (max. 8388607)
  464 compressed objects within 5 object streams
- 151 named destinations out of 1000 (max. 500000)
+ 157 named destinations out of 1000 (max. 500000)
  79 words of extra memory for PDF output out of 10000 (max. 10000000)
 

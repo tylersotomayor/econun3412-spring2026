@@ -18,7 +18,18 @@
 clear all
 set more off
 capture log close
-cd "/Users/tylersotomayor/columbia_university/2025-2026/spring_2026/econ_3412_spring_2026/homework/homework_07"
+* Resolve the project root portably: allow launch from homework_07/ or do_files/.
+capture confirm file "data/fertility.dta"
+if _rc {
+    capture confirm file "../data/fertility.dta"
+    if _rc {
+        di as err "Could not find data/fertility.dta. Run from homework_07 or homework_07/do_files."
+        exit 601
+    }
+    cd ..
+}
+capture mkdir "output"
+capture mkdir "output/tables"
 log using "do_files/ps7_sw_ee.log", replace text
 
 file open mac using "output/tables/prob_sw_ee_macros.tex", write replace
